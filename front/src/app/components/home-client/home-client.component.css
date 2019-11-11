@@ -1,0 +1,15 @@
+.example-container {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+mat-card { margin-bottom: 15px; }
+
+.row-item { cursor: pointer; }
+
+.row-item:hover { background-color: lightgray; }
+
+.see-item { color: teal; }

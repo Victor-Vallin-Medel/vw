@@ -1,0 +1,39 @@
+mat-toolbar {
+    box-shadow: 0px 1px 8px 1px #1f1e1e;
+    margin-bottom: 15px;
+    position: fixed;
+    z-index: 2;
+  }
+  
+  mat-sidenav {
+    width: 30ch;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  .logo {
+    filter: invert(100%);
+    margin: 0 14px 0 14px;
+  }
+  
+  .router-logo { 
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .main {
+    padding: 0;
+    height: 100vh;
+  }
+  
+  .secondary {
+    padding: 5em 0 5em 0;
+  }
+  
+  .item-link {
+    text-align: left;
+    text-decoration: none;
+    color: black;
+  }

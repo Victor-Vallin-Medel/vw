@@ -1,0 +1,40 @@
+<div class="flex-container flex-between">
+    <h1 mat-dialog-title class="flex-child">Registro de vehículo</h1>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon class="flex-child">close</mat-icon>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <form [formGroup]="registerFormGroup" (ngSubmit)="registerNewCar()" class="form-padding">
+    <div class="row">
+      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m12">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nameCtrl" required cdkFocusInitial>
+        <mat-error *ngIf="registerFormGroup.get('nameCtrl').hasError('required')">
+          Ingresa un nombre de vehículo.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m8">
+        <mat-label>Versión</mat-label>
+        <input matInput formControlName="versionCtrl" required cdkFocusInitial>
+        <mat-error *ngIf="registerFormGroup.get('versionCtrl').hasError('required')">
+          Ingresa una versión.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m4">
+        <mat-label>Modelo</mat-label>
+        <input type="number" matInput formControlName="modelCtrl" required>
+        <mat-error *ngIf="registerFormGroup.get('modelCtrl').hasError('required')">
+          Ingresa el modelo.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m12">
+        <mat-label>Placas</mat-label>
+        <input matInput formControlName="platesCtrl" required>
+        <mat-error *ngIf="registerFormGroup.get('platesCtrl').hasError('required')">
+          Ingresa las placas.
+        </mat-error>
+      </mat-form-field>
+      <button type="submit" mat-raised-button color="primary" class="col s12" [disabled]="registerFormGroup.invalid">Registrar</button>
+    </div>
+  </form>
