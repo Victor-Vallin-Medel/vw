@@ -1,0 +1,19 @@
+button[type=submit] {
+    margin: 18px 0 15px 0;
+    width: 100%;
+}
+
+mat-tab-group, mat-card {
+    max-width: 550px;
+    margin: auto;
+}
+
+mat-card {
+    margin-top: 8px;
+    margin-bottom: 5px;
+}
+
+.row {
+    margin: 0;
+    padding: 0;
+}
