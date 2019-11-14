@@ -36,7 +36,7 @@ export class HomeClientComponent implements OnInit {
     // this.session.onAuthStateChanged(user => {
     //   if (user) {
     //     this.orderService.getUserOrders(user.uid).subscribe((orders: Order []) => this.orders = orders);
-    //     this.carService.getCars(user.uid).subscribe((cars: Car []) => {
+    //     this.carService.getClientCars(user.uid).subscribe((cars: Car []) => {
     //       this.Auto = cars
     //       cars.forEach(car => {
     //         if (car.status != 0) {

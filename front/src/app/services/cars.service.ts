@@ -11,8 +11,12 @@ export class CarsService {
 
   constructor(private http:HttpClient) { }
   
-  getCars(uid: string) {
+  getClientCars(uid: string) {
     return this.http.get(`${this.URL}user/${uid}`);
+  }
+
+  getCars() {
+    return this.http.get(`${this.URL}`);
   }
 
   getCar(id: string) {
@@ -21,6 +25,10 @@ export class CarsService {
 
   postCar(carDto: Car) {
     return this.http.post(`${this.URL}${carDto.plates}`, carDto);
+  }
+
+  putCar(id: string, status: number) {
+    return this.http.put(`${this.URL}${id}`, { status: status});
   }
 
   deleteCar(id: string) {

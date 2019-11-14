@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class ClientService {
 
   currentClient: Client;
   readonly URL: string = 'https://us-central1-volkswagen-6510d.cloudfunctions.net/app/api/clients/';
@@ -16,7 +16,11 @@ export class UsersService {
     return this.http.post(this.URL + `${uid}`, clientDTO);
   }
 
-  getUser(uid) {
+  getClients() {
+    return this.http.get(`${this.URL}`);
+  }
+
+  getClient(uid) {
     return this.http.get(`${this.URL}${uid}`);
   }
 }

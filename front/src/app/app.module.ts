@@ -21,7 +21,7 @@ import { StatusPipe } from './pipes/status.pipe';
 
 // Services
 import { SessionService } from './services/session.service';
-import { UsersService } from './services/users.service';
+import { ClientService } from './services/client.service';
 import { CarsService } from './services/cars.service';
 
 // Components
@@ -29,25 +29,52 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/user/register/register.component';
-import { ScheduleComponent } from './components/user/schedule/schedule.component';
-import { HomeClientComponent } from './components/user/home-client/home-client.component';
 import { ViewServiceComponent } from './components/view-service/view-service.component';
 import { ViewCarComponent } from './components/view-car/view-car.component';
 import { HistoryServiceComponent } from './components/history-service/history-service.component';
+
+
+import { RegisterComponent } from './components/client/register/register.component';
+import { ScheduleComponent } from './components/client/schedule/schedule.component';
+import { HomeClientComponent } from './components/client/home-client/home-client.component';
+
+import { HomeComponent } from './components/employee/home/home.component';
+import { UpdateServiceComponent } from './components/employee/update-service/update-service.component';
+import { CarDetailsComponent } from './components/employee/car-details/car-details.component';
+import { CarsComponent } from './components/employee/cars/cars.component';
+import { ClientDetailsComponent } from './components/employee/client-details/client-details.component';
+import { ClientsComponent } from './components/employee/clients/clients.component';
+import {  EmployeeDetailsComponent} from './components/employee/employee-details/employee-details.component';
+import { EmployeesComponent } from './components/employee/employees/employees.component';
+import { OrdersComponent } from './components/employee/orders/orders.component';
+
+import { RolesPipe } from './pipes/roles.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     // NotFoundComponent,
-    HomeClientComponent,
     ViewServiceComponent,
     ViewCarComponent,
     LoginComponent,
+    // Client
+    HomeClientComponent,
     RegisterComponent,
     ScheduleComponent,
     HistoryServiceComponent,
-    StatusPipe
+    // Employee
+    HomeComponent,
+    UpdateServiceComponent,
+    CarDetailsComponent,
+    CarsComponent,
+    ClientDetailsComponent,
+    ClientsComponent,
+    EmployeeDetailsComponent,
+    EmployeesComponent,
+    OrdersComponent,
+
+    StatusPipe,
+    RolesPipe
   ],
   imports: [
     BrowserModule,
@@ -65,14 +92,15 @@ import { HistoryServiceComponent } from './components/history-service/history-se
     AuthUserGuard,
     AuthEmployeeGuard,
     SessionService,
-    UsersService,
+    ClientService,
     CarsService
   ],
   entryComponents: [
     RegisterComponent,
     ScheduleComponent,
     ViewServiceComponent,
-    HistoryServiceComponent
+    HistoryServiceComponent,
+    UpdateServiceComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -25,7 +25,7 @@ export class AuthUserGuard implements CanActivate {
                   this.snack.open("Vista no disponible.", "Close", {
                     duration: 3000
                   });
-                  this.redirect(reject);
+                  this.redirect(reject, 'home');
                 }
               }
               else

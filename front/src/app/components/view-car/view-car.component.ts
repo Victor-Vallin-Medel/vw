@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Car } from '../../models/car';
 import { CarsService } from '../../services/cars.service';
 import { Location } from '@angular/common';
-import { UsersService } from '../../services/users.service';
+import { ClientService } from '../../services/client.service';
 import { Client } from '../../models/client';
 import { MatSnackBar } from '@angular/material';
 import { SessionService } from 'src/app/services/session.service';
@@ -17,7 +17,7 @@ export class ViewCarComponent implements OnInit {
 
   car: Car;
   client: Client;
-  constructor(private router: Router, private activeRouter: ActivatedRoute, private location: Location, private carService: CarsService, private userService: UsersService, private snack: MatSnackBar, private session: SessionService) { }
+  constructor(private router: Router, private activeRouter: ActivatedRoute, private location: Location, private carService: CarsService, private clientService: ClientService, private snack: MatSnackBar, private session: SessionService) { }
 
   ngOnInit() {
     // this.afAuth.auth.onAuthStateChanged(user => {
@@ -25,7 +25,7 @@ export class ViewCarComponent implements OnInit {
     //     this.activeRouter.params.subscribe(params => {
     //       this.carService.getCar(params.id).subscribe((car: Car) => {
     //         this.car = car;
-    //         this.userService.getUser(car.fk_client).subscribe((client: Client) => this.client = client);
+    //         this.clientService.getUser(car.fk_client).subscribe((client: Client) => this.client = client);
     //       });
     //     });
     //   }

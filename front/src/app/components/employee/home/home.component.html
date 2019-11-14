@@ -1,0 +1,130 @@
+<h1 mat-dialog-title>Servicios vigentes <mat-icon color="primary">assignment</mat-icon></h1>
+<mat-accordion>
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.espera" matBadgeOverlap="false">En espera de llegada</p>
+      </mat-panel-title>
+      <!-- <mat-panel-description>
+        Description
+      </mat-panel-description> -->
+    </mat-expansion-panel-header>
+
+    <div class="row">
+      <div *ngFor="let order of orders">
+        <div class="col s12 m6 l4 xl3" *ngIf="order.status == 2">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{order.dateReception | date: short}}</mat-card-title>
+              <mat-card-subtitle>{{order.time}}:00 hrs</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-chip-list>
+                <mat-chip color="primary" selected>{{order.fk_plates_car}}</mat-chip>
+              </mat-chip-list>
+            </mat-card-content>
+            <mat-card-actions align=end>
+              <button mat-raised-button color="accent" (click)="openService(order)">Ver orden</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.recepcion" matBadgeOverlap="false">En recepción</p>
+      </mat-panel-title>
+      <!-- <mat-panel-description>
+          Description
+        </mat-panel-description> -->
+    </mat-expansion-panel-header>
+  
+    <div class="row">
+      <div *ngFor="let order of orders">
+        <div class="col s12 m6 l4 xl3" *ngIf="order.status == 3">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{order.dateReception | date: short}}</mat-card-title>
+              <mat-card-subtitle>{{order.time}}:00 hrs</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-chip-list>
+                <mat-chip color="primary" selected>{{order.fk_plates_car}}</mat-chip>
+              </mat-chip-list>
+            </mat-card-content>
+            <mat-card-actions align=end>
+              <button mat-raised-button color="accent" (click)="openService(order)">Ver orden</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.reparando" matBadgeOverlap="false">Reparando</p>
+      </mat-panel-title>
+      <!-- <mat-panel-description>
+            Description
+          </mat-panel-description> -->
+    </mat-expansion-panel-header>
+  
+    <div class="row">
+      <div *ngFor="let order of orders">
+        <div class="col s12 m6 l4 xl3" *ngIf="order.status == 4">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{order.dateReception | date: short}}</mat-card-title>
+              <mat-card-subtitle>{{order.time}}:00 hrs</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-chip-list>
+                <mat-chip color="primary" selected>{{order.fk_plates_car}}</mat-chip>
+              </mat-chip-list>
+            </mat-card-content>
+            <mat-card-actions align=end>
+              <button mat-raised-button color="accent" (click)="openService(order)">Ver orden</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.lavando" matBadgeOverlap="false">Lavando</p>
+      </mat-panel-title>
+      <!-- <mat-panel-description>
+            Description
+          </mat-panel-description> -->
+    </mat-expansion-panel-header>
+  
+    <div class="row">
+      <div *ngFor="let order of orders">
+        <div class="col s12 m6 l4 xl3" *ngIf="order.status == 5">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{order.dateReception | date: short}}</mat-card-title>
+              <mat-card-subtitle>{{order.time}}:00 hrs</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-chip-list>
+                <mat-chip color="primary" selected>{{order.fk_plates_car}}</mat-chip>
+              </mat-chip-list>
+            </mat-card-content>
+            <mat-card-actions align=end>
+              <button mat-raised-button color="accent" (click)="openService(order)">Ver orden</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

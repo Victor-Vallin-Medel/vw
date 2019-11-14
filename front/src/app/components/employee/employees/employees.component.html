@@ -1,0 +1,58 @@
+<div class="flex-container flex-between">
+  <div class="flex-child">
+    <h4 mat-dialog-title>Empleados <mat-icon color="primary">assignment_ind</mat-icon>
+    </h4>
+  </div>
+  <div class="flex-child">
+    <button mat-stroked-button color="primary" style="margin-top: 1.5rem;" (click)="goBack()">Regresar</button>
+  </div>
+</div>
+<div class="row">
+  <div *ngFor="let employee of employees">
+    <div class="col s12 m6" *ngIf="employee.ref != afAuth.auth.currentUser.uid">
+      <mat-card class="mt">
+        <mat-card-header>
+          <mat-card-title>{{employee.name}} {{employee.apPat}} {{employee.apMat}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col s12">
+              <button mat-icon-button matTooltip="Fecha de ingreso" matTooltipPosition="right">
+                <mat-icon style="color: teal;">calendar_today</mat-icon>
+              </button>
+              {{employee.dateUp | date: short}}
+            </div>
+            <div class="col s12">
+              <button mat-icon-button matTooltip="Rol" matTooltipPosition="right">
+                <mat-icon style="color: teal;">record_voice_over</mat-icon>
+              </button>
+              Asesor
+            </div>
+            <div class="col s12">
+              <button mat-icon-button>
+                <mat-icon style="color: teal;">business</mat-icon>
+              </button>
+              {{employee.domicile}}
+            </div>
+            <div class="col s12">
+              <button mat-icon-button>
+                <mat-icon style="color: teal;">email</mat-icon>
+              </button>
+              {{employee.email}}
+            </div>
+            <div class="col s12">
+              <button mat-icon-button>
+                <mat-icon style="color: teal;">phone</mat-icon>
+              </button>
+              {{employee.phone}}
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions align=end>
+          <button mat-raised-button color="accent" [routerLink]="['/employee', employee.ref]">Administar</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

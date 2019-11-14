@@ -11,6 +11,10 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
+  getAllOrders() {
+    return this.http.get(`${this.URL}`);
+  }
+
   getUserOrders(uid) {
     return this.http.get(`${this.URL}user/${uid}`);
   }
@@ -21,5 +25,9 @@ export class OrderService {
 
   postOrder(orderDto: Order) {
     return this.http.post(`${this.URL}`, orderDto);
+  }
+
+  updateService(orderDto: Order) {
+    return this.http.put(`${this.URL}${orderDto.ref}`, orderDto);
   }
 }
