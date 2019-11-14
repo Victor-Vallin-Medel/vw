@@ -1,0 +1,1 @@
+EL omar es puto
