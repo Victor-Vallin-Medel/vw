@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CarsService } from '../../services/cars.service';
-import { Car } from "../../models/car";
-import { Order } from '../../models/order';
-import { OrderService } from '../../services/order.service';
+import { CarsService } from '../../../services/cars.service';
+import { Car } from "../../../models/car";
+import { Order } from '../../../models/order';
+import { OrderService } from '../../../services/order.service';
 import { MatBottomSheet } from '@angular/material';
-import { HistoryServiceComponent } from '../history-service/history-service.component';
-import { ViewServiceComponent } from '../view-service/view-service.component';
+import { HistoryServiceComponent } from '../../history-service/history-service.component';
+import { ViewServiceComponent } from '../../view-service/view-service.component';
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
 

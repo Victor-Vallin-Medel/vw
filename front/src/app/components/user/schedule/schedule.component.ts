@@ -2,9 +2,9 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { Car } from '../../models/car';
-import { CarsService } from '../../services/cars.service';
-import { OrderService } from '../../services/order.service';
+import { Car } from '../../../models/car';
+import { CarsService } from '../../../services/cars.service';
+import { OrderService } from '../../../services/order.service';
 import { SessionService } from 'src/app/services/session.service';
 
 @Component({
