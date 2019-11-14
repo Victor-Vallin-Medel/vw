@@ -12,6 +12,10 @@ import { LoadingBarHttpClientModule } from "@ngx-loading-bar/http-client";
 // Sweet Alert
 import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
 
+// Guards
+import { AuthEmployeeGuard } from './guards/auth-employee.guard';
+import { AuthUserGuard } from './guards/auth-user.guard';
+
 // Pipes
 import { StatusPipe } from './pipes/status.pipe';
 
@@ -58,6 +62,8 @@ import { HistoryServiceComponent } from './components/history-service/history-se
     SweetAlert2Module.forRoot()
   ],
   providers: [
+    AuthUserGuard,
+    AuthEmployeeGuard,
     SessionService,
     UsersService,
     CarsService
