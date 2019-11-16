@@ -1,1 +1,1 @@
-EL omar es puto wsdfs
+EL omar se besa con mario en craft por eso van tan seguido solos
