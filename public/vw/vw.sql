@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.18, for Linux (x86_64)
+-- MySQL dump 10.17  Distrib 10.3.15-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: mydb
 -- ------------------------------------------------------
--- Server version	5.7.18-0ubuntu0.16.04.1
+-- Server version	8.0.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -16,28 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Usuarios`
+-- Current Database: `mydb`
 --
 
-DROP TABLE IF EXISTS `Usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Usuarios` (
-  `idUsuarios` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario` varchar(45) NOT NULL,
-  `password` varchar(500) NOT NULL,
-  PRIMARY KEY (`idUsuarios`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `mydb` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
---
--- Dumping data for table `Usuarios`
---
-
-LOCK TABLES `Usuarios` WRITE;
-/*!40000 ALTER TABLE `Usuarios` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Usuarios` ENABLE KEYS */;
-UNLOCK TABLES;
+USE `mydb`;
 
 --
 -- Table structure for table `automovil`
@@ -95,6 +79,33 @@ CREATE TABLE `citas` (
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `citas_has_states`
+--
+
+DROP TABLE IF EXISTS `citas_has_states`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `citas_has_states` (
+  `Citas_idCitas` int(11) NOT NULL,
+  `states_idstates` int(11) NOT NULL,
+  PRIMARY KEY (`Citas_idCitas`,`states_idstates`),
+  KEY `fk_Citas_has_states_states1_idx` (`states_idstates`),
+  KEY `fk_Citas_has_states_Citas1_idx` (`Citas_idCitas`),
+  CONSTRAINT `fk_Citas_has_states_Citas1` FOREIGN KEY (`Citas_idCitas`) REFERENCES `citas` (`idCitas`),
+  CONSTRAINT `fk_Citas_has_states_states1` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `citas_has_states`
+--
+
+LOCK TABLES `citas_has_states` WRITE;
+/*!40000 ALTER TABLE `citas_has_states` DISABLE KEYS */;
+/*!40000 ALTER TABLE `citas_has_states` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -225,6 +236,33 @@ LOCK TABLES `hoja_recepcion` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `hoja_recepcion_has_states`
+--
+
+DROP TABLE IF EXISTS `hoja_recepcion_has_states`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hoja_recepcion_has_states` (
+  `Hoja_Recepcion_idHoja_Recepcion` int(11) NOT NULL,
+  `states_idstates` int(11) NOT NULL,
+  PRIMARY KEY (`Hoja_Recepcion_idHoja_Recepcion`,`states_idstates`),
+  KEY `fk_Hoja_Recepcion_has_states_states1_idx` (`states_idstates`),
+  KEY `fk_Hoja_Recepcion_has_states_Hoja_Recepcion1_idx` (`Hoja_Recepcion_idHoja_Recepcion`),
+  CONSTRAINT `fk_Hoja_Recepcion_has_states_Hoja_Recepcion1` FOREIGN KEY (`Hoja_Recepcion_idHoja_Recepcion`) REFERENCES `hoja_recepcion` (`idHoja_Recepcion`),
+  CONSTRAINT `fk_Hoja_Recepcion_has_states_states1` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `hoja_recepcion_has_states`
+--
+
+LOCK TABLES `hoja_recepcion_has_states` WRITE;
+/*!40000 ALTER TABLE `hoja_recepcion_has_states` DISABLE KEYS */;
+/*!40000 ALTER TABLE `hoja_recepcion_has_states` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `refacciones_accesorios`
 --
 
@@ -303,6 +341,29 @@ LOCK TABLES `reparaciones_has_refacciones_accesorios` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `states`
+--
+
+DROP TABLE IF EXISTS `states`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `states` (
+  `idstates` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  PRIMARY KEY (`idstates`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `states`
+--
+
+LOCK TABLES `states` WRITE;
+/*!40000 ALTER TABLE `states` DISABLE KEYS */;
+/*!40000 ALTER TABLE `states` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usuarios`
 --
 
@@ -325,10 +386,6 @@ LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'mydb'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -339,4 +396,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-10 22:39:34
+-- Dump completed on 2019-11-16 19:36:19
