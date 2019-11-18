@@ -29,5 +29,19 @@ $middleware($app);
 $routes = require __DIR__ . '/../src/routes.php';
 $routes($app);
 
+//Require db and create connection
+require __DIR__ . '/../config/db.php';
+
+$dbhost = 'localhost';
+$dbuser = 'root';
+$dbpass = 'root';
+$dbname = 'mydb';
+
+$db = new DB( $dbhost, $dbuser, $dbpass, $dbname );
+
+require __DIR__ . '/../models/model.php';
+require __DIR__ . '/../classes/cliente.php';
+require __DIR__ . '/../controllers/cliente.php';
+
 // Run app
 $app->run();
