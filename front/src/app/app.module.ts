@@ -5,6 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialModule } from './material.module';
 
+// Json Web Token
+import { JwtModule } from '@auth0/angular-jwt';
+
 // Ngx LoadingBar
 import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 import { LoadingBarHttpClientModule } from "@ngx-loading-bar/http-client";
@@ -51,6 +54,10 @@ import { OrdersComponent } from './components/employee/orders/orders.component';
 
 import { RolesPipe } from './pipes/roles.pipe';
 
+export function getToken(): string {
+  return localStorage.getItem('token');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +95,14 @@ import { RolesPipe } from './pipes/roles.pipe';
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
     HttpClientModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: getToken,
+        skipWhenExpired: true,
+        whitelistedDomains: ['localhost:3004']
+      }
+    })
   ],
   providers: [
     AuthUserGuard,
