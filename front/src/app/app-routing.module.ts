@@ -1,14 +1,33 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
+import { AuthEmployeeGuard } from './guards/auth-employee.guard';
+import { AuthUserGuard } from './guards/auth-user.guard';
+import { HomeClientComponent } from './components/client/home-client/home-client.component';
+import { HomeComponent } from './components/employee/home/home.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+
+const routes_clients: Routes = [
+  { path: 'dashboard', component: HomeClientComponent, canActivate: [AuthUserGuard] },
+];
+
+const routes_employee: Routes = [
+  { path: 'home', component: HomeComponent, canActivate: [AuthEmployeeGuard] },
+];
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: '404', component: NotFoundComponent },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: '404', pathMatch: 'full' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
+  imports: [
+    RouterModule.forRoot(routes_clients, { scrollPositionRestoration: 'enabled' }),
+    RouterModule.forRoot(routes_employee, { scrollPositionRestoration: 'enabled' }),
+    RouterModule.forRoot(routes)
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

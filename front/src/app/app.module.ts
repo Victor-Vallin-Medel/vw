@@ -32,6 +32,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ViewServiceComponent } from './components/view-service/view-service.component';
 import { ViewCarComponent } from './components/view-car/view-car.component';
 import { HistoryServiceComponent } from './components/history-service/history-service.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 import { RegisterComponent } from './components/client/register/register.component';
@@ -74,7 +75,8 @@ import { RolesPipe } from './pipes/roles.pipe';
     OrdersComponent,
 
     StatusPipe,
-    RolesPipe
+    RolesPipe,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
