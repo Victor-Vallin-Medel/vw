@@ -6,7 +6,7 @@ export interface User {
     apMat?: string,
 
     // Employee properties
-    rol?: string,
+    rol: string,
 
     // Client properties
     calle?: string,
@@ -14,7 +14,4 @@ export interface User {
     ciudad?: string,
     cp?: number
     activo?: number,
-
-    // User flag (0 = employee, 1 = client)
-    type: number
 }
