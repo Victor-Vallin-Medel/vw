@@ -16,7 +16,6 @@ import { User } from './models/user';
 export class AppComponent {
   title = 'front';
 
-  isLoggedIn: Observable<boolean>; 
   behaviorLoggedIn: BehaviorSubject<boolean>;
 
   mobileQuery: MediaQueryList;
@@ -32,7 +31,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.session.checkAuth().then((user: User) => {
+    this.session.onAuthState().subscribe((user: User) => {
       if (user.id > 0) {
         this.session.user = user;
         this.behaviorLoggedIn.next(true);
@@ -41,7 +40,7 @@ export class AppComponent {
         this.session.user = null;
         this.behaviorLoggedIn.next(false);
       }
-      this.isLoggedIn = this.behaviorLoggedIn.asObservable();
+      this.session.isLoggedIn = this.behaviorLoggedIn.asObservable();
     });
   }
 
@@ -64,7 +63,9 @@ export class AppComponent {
   }
 
   logOut() {
-    // this.afAuth.auth.signOut();
+    this.session.logout();
+    this.behaviorLoggedIn.next(false);
+    this.session.isLoggedIn = this.behaviorLoggedIn.asObservable();
     this.router.navigate(['login']);
   }
 }
