@@ -3,6 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 import { Observable } from 'rxjs';
 import { SessionService } from '../services/session.service';
 import { MatSnackBar } from '@angular/material';
+import { isNull } from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -15,24 +16,26 @@ export class AuthUserGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree  {
       let promise = new Promise<boolean>((resolve, reject) => {
-        this.session.checkAuth()
-          .then(
-            res => {
-              if (res.PHPSESSID) {
-                if (res.USER)
-                  resolve(true);
-                else {
-                  this.snack.open("Vista no disponible.", "Close", {
-                    duration: 3000
-                  });
-                  this.redirect(reject, 'home');
-                }
-              }
-              else
-                this.redirect(reject);
-            },
-            err => this.redirect(reject)
-          )
+        // Check if token exist.
+        if (isNull(this.session.isAuth())) {
+          this.redirect(reject);
+        }
+        else {
+          // Check if token is expired.
+          if (this.session.isExpired())
+            this.redirect(reject);
+          else {
+            if (this.session.getTokenType() == false)
+              resolve(true);
+              // Check if user is client.
+            else {
+              this.snack.open("Vista no disponible.", "Close", {
+                duration: 3000
+              });
+              this.redirect(reject, 'home');
+            }
+          }
+        }
       });
 
       return promise;
