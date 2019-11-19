@@ -1,7 +1,7 @@
 <ngx-loading-bar [color]="'white'"></ngx-loading-bar>
 <mat-toolbar color="primary" class="nav">
   <mat-toolbar-row>
-    <button *ngIf="isLoggedIn | async" mat-icon-button (click)="sidenav.toggle()">
+    <button *ngIf="session.isLoggedIn | async" mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
     <img routerLink="/home" class="logo router-logo" src="assets/vw.svg" alt="Volkswagen" width="40" height="40">
