@@ -6,6 +6,7 @@ import { AuthUserGuard } from './guards/auth-user.guard';
 import { HomeClientComponent } from './components/client/home-client/home-client.component';
 import { HomeComponent } from './components/employee/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ViewCarComponent } from './components/view-car/view-car.component';
 
 const routes_clients: Routes = [
   { path: 'dashboard', component: HomeClientComponent, canActivate: [AuthUserGuard] },
@@ -17,6 +18,7 @@ const routes_employee: Routes = [
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'car/:id', component: ViewCarComponent },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: '404', pathMatch: 'full' },

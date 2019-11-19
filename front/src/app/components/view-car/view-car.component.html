@@ -6,16 +6,16 @@
     <button mat-stroked-button color="primary" style="margin-top: 1.5rem;" (click)="goBack()">Regresar</button>
   </div>
 </div>
-<mat-card>
+<mat-card *ngIf="currentCar | async; let car; else loading">
   <mat-card-header>
-    <mat-card-title>{{car.name}}</mat-card-title>
+    <mat-card-title>{{car.nombre}}</mat-card-title>
     <mat-card-subtitle>{{car.version}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <p>
       <mat-chip-list>
-        <mat-chip color="primary" selected>{{car.plates}}</mat-chip>
-        <mat-chip color="accent" selected>{{car.model}}</mat-chip>
+        <mat-chip color="primary" selected>{{car.num_serie}}</mat-chip>
+        <mat-chip color="accent" selected>{{car.modelo}}</mat-chip>
       </mat-chip-list>
     </p>
     <br>
@@ -25,19 +25,19 @@
         <button mat-icon-button>
           <mat-icon style="color: teal;">account_box</mat-icon>
         </button>
-        {{client.name}} {{client.apPat}} {{client.apMat}}
+        {{client.nombre}} {{client.apPat}} {{client.apMat}}
       </div>
       <div class="col s12 l7 mb">
         <button mat-icon-button>
           <mat-icon style="color: teal;">business</mat-icon>
         </button>
-        {{client.domicile}}
+        {{client.calle}} {{client.colonia}}, {{client.ciudad}}. {{client.cp}}
       </div>
       <div class="col s12 l5 mb">
         <button mat-icon-button>
           <mat-icon style="color: teal;">assignment</mat-icon>
         </button>
-        {{client.rfc}}
+        <!-- {{client.rfc}} -->
       </div>
       <div class="col s12 m7 mb">
         <button mat-icon-button>
@@ -49,7 +49,7 @@
         <button mat-icon-button>
           <mat-icon style="color: teal;">phone</mat-icon>
         </button>
-        {{client.phone}}
+        <!-- {{client.phone}} -->
       </div>
     </div>
   </mat-card-content>
@@ -58,3 +58,8 @@
     <button mat-icon-button color="warn" matTooltip="Borrar" [swal]="{ title: '¿Deseas eliminar este vehículo?', type: 'question', showCancelButton: true, confirmButtonColor: '#3f51b5', cancelButtonColor: '#d33', confirmButtonText: 'Eliminar', cancelButtonText: 'Cancelar' }" (confirm)="deleteCar()"><mat-icon>delete</mat-icon></button>
   </mat-card-actions>
 </mat-card>
+<ng-template #loading>
+    <div class="load">
+      <mat-spinner class="spinner"></mat-spinner>
+    </div>
+  </ng-template>

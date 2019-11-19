@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Car } from '../models/car';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class CarsService {
   }
 
   getCar(id: string) {
-    return this.http.get(`${this.URL}${id}`);
+    return this.http.get<Car>(`${this.URL}${id}`);
   }
 
   postCar(carDto: Car) {
@@ -31,7 +32,7 @@ export class CarsService {
     return this.http.put(`${this.URL}${id}`, { status: status});
   }
 
-  deleteCar(id: string) {
+  deleteCar(id: number) {
     return this.http.delete(`${this.URL}${id}`);
   }
 
