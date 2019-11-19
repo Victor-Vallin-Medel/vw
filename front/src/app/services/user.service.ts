@@ -1,23 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Employee } from '../models/employee';
 import { HttpClient } from '@angular/common/http';
-import { Client } from '../models/client';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private readonly URL = 'https://us-central1-volkswagen-6510d.cloudfunctions.net/app/api/employees/';
+  private readonly URL = 'http://localhost:3004/users/';
 
   constructor(private http: HttpClient) { }
 
-  postClient(clientDTO: Client, uid: string) {
-    return this.http.post(this.URL + `${uid}`, clientDTO);
+  postClient(userDTO: User, uid: string) {
+    return this.http.post(this.URL + `${uid}`, userDTO);
   }
 
-  pushEmployee(employeDto: Employee) {
-    return this.http.post(`${this.URL}${employeDto.ref}`, employeDto);
+  pushEmployee(userDto: User) {
+    return this.http.post(`${this.URL}${userDto.id}`, userDto);
+  }
+
+  postUser(userDto: User) {
+    return this.http.post(`${this.URL}`, userDto);
+  }
+
+  getUsers() {
+    return this.http.get(`${this.URL}`);
   }
 
   getClients() {
@@ -36,8 +43,8 @@ export class UserService {
     return this.http.get(`${this.URL}${uid}`);
   }
 
-  putEmployee(employeeDto: Employee) {
-    return this.http.put(`${this.URL}${employeeDto.ref}`, employeeDto);
+  putEmployee(userDto: User) {
+    return this.http.put(`${this.URL}${userDto.id}`, userDto);
   }
 
   deleteEmployee(uid: string) {

@@ -6,6 +6,7 @@ import { SessionService } from '../../services/session.service';
 import { User } from 'src/app/models/user';
 import { isNull } from 'util';
 import { BehaviorSubject } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   private employee: boolean = false;
 
-  constructor(private session: SessionService, private router: Router, private _formBuilder: FormBuilder, private snack: MatSnackBar) { }
+  constructor(private session: SessionService, private userService: UserService, private router: Router, private _formBuilder: FormBuilder, private snack: MatSnackBar) { }
 
   ngOnInit() {
     this.loginFormGroup = this._formBuilder.group({
@@ -114,32 +115,34 @@ export class LoginComponent implements OnInit {
   createUserWithEmail = () => {
     let email: string = this.signupFormGroup.value.emailCtrl;
     let password: string = this.signupFormGroup.value.passwordCtrl;
-    
 
-    // this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
-    //   res => {
-    //     this.userService.setClient({
-    //       email: res.user.email,
-    //       name: this.signupFormGroup.value.nameCtrl,
-    //       apPat: this.signupFormGroup.value.apPatCtrl,
-    //       apMat: this.signupFormGroup.value.apMatCtrl,
-    //       rfc: this.signupFormGroup.value.rfcCtrl,
-    //       phone: this.signupFormGroup.value.phoneCtrl,
-    //       domicile: this.signupFormGroup.value.domCtrl,
-    //       ref: res.user.uid
-    //     }, res.user.uid).subscribe(response => {
-    //       this.snack.open(`Bienvenido  ${res.user.email}`, "Close", {
-    //         duration: 6000
-    //       });
-    //       this.router.navigate(['home']);
-    //     });
-    //   },
-    //   error => {
-    //     this.snack.open(error.message, "Close", {
-    //       duration: 4000
-    //     });
-    //   }
-    // );
+    // FIXME: Remover getUsers function and id assing.
+    this.userService.getUsers().subscribe((users: User) => {
+      let size = Object.keys(users).length;
+      
+      this.userService.postUser({
+        id: size + 1,
+        email: email,
+        nombre: this.signupFormGroup.value.nameCtrl,
+        apPat: this.signupFormGroup.value.apPatCtrl,
+        apMat: this.signupFormGroup.value.apMatCtrl,
+        rol: this.signupFormGroup.value.roleCtrl,
+
+        calle: (this.employee) ? '' : this.signupFormGroup.value.calleCtrl,
+        colonia: (this.employee) ? '' : this.signupFormGroup.value.colCtrl,
+        ciudad: (this.employee) ? '' : this.signupFormGroup.value.ciudadCtrl,
+        cp: (this.employee) ? '' : this.signupFormGroup.value.cpCtrl,
+
+        activo: 1,
+      })
+        .subscribe((response: User) => {
+          // TODO: Use session.login function to send email/password ang log in. Catch the token and save int localstorage.
+          this.snack.open(`Bienvenido  ${response.email}`, "Close", {
+            duration: 6000
+          });
+          // this.router.navigate(['home']);
+        });
+    });
   }
 
 }
