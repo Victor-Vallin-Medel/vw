@@ -1,8 +1,8 @@
 export interface Car {
-  name: string,
-  model: number,
+  idAutomovil?: number,
+  nombre: string,
   version: string,
-  plates: string
-  fk_client: string,
-  status: number,
+  modelo: number,
+  num_serie: string
+  Cliente_idCliente: number
 }

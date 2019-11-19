@@ -7,7 +7,7 @@ import { Car } from '../models/car';
 })
 export class CarsService {
 
-  readonly URL: string = 'https://us-central1-volkswagen-6510d.cloudfunctions.net/app/api/cars/';
+  readonly URL: string = 'http://localhost:3004/cars/';
 
   constructor(private http:HttpClient) { }
   
@@ -24,7 +24,7 @@ export class CarsService {
   }
 
   postCar(carDto: Car) {
-    return this.http.post(`${this.URL}${carDto.plates}`, carDto);
+    return this.http.post(`${this.URL}`, carDto);
   }
 
   putCar(id: string, status: number) {
