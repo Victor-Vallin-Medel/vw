@@ -9,13 +9,6 @@ import { ViewServiceComponent } from '../../view-service/view-service.component'
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
 @Component({
   selector: 'app-home-client',
   templateUrl: './home-client.component.html',
@@ -23,18 +16,17 @@ export interface PeriodicElement {
 })
 export class HomeClientComponent implements OnInit {
 
-  notService: number = 0;
-  Auto: Car[] = [];
   orders: Order[] = [];
   displayedColumns: string[] = ['fk_plates_car', 'dateReception', 'time',];
 
-  constructor(private session: SessionService, private carService: CarsService, private orderService: OrderService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
+  constructor(private session: SessionService, public car$: CarsService, private orderService: OrderService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
 
   }
 
   ngOnInit() {
     // this.orderService.getUserOrders(user.uid).subscribe((orders: Order[]) => this.orders = orders);
-    this.carService.getClientCars(this.session.user.id).subscribe((cars: Car[]) => this.Auto = cars );
+    // Get Client cars.
+    this.car$.getClientCars(this.session.user.id);
   }
 
   openOrderService(order: Order) {

@@ -7,6 +7,7 @@ import { ScheduleComponent } from './components/client/schedule/schedule.compone
 import { SessionService } from './services/session.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from './models/user';
+import { CarsService } from './services/cars.service';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  constructor(private router: Router, private session: SessionService, public dialogRegister: MatDialog, public dialogSchedule: MatDialog, changeDetRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(private router: Router, private session: SessionService, public car$: CarsService, public dialogRegister: MatDialog, public dialogSchedule: MatDialog, changeDetRef: ChangeDetectorRef, media: MediaMatcher) {
     // Para cambiar el modo de Sidenav entre pantallas.
     this.mobileQuery = media.matchMedia('(max-width: 700px)');
     this._mobileQueryListener = () => changeDetRef.detectChanges();
@@ -47,9 +48,10 @@ export class AppComponent {
   openDialog(type: string): void {
     switch (type) {
       case 'register':
-        this.dialogRegister.open(RegisterComponent, {
+        const dialog = this.dialogRegister.open(RegisterComponent, {
           width: '600px'
         });
+        dialog.afterClosed().subscribe(() => this.car$.getClientCars(this.session.user.id));
         break;
       case 'schedule':
         this.dialogSchedule.open(ScheduleComponent, {

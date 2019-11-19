@@ -1,14 +1,14 @@
 <h1 mat-dialog-title>Mis vehículos <mat-icon color="primary">directions_car</mat-icon></h1>
-<mat-accordion>
+<mat-accordion *ngIf="car$.list | async; let cars">
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <p [matBadge]="Auto.length" matBadgeOverlap="false">Registrados</p>
+        <p [matBadge]="cars.length" matBadgeOverlap="false">Registrados</p>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
     <div class="row">
-      <div class="col s12 m6 l4 xl3" *ngFor="let car of Auto">
+      <div class="col s12 m6 l4 xl3" *ngFor="let car of cars">
         <mat-card>
           <mat-card-header>
             <mat-card-title>{{car.nombre}}</mat-card-title>
@@ -35,9 +35,9 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div class="row">
+    <!-- <div class="row">
       <div *ngFor="let car of Auto">
-        <div class="col s12 m6 l4" *ngIf="false"> <!--car.status != 0-->
+        <div class="col s12 m6 l4" *ngIf="false"> <!--car.status != 0
           <mat-card >
             <mat-card-header>
               <mat-card-title>{{car.nombre}}</mat-card-title>
@@ -57,7 +57,7 @@
 
       </div>
     
-    </div>
+    </div> -->
   </mat-expansion-panel>
 
 </mat-accordion>
