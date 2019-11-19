@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { Client } from 'src/app/models/client';
+import { User } from 'src/app/models/user';
 import { Car } from 'src/app/models/car';
 import { UserService } from 'src/app/services/user.service';
 import { CarsService } from 'src/app/services/cars.service';
@@ -13,7 +13,7 @@ import { CarsService } from 'src/app/services/cars.service';
 })
 export class ClientDetailsComponent implements OnInit {
 
-  client: Client;
+  client: User;
   cars: Car[];
 
   constructor(private userService: UserService, private carService: CarsService, private active: ActivatedRoute, private location: Location, private router: Router) { }

@@ -7,7 +7,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { CarsService } from 'src/app/services/cars.service';
 import { UserService } from 'src/app/services/user.service';
 import { Car } from 'src/app/models/car';
-import { Client } from 'src/app/models/client';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-update-service',
@@ -17,7 +17,7 @@ import { Client } from 'src/app/models/client';
 export class UpdateServiceComponent implements OnInit {
 
   car: Car;
-  client: Client;
+  client: User;
   employee: Observable<{}>;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public order: Order, private orderService: OrderService, private carService: CarsService, private userService: UserService, private router: Router, private sheetRef: MatBottomSheetRef, private snack: MatSnackBar) {
@@ -32,12 +32,12 @@ export class UpdateServiceComponent implements OnInit {
 
   ngOnInit() {
     this.carService.getCar(this.order.fk_plates_car).subscribe((car: Car) => this.car = car);
-    this.userService.getClient(this.order.fk_client).subscribe((client: Client) => this.client = client);
+    this.userService.getClient(this.order.fk_client).subscribe((client: User) => this.client = client);
   }
 
   goToClient() {
     this.sheetRef.dismiss();
-    this.router.navigate(['/client', this.client.ref]);
+    this.router.navigate(['/client', this.client.id]);
   }
 
   updateService(status: number) {

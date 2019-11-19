@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { Employee } from 'src/app/models/employee';
+import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class EmployeesComponent implements OnInit {
 
-  employees: Employee [];
+  employees: User [];
 
   constructor(private userService: UserService, private location: Location, private router: Router) { }
 

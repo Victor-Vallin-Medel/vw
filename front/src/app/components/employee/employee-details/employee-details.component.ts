@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
-import { Employee } from 'src/app/models/employee';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-employee-details',
@@ -13,7 +13,7 @@ import { Employee } from 'src/app/models/employee';
 })
 export class EmployeeDetailsComponent implements OnInit {
 
-  employee: Employee;
+  employee: User;
   private signupFormGroup: FormGroup;
 
   constructor(private userService: UserService, private active: ActivatedRoute, private location: Location, private _formBuilder: FormBuilder, private snack: MatSnackBar, private router: Router) {
@@ -43,21 +43,21 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   updateEmployee() {
-    this.userService.putEmployee(this.employee).subscribe((employee: Employee) => {
-      this.snack.open(`${employee.name} ${employee.apPat} actualizado.`, 'Close', {
-        duration: 8000
-      });
-    });
+    // this.userService.putEmployee(this.employee).subscribe((employee: User) => {
+    //   this.snack.open(`${employee.name} ${employee.apPat} actualizado.`, 'Close', {
+    //     duration: 8000
+    //   });
+    // });
   }
 
 
   deleteEmployee() {
-    this.userService.deleteEmployee(this.employee.ref).subscribe((employee: Employee) => {
-      this.snack.open(`${employee.name} ${employee.apPat} eliminado.`, 'Close', {
-        duration: 8000,
-      });
-      this.location.back();
-    })
+    // this.userService.deleteEmployee(this.employee.ref).subscribe((employee: User) => {
+    //   this.snack.open(`${employee.name} ${employee.apPat} eliminado.`, 'Close', {
+    //     duration: 8000,
+    //   });
+    //   this.location.back();
+    // })
   }
 
 }
