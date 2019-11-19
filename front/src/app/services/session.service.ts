@@ -19,11 +19,8 @@ export class SessionService {
 	}
 
 	// FIXME: Crear función con servidor real.
-	login() {
-		this.http.get<{ token: string }>("http://localhost:3004/auth").subscribe(auth => {
-			localStorage.setItem('token', auth.token);
-		});
-		this.router.navigate(['/home']);
+	login(): Promise<{ token: string }> {
+		return this.http.get<{ token: string }>("http://localhost:3004/auth").toPromise();
 	}
 
 	logout() {

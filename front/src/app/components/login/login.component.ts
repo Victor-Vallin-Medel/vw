@@ -3,6 +3,9 @@ import { MatSnackBar } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SessionService } from '../../services/session.service';
+import { User } from 'src/app/models/user';
+import { isNull } from 'util';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +17,7 @@ export class LoginComponent implements OnInit {
   private loginFormGroup: FormGroup;
   private signupFormGroup: FormGroup;
 
-  constructor(private userService: SessionService, private router: Router, private _formBuilder: FormBuilder, private snack: MatSnackBar) { }
+  constructor(private session: SessionService, private router: Router, private _formBuilder: FormBuilder, private snack: MatSnackBar) { }
 
   ngOnInit() {
     this.loginFormGroup = this._formBuilder.group({
@@ -37,21 +40,37 @@ export class LoginComponent implements OnInit {
   signInWithEmail() {
     let email: string = this.loginFormGroup.value.emailCtrl;
     let password: string = this.loginFormGroup.value.passwordCtrl;
+
+    // Form valid.
     if(this.loginFormGroup.valid) {
-      // this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      //   .then(
-      //     user => {
-      //       this.snack.open(`Bienvenido  ${user.user.email}`, "Close", {
-      //         duration: 6000
-      //       });
-      //       this.router.navigate(['home']);
-      //     },
-      //     err => {
-      //       this.snack.open(err.message, "Close", {
-      //         duration: 4000
-      //       });
-      //     }
-      //   );
+      this.session.login().then(
+        res => { // Success
+          // Check token.
+          if (isNull(res.token) == false) {
+            // Save token.
+            localStorage.setItem('token', res.token);
+
+            // Get User observable.
+            this.session.onAuthState().subscribe((user: User) => {
+              this.session.user = user;
+              this.session.isLoggedIn = new BehaviorSubject<boolean>(true).asObservable();
+
+              // Snack welcome.
+              this.snack.open(`Bienvenido ${user.email}`, "Close", {
+                duration: 6000
+              });
+
+              // Redirect
+              this.router.navigate([(user.rol != 'cliente') ? 'home' : 'dashboard']);
+            })
+          }
+        },
+        err => {
+          this.snack.open(err.message, "Close", {
+            duration: 4000
+          });
+        }
+      )
     }
   }
 
