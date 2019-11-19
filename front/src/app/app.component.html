@@ -42,7 +42,15 @@
         <mat-icon mat-list-icon>settings</mat-icon>
         <a class="item-link" mat-line>Configuración</a>
       </mat-list-item>
-      <mat-list-item [swal]="{ title: '¿Deseas cerrar sesión?', type: 'question', showCancelButton: true, confirmButtonColor: '#3f51b5', cancelButtonColor: '#ff4081', confirmButtonText: 'Sí', cancelButtonText: 'No' }" (confirm)="logOut()">
+      <mat-list-item 
+        [swal]="{
+          title: 'Un momento...',
+          text: '¿Deseas cerrar sesión?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí', cancelButtonText: 'No'
+        }"
+        (confirm)="logOut()">
         <mat-icon mat-list-icon>keyboard_tab</mat-icon>
         <a class="item-link" mat-line>Cerrar sesión</a>
       </mat-list-item>
