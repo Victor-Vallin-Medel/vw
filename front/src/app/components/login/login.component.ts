@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatSlideToggleChange } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SessionService } from '../../services/session.service';
@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
   private loginFormGroup: FormGroup;
   private signupFormGroup: FormGroup;
 
+  private employee: boolean = false;
+
   constructor(private session: SessionService, private router: Router, private _formBuilder: FormBuilder, private snack: MatSnackBar) { }
 
   ngOnInit() {
@@ -31,10 +33,45 @@ export class LoginComponent implements OnInit {
       nameCtrl: ['', Validators.required],
       apPatCtrl: ['', Validators.required],
       apMatCtrl: [''],
-      rfcCtrl: ['', Validators.required],
-      domCtrl: ['', Validators.required],
-      phoneCtrl: ['', Validators.required],
+      roleCtrl: ['cliente', Validators.required],
+      calleCtrl: ['', Validators.required],
+      colCtrl: ['', Validators.required],
+      ciudadCtrl: ['', Validators.required],
+      cpCtrl: ['', Validators.required],
     });
+  }
+
+  // Change the inputs to user type.
+  changeBuilder() {
+    const calleCtrl = this.signupFormGroup.get('calleCtrl');
+    const colCtrl = this.signupFormGroup.get('colCtrl');
+    const ciudadCtrl = this.signupFormGroup.get('ciudadCtrl');
+    const cpCtrl = this.signupFormGroup.get('cpCtrl');
+    const roleCtrl = this.signupFormGroup.get('roleCtrl');
+
+    if (this.employee) {
+      calleCtrl.setValidators(null);
+      colCtrl.setValidators(null);
+      ciudadCtrl.setValidators(null);
+      cpCtrl.setValidators(null);
+
+      // Clear role value.
+      roleCtrl.setValue('');
+    }
+    else {
+      calleCtrl.setValidators([Validators.required]);
+      colCtrl.setValidators([Validators.required]);
+      ciudadCtrl.setValidators([Validators.required]);
+      cpCtrl.setValidators([Validators.required]);
+
+      // Set default value to role.
+      roleCtrl.setValue('cliente');
+    }
+
+    calleCtrl.updateValueAndValidity();
+    colCtrl.updateValueAndValidity();
+    ciudadCtrl.updateValueAndValidity();
+    cpCtrl.updateValueAndValidity();
   }
 
   signInWithEmail() {
@@ -77,6 +114,7 @@ export class LoginComponent implements OnInit {
   createUserWithEmail = () => {
     let email: string = this.signupFormGroup.value.emailCtrl;
     let password: string = this.signupFormGroup.value.passwordCtrl;
+    console.log(this.signupFormGroup.value.roleCtrl);
     // this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
     //   res => {
     //     this.userService.setClient({
