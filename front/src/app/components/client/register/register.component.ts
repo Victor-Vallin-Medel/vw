@@ -12,7 +12,7 @@ import { Car } from 'src/app/models/car';
 })
 export class RegisterComponent implements OnInit {
 
-  private registerFormGroup: FormGroup;
+  registerFormGroup: FormGroup;
 
   constructor(private _formBuilder: FormBuilder, private session: SessionService, private carService: CarsService, private snack: MatSnackBar, private dialogRef: MatDialogRef<RegisterComponent>) {
     this.registerFormGroup = this._formBuilder.group({

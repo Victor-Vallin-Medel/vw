@@ -15,10 +15,10 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
 
-  private loginFormGroup: FormGroup;
-  private signupFormGroup: FormGroup;
+  loginFormGroup: FormGroup;
+  signupFormGroup: FormGroup;
 
-  private employee: boolean = false;
+  employee: boolean = false;
 
   constructor(private session: SessionService, private userService: UserService, private router: Router, private _formBuilder: FormBuilder, private snack: MatSnackBar) { }
 
