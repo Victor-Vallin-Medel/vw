@@ -114,7 +114,8 @@ export class LoginComponent implements OnInit {
   createUserWithEmail = () => {
     let email: string = this.signupFormGroup.value.emailCtrl;
     let password: string = this.signupFormGroup.value.passwordCtrl;
-    console.log(this.signupFormGroup.value.roleCtrl);
+    
+
     // this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
     //   res => {
     //     this.userService.setClient({

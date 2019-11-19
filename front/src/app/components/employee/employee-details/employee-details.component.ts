@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { UserService } from 'src/app/services/user.service';
 import { Employee } from 'src/app/models/employee';
 
 @Component({
@@ -16,7 +16,7 @@ export class EmployeeDetailsComponent implements OnInit {
   employee: Employee;
   private signupFormGroup: FormGroup;
 
-  constructor(private employeeService: EmployeeService, private active: ActivatedRoute, private location: Location, private _formBuilder: FormBuilder, private snack: MatSnackBar, private router: Router) {
+  constructor(private userService: UserService, private active: ActivatedRoute, private location: Location, private _formBuilder: FormBuilder, private snack: MatSnackBar, private router: Router) {
     this.signupFormGroup = this._formBuilder.group({
       emailCtrl: ['', [Validators.required, Validators.email]],
       nameCtrl: ['', Validators.required],
@@ -43,7 +43,7 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   updateEmployee() {
-    this.employeeService.putEmployee(this.employee).subscribe((employee: Employee) => {
+    this.userService.putEmployee(this.employee).subscribe((employee: Employee) => {
       this.snack.open(`${employee.name} ${employee.apPat} actualizado.`, 'Close', {
         duration: 8000
       });
@@ -52,7 +52,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
 
   deleteEmployee() {
-    this.employeeService.deleteEmployee(this.employee.ref).subscribe((employee: Employee) => {
+    this.userService.deleteEmployee(this.employee.ref).subscribe((employee: Employee) => {
       this.snack.open(`${employee.name} ${employee.apPat} eliminado.`, 'Close', {
         duration: 8000,
       });

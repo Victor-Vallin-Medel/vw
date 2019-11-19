@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-employees',
@@ -13,7 +13,7 @@ export class EmployeesComponent implements OnInit {
 
   employees: Employee [];
 
-  constructor(private employeeService: EmployeeService, private location: Location, private router: Router) { }
+  constructor(private userService: UserService, private location: Location, private router: Router) { }
 
   ngOnInit() {
     // this.afAuth.auth.onAuthStateChanged(user => {

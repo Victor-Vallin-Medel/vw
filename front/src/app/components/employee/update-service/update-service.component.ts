@@ -5,8 +5,7 @@ import { Observable } from 'rxjs';
 import { Order } from 'src/app/models/order';
 import { OrderService } from 'src/app/services/order.service';
 import { CarsService } from 'src/app/services/cars.service';
-import { ClientService } from 'src/app/services/client.service';
-import { EmployeeService } from 'src/app/services/employee.service';
+import { UserService } from 'src/app/services/user.service';
 import { Car } from 'src/app/models/car';
 import { Client } from 'src/app/models/client';
 
@@ -21,7 +20,7 @@ export class UpdateServiceComponent implements OnInit {
   client: Client;
   employee: Observable<{}>;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public order: Order, private orderService: OrderService, private carService: CarsService, private clientService: ClientService, private employeeService: EmployeeService, private router: Router, private sheetRef: MatBottomSheetRef, private snack: MatSnackBar) {
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public order: Order, private orderService: OrderService, private carService: CarsService, private userService: UserService, private router: Router, private sheetRef: MatBottomSheetRef, private snack: MatSnackBar) {
     if (this.router.url == '/home') {
       // this.afAuth.auth.onAuthStateChanged(user => {
       //   if (user) {
@@ -33,7 +32,7 @@ export class UpdateServiceComponent implements OnInit {
 
   ngOnInit() {
     this.carService.getCar(this.order.fk_plates_car).subscribe((car: Car) => this.car = car);
-    this.clientService.getClient(this.order.fk_client).subscribe((client: Client) => this.client = client);
+    this.userService.getClient(this.order.fk_client).subscribe((client: Client) => this.client = client);
   }
 
   goToClient() {

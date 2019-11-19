@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Client } from 'src/app/models/client';
 import { Car } from 'src/app/models/car';
-import { ClientService } from 'src/app/services/client.service';
+import { UserService } from 'src/app/services/user.service';
 import { CarsService } from 'src/app/services/cars.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class ClientDetailsComponent implements OnInit {
   client: Client;
   cars: Car[];
 
-  constructor(private clientService: ClientService, private carService: CarsService, private active: ActivatedRoute, private location: Location, private router: Router) { }
+  constructor(private userService: UserService, private carService: CarsService, private active: ActivatedRoute, private location: Location, private router: Router) { }
 
   ngOnInit() {
     // this.afAuth.auth.onAuthStateChanged(user => {

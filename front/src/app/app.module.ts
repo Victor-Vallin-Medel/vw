@@ -24,7 +24,7 @@ import { StatusPipe } from './pipes/status.pipe';
 
 // Services
 import { SessionService } from './services/session.service';
-import { ClientService } from './services/client.service';
+import { UserService } from './services/user.service';
 import { CarsService } from './services/cars.service';
 
 // Components
@@ -108,7 +108,7 @@ export function getToken(): string {
     AuthUserGuard,
     AuthEmployeeGuard,
     SessionService,
-    ClientService,
+    UserService,
     CarsService
   ],
   entryComponents: [
