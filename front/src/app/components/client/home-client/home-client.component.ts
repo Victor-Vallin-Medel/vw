@@ -24,28 +24,17 @@ export interface PeriodicElement {
 export class HomeClientComponent implements OnInit {
 
   notService: number = 0;
-  Auto: Car [] = [];
-  orders: Order [] = [];
-  displayedColumns: string[] = ['fk_plates_car', 'dateReception', 'time', ];
-  
+  Auto: Car[] = [];
+  orders: Order[] = [];
+  displayedColumns: string[] = ['fk_plates_car', 'dateReception', 'time',];
+
   constructor(private session: SessionService, private carService: CarsService, private orderService: OrderService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
-    
+
   }
 
   ngOnInit() {
-    // this.session.onAuthStateChanged(user => {
-    //   if (user) {
-    //     this.orderService.getUserOrders(user.uid).subscribe((orders: Order []) => this.orders = orders);
-    //     this.carService.getClientCars(user.uid).subscribe((cars: Car []) => {
-    //       this.Auto = cars
-    //       cars.forEach(car => {
-    //         if (car.status != 0) {
-    //           this.notService++;
-    //         }
-    //       })
-    //     });
-    //   }
-    // });
+    // this.orderService.getUserOrders(user.uid).subscribe((orders: Order[]) => this.orders = orders);
+    this.carService.getClientCars(this.session.user.id).subscribe((cars: Car[]) => this.Auto = cars );
   }
 
   openOrderService(order: Order) {

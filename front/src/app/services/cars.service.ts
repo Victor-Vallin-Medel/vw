@@ -11,8 +11,8 @@ export class CarsService {
 
   constructor(private http:HttpClient) { }
   
-  getClientCars(uid: string) {
-    return this.http.get(`${this.URL}user/${uid}`);
+  getClientCars(uid: number) {
+    return this.http.get(`${this.URL}?car.Cliente_idCliente=${uid}`);
   }
 
   getCars() {
