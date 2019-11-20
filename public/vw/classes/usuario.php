@@ -2,27 +2,30 @@
 
 namespace Classes;
 
-class Cliente{
+class Usuario{
 
     public $data;
 
-    public function _construct($data){
+    public function __construct($data){
         $this->data = $data;
     }
 
     public static $definition = array(
-        'table' => 'cliente',
-        'primary' => 'idCliente',
+        'table' => 'usuario',
+        'primary' => 'idUsuario',
         'fields' => array(
-            'idCliente', 
+            'idUsuario', 
             'apPat',
             'apMat',
             'calle',
             'colonia',
             'ciudad',
             'activo',
+            'cp',
             'Usuarios_idUsuarios',
-            'cp'
+            'rol',
+            'usuario',
+            'password'
         )
     );
 }

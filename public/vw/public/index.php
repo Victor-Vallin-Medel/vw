@@ -40,8 +40,8 @@ $dbname = 'mydb';
 $db = new DB( $dbhost, $dbuser, $dbpass, $dbname );
 
 require __DIR__ . '/../models/model.php';
-require __DIR__ . '/../classes/cliente.php';
-require __DIR__ . '/../controllers/cliente.php';
+require __DIR__ . '/../classes/classes.php';
+require __DIR__ . '/../controllers/usuario.php';
 
 // Run app
 $app->run();

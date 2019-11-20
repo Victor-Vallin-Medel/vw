@@ -35,10 +35,10 @@ CREATE TABLE `automovil` (
   `num_serie` varchar(45) NOT NULL,
   `version` varchar(45) NOT NULL,
   `modelo` varchar(45) NOT NULL,
-  `Cliente_idCliente` int(11) NOT NULL,
-  PRIMARY KEY (`idAutomovil`,`Cliente_idCliente`),
-  KEY `fk_Automovil_Cliente_idx` (`Cliente_idCliente`),
-  CONSTRAINT `fk_Automovil_Cliente` FOREIGN KEY (`Cliente_idCliente`) REFERENCES `cliente` (`idCliente`)
+  `Usuario_idUsuario` int(11) NOT NULL,
+  PRIMARY KEY (`idAutomovil`,`Usuario_idUsuario`),
+  KEY `fk_Automovil_Cliente_idx` (`Usuario_idUsuario`),
+  CONSTRAINT `fk_Automovil_Cliente` FOREIGN KEY (`Usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -62,13 +62,13 @@ CREATE TABLE `citas` (
   `idCitas` int(11) NOT NULL AUTO_INCREMENT,
   `fecha` datetime NOT NULL,
   `confirmacion` varchar(1) NOT NULL,
-  `Cliente_idCliente` int(11) NOT NULL,
+  `Usuario_idUsuario` int(11) NOT NULL,
   `Automovil_idAutomovil` int(11) NOT NULL,
-  PRIMARY KEY (`idCitas`,`Cliente_idCliente`,`Automovil_idAutomovil`),
-  KEY `fk_Citas_Cliente1_idx` (`Cliente_idCliente`),
+  PRIMARY KEY (`idCitas`,`Usuario_idUsuario`,`Automovil_idAutomovil`),
+  KEY `fk_Citas_Cliente1_idx` (`Usuario_idUsuario`),
   KEY `fk_Citas_Automovil1_idx` (`Automovil_idAutomovil`),
   CONSTRAINT `fk_Citas_Automovil1` FOREIGN KEY (`Automovil_idAutomovil`) REFERENCES `automovil` (`idAutomovil`),
-  CONSTRAINT `fk_Citas_Cliente1` FOREIGN KEY (`Cliente_idCliente`) REFERENCES `cliente` (`idCliente`)
+  CONSTRAINT `fk_Citas_Cliente1` FOREIGN KEY (`Usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -109,39 +109,6 @@ LOCK TABLES `citas_has_states` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `cliente`
---
-
-DROP TABLE IF EXISTS `cliente`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cliente` (
-  `idCliente` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `apPat` varchar(45) NOT NULL,
-  `apMat` varchar(45) NOT NULL,
-  `calle` varchar(45) DEFAULT NULL,
-  `colonia` varchar(45) DEFAULT NULL,
-  `ciudad` varchar(45) DEFAULT NULL,
-  `activo` varchar(1) NOT NULL,
-  `Usuarios_idUsuarios` int(11) NOT NULL,
-  `cp` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`idCliente`,`Usuarios_idUsuarios`),
-  KEY `fk_Cliente_Usuarios1_idx` (`Usuarios_idUsuarios`),
-  CONSTRAINT `fk_Cliente_Usuarios1` FOREIGN KEY (`Usuarios_idUsuarios`) REFERENCES `usuarios` (`idUsuarios`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cliente`
---
-
-LOCK TABLES `cliente` WRITE;
-/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `documento_diagnostico`
 --
 
@@ -169,35 +136,6 @@ LOCK TABLES `documento_diagnostico` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `empleado`
---
-
-DROP TABLE IF EXISTS `empleado`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `empleado` (
-  `idEmpleado` int(11) NOT NULL AUTO_INCREMENT,
-  `Nombre` varchar(45) NOT NULL,
-  `apPat` varchar(45) NOT NULL,
-  `apMat` varchar(45) NOT NULL,
-  `rol` varchar(45) NOT NULL,
-  `Usuarios_idUsuarios` int(11) NOT NULL,
-  PRIMARY KEY (`idEmpleado`,`Usuarios_idUsuarios`),
-  KEY `fk_Empleado_Usuarios1_idx` (`Usuarios_idUsuarios`),
-  CONSTRAINT `fk_Empleado_Usuarios1` FOREIGN KEY (`Usuarios_idUsuarios`) REFERENCES `usuarios` (`idUsuarios`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `empleado`
---
-
-LOCK TABLES `empleado` WRITE;
-/*!40000 ALTER TABLE `empleado` DISABLE KEYS */;
-/*!40000 ALTER TABLE `empleado` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `hoja_recepcion`
 --
 
@@ -210,18 +148,15 @@ CREATE TABLE `hoja_recepcion` (
   `aviso_privacidad` tinytext NOT NULL,
   `observaciones` json DEFAULT NULL,
   `Reparaciones_idReparaciones` int(11) NOT NULL,
-  `Cliente_idCliente` int(11) NOT NULL,
-  `Empleado_idEmpleado` int(11) NOT NULL,
+  `Usuario_idUsuario` int(11) NOT NULL,
   `Automovil_idAutomovil` int(11) NOT NULL,
   `Citas_idCitas` int(11) NOT NULL,
-  PRIMARY KEY (`idHoja_Recepcion`,`Reparaciones_idReparaciones`,`Cliente_idCliente`,`Empleado_idEmpleado`,`Automovil_idAutomovil`,`Citas_idCitas`),
+  PRIMARY KEY (`idHoja_Recepcion`,`Reparaciones_idReparaciones`,`Usuario_idUsuario`,`Automovil_idAutomovil`,`Citas_idCitas`),
   KEY `fk_Hoja_Recepcion_Reparaciones1_idx` (`Reparaciones_idReparaciones`),
-  KEY `fk_Hoja_Recepcion_Empleado1_idx` (`Empleado_idEmpleado`),
   KEY `fk_Hoja_Recepcion_Automovil1_idx` (`Automovil_idAutomovil`),
   KEY `fk_Hoja_Recepcion_Citas1_idx` (`Citas_idCitas`),
   CONSTRAINT `fk_Hoja_Recepcion_Automovil1` FOREIGN KEY (`Automovil_idAutomovil`) REFERENCES `automovil` (`idAutomovil`),
   CONSTRAINT `fk_Hoja_Recepcion_Citas1` FOREIGN KEY (`Citas_idCitas`) REFERENCES `citas` (`idCitas`),
-  CONSTRAINT `fk_Hoja_Recepcion_Empleado1` FOREIGN KEY (`Empleado_idEmpleado`) REFERENCES `empleado` (`idEmpleado`),
   CONSTRAINT `fk_Hoja_Recepcion_Reparaciones1` FOREIGN KEY (`Reparaciones_idReparaciones`) REFERENCES `reparaciones` (`idReparaciones`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -245,7 +180,8 @@ DROP TABLE IF EXISTS `hoja_recepcion_has_states`;
 CREATE TABLE `hoja_recepcion_has_states` (
   `Hoja_Recepcion_idHoja_Recepcion` int(11) NOT NULL,
   `states_idstates` int(11) NOT NULL,
-  PRIMARY KEY (`Hoja_Recepcion_idHoja_Recepcion`,`states_idstates`),
+  `idUsuario` int(11) NOT NULL,
+  PRIMARY KEY (`Hoja_Recepcion_idHoja_Recepcion`,`states_idstates`,`idUsuario`),
   KEY `fk_Hoja_Recepcion_has_states_states1_idx` (`states_idstates`),
   KEY `fk_Hoja_Recepcion_has_states_Hoja_Recepcion1_idx` (`Hoja_Recepcion_idHoja_Recepcion`),
   CONSTRAINT `fk_Hoja_Recepcion_has_states_Hoja_Recepcion1` FOREIGN KEY (`Hoja_Recepcion_idHoja_Recepcion`) REFERENCES `hoja_recepcion` (`idHoja_Recepcion`),
@@ -364,27 +300,36 @@ LOCK TABLES `states` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `usuarios`
+-- Table structure for table `usuario`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
+DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `usuarios` (
-  `idUsuarios` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `usuario` (
+  `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `apPat` varchar(45) NOT NULL,
+  `apMat` varchar(45) NOT NULL,
+  `calle` varchar(45) DEFAULT NULL,
+  `colonia` varchar(45) DEFAULT NULL,
+  `ciudad` varchar(45) DEFAULT NULL,
+  `activo` varchar(1) NOT NULL,
+  `cp` varchar(10) DEFAULT NULL,
+  `rol` varchar(45) NOT NULL,
   `usuario` varchar(45) NOT NULL,
-  `password` varchar(500) NOT NULL,
-  PRIMARY KEY (`idUsuarios`)
+  `password` varchar(45) NOT NULL,
+  PRIMARY KEY (`idUsuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuarios`
+-- Dumping data for table `usuario`
 --
 
-LOCK TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -396,4 +341,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-16 19:36:19
+-- Dump completed on 2019-11-18 17:30:40
