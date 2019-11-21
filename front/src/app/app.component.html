@@ -38,9 +38,9 @@
         <h4 mat-line>{{ session.user.nombre }} {{ session.user.apPat }}</h4>
         <p mat-line>{{ session.user.email }}</p>
       </mat-list-item>
-      <mat-list-item routerLink="/settings">
+      <mat-list-item routerLink="/settings" routerLinkActive="active-link">
         <mat-icon mat-list-icon>settings</mat-icon>
-        <a class="item-link" mat-line>Configuración</a>
+        <p class="item-link" mat-line>Configuración</p>
       </mat-list-item>
       <mat-list-item 
         [swal]="{
