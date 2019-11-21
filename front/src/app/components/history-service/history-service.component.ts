@@ -16,7 +16,7 @@ export class HistoryServiceComponent implements OnInit {
   car: Observable<{}>;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public order: Order, private carService: CarsService) {
-    this.car = this.carService.getCar(this.order.fk_plates_car);
+    // this.car = this.carService.getCar(this.order.fk_plates_car);
   }
 
   ngOnInit() {

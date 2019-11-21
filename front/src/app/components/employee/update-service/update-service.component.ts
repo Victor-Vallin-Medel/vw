@@ -31,7 +31,7 @@ export class UpdateServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.carService.getCar(this.order.fk_plates_car).subscribe((car: Car) => this.car = car);
+    // this.carService.getCar(this.order.fk_plates_car).subscribe((car: Car) => this.car = car);
     this.userService.getClient(this.order.fk_client).subscribe((client: User) => this.client = client);
   }
 
@@ -43,7 +43,7 @@ export class UpdateServiceComponent implements OnInit {
   updateService(status: number) {
     console.log(status);
     if (status == 6) {
-      this.carService.putCar(this.order.fk_plates_car, 0).subscribe();
+      // this.carService.putCar(this.order.fk_plates_car, 0).subscribe();
       this.order.dateDelivery = new Date();
     }
     this.order.status = status;
