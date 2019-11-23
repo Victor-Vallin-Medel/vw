@@ -53,6 +53,7 @@ import { EmployeesComponent } from './components/employee/employees/employees.co
 import { OrdersComponent } from './components/employee/orders/orders.component';
 
 import { RolesPipe } from './pipes/roles.pipe';
+import { SettingsComponent } from './components/settings/settings.component';
 
 export function getToken(): string {
   return localStorage.getItem('token');
@@ -83,7 +84,8 @@ export function getToken(): string {
 
     StatusPipe,
     RolesPipe,
-    NotFoundComponent
+    NotFoundComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

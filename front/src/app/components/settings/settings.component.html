@@ -1,0 +1,192 @@
+<div class="flex-container flex-between">
+  <div class="flex-child">
+    <h4 mat-dialog-title>Perfil <mat-icon color="primary">assignment_ind</mat-icon>
+    </h4>
+  </div>
+  <div class="flex-child">
+    <button mat-stroked-button color="primary" style="margin-top: 1.5rem;" (click)="goBack()">Regresar</button>
+  </div>
+</div>
+
+<div *ngIf="user$.current | async; let user">
+  <!-- Ficha de usuario -->
+  <div class="col s12">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{user.nombre}} {{user.apPat}} {{user.apMat}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row">
+          <div class="col s12 m6" *ngIf="user.rol != 'cliente'">
+            <button mat-icon-button matTooltip="Rol" matTooltipPosition="right">
+              <mat-icon style="color: teal;">record_voice_over</mat-icon>
+            </button>
+            {{user.rol | uppercase}}
+          </div>
+          <div class="col s12 m6">
+            <button mat-icon-button>
+              <mat-icon style="color: teal;">email</mat-icon>
+            </button>
+            {{user.email}}
+          </div>
+          <div class="col s12">
+            <button mat-icon-button>
+              <mat-icon style="color: teal;">room</mat-icon>
+            </button>
+            {{user.calle}}, {{user.colonia}}, {{user.ciudad}}, {{user.cp}}.
+          </div>
+        </div>
+        <div class="row" align="end">
+          <button mat-raised-button [color]="edit? 'accent' : 'primary'" class="middle"
+            (click)="edit = !edit">{{ edit? 'Cancelar' : 'Editar' }}</button>
+          <button mat-raised-button color="warn" class="middle" *ngIf="session.user.rol == 'asesor'"
+            [swal]="{
+              title: 'Accion irreversible',
+              text: '¿Deseas eliminar al empleado?',
+              icon: 'question', showCancelButton: true,
+              confirmButtonText: 'Eliminar',
+              cancelButtonText: 'Cancelar' }"
+            (confirm)="deleteEmployee()">Eliminar</button>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Forms -->
+  <div class="col s12" class="tabs-modify" *ngIf="edit">
+    <mat-tab-group>
+      <!-- General -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">person</mat-icon>
+          General
+        </ng-template>
+        <!-- Form to update user. -->
+        <form [formGroup]="generalFormGroup" (ngSubmit)="updateUser(generalFormGroup, user.id)" class="form-tab">
+          <div class="row">
+            <mat-form-field appearance="outline" class="col s12 m4">
+              <mat-label>Nombre</mat-label>
+              <input [(ngModel)]="user.nombre" matInput formControlName="nombreCtrl" required>
+              <mat-error *ngIf="generalFormGroup.get('nombreCtrl').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col s6 m4">
+              <mat-label>Apellido Paterno</mat-label>
+              <input [(ngModel)]="user.apPat" matInput formControlName="apPatCtrl" required>
+              <mat-error *ngIf="generalFormGroup.get('apPatCtrl').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="col s6 m4">
+              <mat-label>Materno</mat-label>
+              <input [(ngModel)]="user.apMat" matInput formControlName="apMatCtrl">
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="col s12" appearance="outline" [ngClass]="(session.user.rol == 'asesor')? 'l7' : 'l12'">
+              <mat-label>Email</mat-label>
+              <input [(ngModel)]="user.email" matInput formControlName="emailCtrl" required cdkFocusInitial>
+              <mat-error *ngIf="generalFormGroup.get('emailCtrl').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+              <mat-error
+                *ngIf="!generalFormGroup.get('emailCtrl').hasError('required') && generalFormGroup.get('emailCtrl').hasError('email')">
+                Debes ingresar un correo válido.
+              </mat-error>
+            </mat-form-field>
+            <div class="col s12 l5" *ngIf="session.user.rol == 'asesor'">
+              <mat-radio-group [(ngModel)]="user.rol" class="row" formControlName="rolCtrl">
+                <mat-radio-button value="asesor" class="col s4 l6 radio-button">Asesor</mat-radio-button>
+                <mat-radio-button value="mecánico" class="col s4 l6 radio-button">Mecánico</mat-radio-button>
+                <mat-radio-button value="aseador" class="col s4 l6 radio-button">Aseador</mat-radio-button>
+              </mat-radio-group>
+              <mat-error *ngIf="generalFormGroup.get('phoneCtrl').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+            </div>
+          </div>
+          <div class="row" align="end">
+            <button type="submit" mat-raised-button color="primary" [disabled]="generalFormGroup.invalid"
+              class="middle">Modificar</button>
+          </div>
+        </form>
+      </mat-tab>
+
+      <!-- Dirección -->
+      <mat-tab *ngIf="session.user.rol == 'cliente'">
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">room</mat-icon>
+          Domicilio
+        </ng-template>
+        <!-- Form to update dom -->
+        <form [formGroup]="locationFormGroup" (ngSubmit)="updateUser(locationFormGroup, user.id)" class="form-tab">
+          <div class="row">
+            <mat-form-field appearance="outline" class="col s12">
+              <mat-label>Calle</mat-label>
+              <input matInput [(ngModel)]="user.calle" formControlName="calleCtrl" required>
+              <mat-error *ngIf="locationFormGroup.get('calleCtrl').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col s12 m12 l4" appearance="outline">
+              <mat-label>Colonia</mat-label>
+              <input matInput [(ngModel)]="user.colonia" formControlName="coloniaCtrl" required>
+              <mat-error *ngIf="locationFormGroup.get('coloniaCtrl').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col s12 m8 l4" appearance="outline">
+              <mat-label>Ciudad</mat-label>
+              <input matInput [(ngModel)]="user.ciudad" formControlName="ciudadCtrl" required>
+              <mat-error *ngIf="locationFormGroup.get('ciudadCtrl').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="col s12 m4 l4" appearance="outline">
+              <mat-label>CP</mat-label>
+              <input matInput [(ngModel)]="user.cp" type="number" formControlName="cpCtrl" required>
+              <mat-error *ngIf="locationFormGroup.get('cpCtrl').hasError('required')">
+                Campo obligatorio.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row" align="end">
+            <button type="submit" mat-raised-button color="primary" [disabled]="locationFormGroup.invalid" class="middle">Modificar</button>
+          </div>
+        </form>
+      </mat-tab>
+
+      <!-- Contraseña -->
+      <mat-tab *ngIf="router.url == '/settings'">
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">lock</mat-icon>
+          Contraseña
+        </ng-template>
+        <!-- Form to update password -->
+        <form [formGroup]="securityFormGroup" (ngSubmit)="updateUser(securityFormGroup, user.id)" class="form-tab">
+            <div class="row">
+              <mat-form-field appearance="outline" class="col s12">
+                <mat-label>Contraseña</mat-label>
+                <input matInput formControlName="passwordCtrl" required>
+                <mat-error *ngIf="securityFormGroup.get('passwordCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col s12">
+                  <mat-label>Confirmar contraseña</mat-label>
+                  <input matInput formControlName="confirmCtrl" required [errorStateMatcher]="matcher">
+                  <mat-error *ngIf="securityFormGroup.hasError('notSame')">
+                    Las contraseñas no coinciden.
+                  </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="row" align="end">
+              <button type="submit" mat-raised-button color="primary" [disabled]="securityFormGroup.invalid" class="middle">Modificar</button>
+            </div>
+          </form>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
