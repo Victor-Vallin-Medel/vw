@@ -29,7 +29,7 @@
             </button>
             {{user.email}}
           </div>
-          <div class="col s12">
+          <div class="col s12" *ngIf="user.rol == 'cliente'">
             <button mat-icon-button>
               <mat-icon style="color: teal;">room</mat-icon>
             </button>
@@ -39,7 +39,7 @@
         <div class="row" align="end">
           <button mat-raised-button [color]="edit? 'accent' : 'primary'" class="middle"
             (click)="edit = !edit">{{ edit? 'Cancelar' : 'Editar' }}</button>
-          <button mat-raised-button color="warn" class="middle" *ngIf="session.user.rol == 'asesor'"
+          <button mat-raised-button color="warn" class="middle" *ngIf="session.user.rol == 'asesor' && router.url == '/employees'"
             [swal]="{
               title: 'Accion irreversible',
               text: '¿Deseas eliminar al empleado?',
@@ -85,7 +85,7 @@
             </mat-form-field>
           </div>
           <div class="row">
-            <mat-form-field class="col s12" appearance="outline" [ngClass]="(session.user.rol == 'asesor')? 'l7' : 'l12'">
+            <mat-form-field class="col s12" appearance="outline" [ngClass]="(session.user.rol == 'asesor' && router.url == '/employees')? 'l7' : 'l12'">
               <mat-label>Email</mat-label>
               <input [(ngModel)]="user.email" matInput formControlName="emailCtrl" required cdkFocusInitial>
               <mat-error *ngIf="generalFormGroup.get('emailCtrl').hasError('required')">
@@ -96,13 +96,13 @@
                 Debes ingresar un correo válido.
               </mat-error>
             </mat-form-field>
-            <div class="col s12 l5" *ngIf="session.user.rol == 'asesor'">
+            <div class="col s12 l5" *ngIf="session.user.rol == 'asesor' && router.url == '/employees'">
               <mat-radio-group [(ngModel)]="user.rol" class="row" formControlName="rolCtrl">
                 <mat-radio-button value="asesor" class="col s4 l6 radio-button">Asesor</mat-radio-button>
                 <mat-radio-button value="mecánico" class="col s4 l6 radio-button">Mecánico</mat-radio-button>
                 <mat-radio-button value="aseador" class="col s4 l6 radio-button">Aseador</mat-radio-button>
               </mat-radio-group>
-              <mat-error *ngIf="generalFormGroup.get('phoneCtrl').hasError('required')">
+              <mat-error *ngIf="generalFormGroup.get('rolCtrl').hasError('required')">
                 Campo obligatorio.
               </mat-error>
             </div>
