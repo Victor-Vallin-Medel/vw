@@ -8,7 +8,7 @@ import { HomeComponent } from './components/employee/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ViewCarComponent } from './components/view-car/view-car.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { EmployeesComponent } from './components/employee/employees/employees.component';
+import { ListUsersComponent } from './components/employee/list-users/list-users.component';
 
 const routes_clients: Routes = [
   { path: 'dashboard', component: HomeClientComponent, canActivate: [AuthUserGuard] },
@@ -16,8 +16,9 @@ const routes_clients: Routes = [
 
 const routes_employee: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthEmployeeGuard] },
-  { path: 'employees', component: EmployeesComponent },
-  { path: 'employee/:id', component: SettingsComponent }
+  { path: 'employees', component: ListUsersComponent },
+  { path: 'customers', component: ListUsersComponent },
+  { path: 'employee/:id', component: SettingsComponent },
 ];
 
 const routes: Routes = [

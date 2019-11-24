@@ -7,19 +7,24 @@ import { SessionService } from 'src/app/services/session.service';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar, MatDialog } from '@angular/material';
 
 @Component({
-  selector: 'app-employees',
-  templateUrl: './employees.component.html',
-  styleUrls: ['./employees.component.css']
+  selector: 'app-list-users',
+  templateUrl: './list-users.component.html',
+  styleUrls: ['./list-users.component.css']
 })
-export class EmployeesComponent implements OnInit {
+export class ListUsersComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  displayedColumns: string[] = ['nombre', 'email', 'rol', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<User>;
 
-  constructor(public session: SessionService, public user$: UserService, private location: Location, public router: Router, private snack: MatSnackBar, public dialog: MatDialog) { }
+  constructor(public session: SessionService, public user$: UserService, private location: Location, public router: Router, private snack: MatSnackBar, public dialog: MatDialog) {
+    if (router.url == '/employees')
+      this.displayedColumns = ['nombre', 'email', 'rol', 'actions'];
+    else if (router.url == '/customers')
+      this.displayedColumns = ['nombre', 'email', 'dom', 'actions']
+  }
 
   ngOnInit() {
     this.setDataSource();
