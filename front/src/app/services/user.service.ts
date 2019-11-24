@@ -11,7 +11,7 @@ export class UserService {
   private readonly URL = 'http://localhost:3004/users/';
 
   /* List (Array), Current (Interface) para mostrar en las vistas */
-  list: Observable<User []>;
+  list: Observable<User []> = new Observable<User []>(null);
   current: Observable<User>;
   
   list$: BehaviorSubject<User []> = new BehaviorSubject<User []>([]);
@@ -42,8 +42,25 @@ export class UserService {
     });
   }
 
-  getUsers() {
-    return this.http.get(`${this.URL}`);
+  /**
+   * Get Users of given type.
+   * @param type number 1 = Employees | 0 = Customers
+   */
+  getUsers(type: number) {
+    // FIXME: Add filter with type.
+    return this.http.get<User []>(`${this.URL}`).subscribe((partial: User []) => {
+      this.list$.next(partial);
+      this.list = this.list$.asObservable();
+    });
+  }
+
+  /**
+   * Get the Observable Users
+   * @param type number 1 = Employees | 0 = Customers
+   */
+  getUsersOf(type: number) {
+    // FIXME: Add filter with type.
+    return this.http.get<User []>(`${this.URL}`);
   }
 
   getClients() {
@@ -75,6 +92,10 @@ export class UserService {
 
   putEmployee(userDto: User) {
     return this.http.put(`${this.URL}${userDto.id}`, userDto);
+  }
+
+  deleteUser(uid: number) {
+    return this.http.delete(`${this.URL}${uid}`);
   }
 
   deleteEmployee(uid: string) {

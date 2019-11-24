@@ -7,52 +7,59 @@
     <button mat-stroked-button color="primary" style="margin-top: 1.5rem;" (click)="goBack()">Regresar</button>
   </div>
 </div>
+
 <div class="row">
-  <div *ngFor="let employee of employees">
-    <div class="col s12 m6" *ngIf="employee.ref != afAuth.auth.currentUser.uid">
-      <mat-card class="mt">
-        <mat-card-header>
-          <mat-card-title>{{employee.name}} {{employee.apPat}} {{employee.apMat}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="row">
-            <div class="col s12">
-              <button mat-icon-button matTooltip="Fecha de ingreso" matTooltipPosition="right">
-                <mat-icon style="color: teal;">calendar_today</mat-icon>
-              </button>
-              {{employee.dateUp | date: short}}
-            </div>
-            <div class="col s12">
-              <button mat-icon-button matTooltip="Rol" matTooltipPosition="right">
-                <mat-icon style="color: teal;">record_voice_over</mat-icon>
-              </button>
-              Asesor
-            </div>
-            <div class="col s12">
-              <button mat-icon-button>
-                <mat-icon style="color: teal;">business</mat-icon>
-              </button>
-              {{employee.domicile}}
-            </div>
-            <div class="col s12">
-              <button mat-icon-button>
-                <mat-icon style="color: teal;">email</mat-icon>
-              </button>
-              {{employee.email}}
-            </div>
-            <div class="col s12">
-              <button mat-icon-button>
-                <mat-icon style="color: teal;">phone</mat-icon>
-              </button>
-              {{employee.phone}}
-            </div>
-          </div>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <mat-card-actions align=end>
-          <button mat-raised-button color="accent" [routerLink]="['/employee', employee.ref]">Administar</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let row"> {{row.nombre}} {{row.apPat}} {{row.apMat}} </td>
+      </ng-container>
+
+      <!-- Role Column -->
+      <ng-container matColumnDef="rol">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
+        <td mat-cell *matCellDef="let row"> {{row.rol | uppercase}} </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+        <td mat-cell *matCellDef="let row"> 
+          <button mat-icon-button class=btn-actions color="primary" (click)="editEmployee(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button class=btn-actions color="warn" [swal]="delUser">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <swal #delUser
+            title="Precaución"
+            icon="warning"
+            text="¿Deseas eliminar al empleado {{row.nombre}} {{row.apPat}} {{row.ApMat}}"
+            showCancelButton="true"
+            cancelButtonText="Cancelar"
+            (confirm)="deleteEmployee(row.id)">
+          </swal>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[2, 5, 10, 25, 100]"></mat-paginator>
   </div>
 </div>
