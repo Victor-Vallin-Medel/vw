@@ -9,7 +9,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ViewCarComponent } from './components/view-car/view-car.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { EmployeesComponent } from './components/employee/employees/employees.component';
-import { EmployeeDetailsComponent } from './components/employee/employee-details/employee-details.component';
 
 const routes_clients: Routes = [
   { path: 'dashboard', component: HomeClientComponent, canActivate: [AuthUserGuard] },

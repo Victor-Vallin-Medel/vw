@@ -117,32 +117,32 @@ export class LoginComponent implements OnInit {
     let password: string = this.signupFormGroup.value.passwordCtrl;
 
     // FIXME: Remover getUsers function and id assing.
-    this.userService.getUsers().subscribe((users: User) => {
-      let size = Object.keys(users).length;
+    // this.userService.getUsers(1).subscribe((users: User) => {
+    //   let size = Object.keys(users).length;
       
-      this.userService.postUser({
-        id: size + 1,
-        email: email,
-        nombre: this.signupFormGroup.value.nameCtrl,
-        apPat: this.signupFormGroup.value.apPatCtrl,
-        apMat: this.signupFormGroup.value.apMatCtrl,
-        rol: this.signupFormGroup.value.roleCtrl,
+    //   this.userService.postUser({
+    //     id: size + 1,
+    //     email: email,
+    //     nombre: this.signupFormGroup.value.nameCtrl,
+    //     apPat: this.signupFormGroup.value.apPatCtrl,
+    //     apMat: this.signupFormGroup.value.apMatCtrl,
+    //     rol: this.signupFormGroup.value.roleCtrl,
 
-        calle: (this.employee) ? '' : this.signupFormGroup.value.calleCtrl,
-        colonia: (this.employee) ? '' : this.signupFormGroup.value.colCtrl,
-        ciudad: (this.employee) ? '' : this.signupFormGroup.value.ciudadCtrl,
-        cp: (this.employee) ? '' : this.signupFormGroup.value.cpCtrl,
+    //     calle: (this.employee) ? '' : this.signupFormGroup.value.calleCtrl,
+    //     colonia: (this.employee) ? '' : this.signupFormGroup.value.colCtrl,
+    //     ciudad: (this.employee) ? '' : this.signupFormGroup.value.ciudadCtrl,
+    //     cp: (this.employee) ? '' : this.signupFormGroup.value.cpCtrl,
 
-        activo: 1,
-      })
-        .subscribe((response: User) => {
-          // TODO: Use session.login function to send email/password ang log in. Catch the token and save int localstorage.
-          this.snack.open(`Bienvenido  ${response.email}`, "Close", {
-            duration: 6000
-          });
-          // this.router.navigate(['home']);
-        });
-    });
+    //     activo: 1,
+    //   })
+    //     .subscribe((response: User) => {
+    //       // TODO: Use session.login function to send email/password ang log in. Catch the token and save int localstorage.
+    //       this.snack.open(`Bienvenido  ${response.email}`, "Close", {
+    //         duration: 6000
+    //       });
+    //       // this.router.navigate(['home']);
+    //     });
+    // });
   }
 
 }

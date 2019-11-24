@@ -52,7 +52,6 @@ import { CarDetailsComponent } from './components/employee/car-details/car-detai
 import { CarsComponent } from './components/employee/cars/cars.component';
 import { ClientDetailsComponent } from './components/employee/client-details/client-details.component';
 import { ClientsComponent } from './components/employee/clients/clients.component';
-import { EmployeeDetailsComponent } from './components/employee/employee-details/employee-details.component';
 import { EmployeesComponent } from './components/employee/employees/employees.component';
 import { OrdersComponent } from './components/employee/orders/orders.component';
 
@@ -81,7 +80,6 @@ export function getToken(): string {
     CarsComponent,
     ClientDetailsComponent,
     ClientsComponent,
-    EmployeeDetailsComponent,
     EmployeesComponent,
     OrdersComponent,
 
