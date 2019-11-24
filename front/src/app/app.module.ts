@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatPaginatorIntl } from '@angular/material';
 
 import { MaterialModule } from './material.module';
 
@@ -28,6 +29,8 @@ import { UserService } from './services/user.service';
 import { CarsService } from './services/cars.service';
 
 // Components
+import { getLabels } from './configs/paginator';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,6 +39,7 @@ import { ViewServiceComponent } from './components/view-service/view-service.com
 import { ViewCarComponent } from './components/view-car/view-car.component';
 import { HistoryServiceComponent } from './components/history-service/history-service.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 
 import { RegisterComponent } from './components/client/register/register.component';
@@ -53,7 +57,6 @@ import { EmployeesComponent } from './components/employee/employees/employees.co
 import { OrdersComponent } from './components/employee/orders/orders.component';
 
 import { RolesPipe } from './pipes/roles.pipe';
-import { SettingsComponent } from './components/settings/settings.component';
 
 export function getToken(): string {
   return localStorage.getItem('token');
@@ -111,7 +114,8 @@ export function getToken(): string {
     AuthEmployeeGuard,
     SessionService,
     UserService,
-    CarsService
+    CarsService,
+    { provide: MatPaginatorIntl, useValue: getLabels() }
   ],
   entryComponents: [
     RegisterComponent,
