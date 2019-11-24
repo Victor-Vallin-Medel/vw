@@ -51,7 +51,6 @@ import { UpdateServiceComponent } from './components/employee/update-service/upd
 import { CarDetailsComponent } from './components/employee/car-details/car-details.component';
 import { CarsComponent } from './components/employee/cars/cars.component';
 import { ClientDetailsComponent } from './components/employee/client-details/client-details.component';
-import { ClientsComponent } from './components/employee/clients/clients.component';
 import { ListUsersComponent } from './components/employee/list-users/list-users.component';
 import { OrdersComponent } from './components/employee/orders/orders.component';
 
@@ -79,7 +78,6 @@ export function getToken(): string {
     CarDetailsComponent,
     CarsComponent,
     ClientDetailsComponent,
-    ClientsComponent,
     ListUsersComponent,
     OrdersComponent,
 
