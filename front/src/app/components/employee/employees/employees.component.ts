@@ -5,7 +5,6 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { SessionService } from 'src/app/services/session.service';
 import { MatTableDataSource, MatPaginator, MatSort, MatSnackBar, MatDialog } from '@angular/material';
-import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
 
 @Component({
   selector: 'app-employees',
@@ -45,17 +44,6 @@ export class EmployeesComponent implements OnInit {
 
   goBack() {
     this.location.back();
-  }
-
-  editEmployee(user: User) {
-    const dialogRef = this.dialog.open( EmployeeDetailsComponent, {
-      width: '250px',
-      data: user
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
   }
 
   deleteEmployee(uid: number) {
