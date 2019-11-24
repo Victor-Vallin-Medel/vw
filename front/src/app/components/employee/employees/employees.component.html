@@ -38,7 +38,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
         <td mat-cell *matCellDef="let row"> 
-          <button mat-icon-button class=btn-actions color="primary" (click)="editEmployee(row)">
+          <button mat-icon-button class=btn-actions color="primary" [routerLink]="['/employee', row.id]">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button class=btn-actions color="warn" [swal]="delUser">

@@ -68,6 +68,8 @@ export class SettingsComponent implements OnInit {
   callUser() {
     if (this.router.url == '/settings')
       this.user$.getUser(this.session.user.id);
+    else
+      this.active.params.subscribe(params => this.user$.getUser(params.id));
   }
 
   checkPasswords(group: FormGroup) {
@@ -98,13 +100,18 @@ export class SettingsComponent implements OnInit {
     // FIXME: Call observable?. Set MD5(password)?
   }
 
-  deleteEmployee() {
-    // this.user$.deleteEmployee(this.employee.ref).subscribe((employee: User) => {
-    //   this.snack.open(`${employee.name} ${employee.apPat} eliminado.`, 'Close', {
-    //     duration: 8000,
-    //   });
-    //   this.location.back();
-    // })
+  deleteEmployee(uid: number) {
+    this.user$.deleteUser(uid).subscribe(
+      partial => {
+        this.snack.open(`Empleado eliminado.`, 'Cerrar', {
+          duration: 8000,
+        });
+        this.goBack();
+      },
+      error => this.snack.open(`Ocurrió un error.`, 'Cerrar', {
+        duration: 8000,
+      })
+    );
   }
 
 }

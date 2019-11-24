@@ -1,6 +1,6 @@
 <div class="flex-container flex-between">
   <div class="flex-child">
-    <h4 mat-dialog-title>Perfil <mat-icon color="primary">assignment_ind</mat-icon>
+    <h4 mat-dialog-title>{{ router.url == '/settings'? 'Perfil' : 'Empleado' }} <mat-icon color="primary">assignment_ind</mat-icon>
     </h4>
   </div>
   <div class="flex-child">
@@ -37,16 +37,19 @@
           </div>
         </div>
         <div class="row" align="end">
-          <button mat-raised-button [color]="edit? 'accent' : 'primary'" class="middle"
-            (click)="edit = !edit">{{ edit? 'Cancelar' : 'Editar' }}</button>
-          <button mat-raised-button color="warn" class="middle" *ngIf="session.user.rol == 'asesor' && router.url == '/employees'"
+          <button mat-icon-button [color]="edit? 'accent' : 'primary'" class="btn-actions" (click)="edit = !edit" [matTooltip]="edit? 'Cancelar' : 'Editar'">
+            <mat-icon>{{ edit? 'close' : 'edit' }}</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" class="btn-actions" *ngIf="session.user.rol == 'asesor' && router.url != '/settings'" matTooltip="Eliminar"
             [swal]="{
               title: 'Accion irreversible',
               text: '¿Deseas eliminar al empleado?',
               icon: 'question', showCancelButton: true,
               confirmButtonText: 'Eliminar',
               cancelButtonText: 'Cancelar' }"
-            (confirm)="deleteEmployee()">Eliminar</button>
+            (confirm)="deleteEmployee(user.id)">
+              <mat-icon>delete</mat-icon>
+          </button>
         </div>
 
       </mat-card-content>
