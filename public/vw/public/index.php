@@ -42,6 +42,7 @@ $db = new DB( $dbhost, $dbuser, $dbpass, $dbname );
 require __DIR__ . '/../models/model.php';
 require __DIR__ . '/../classes/classes.php';
 require __DIR__ . '/../controllers/usuario.php';
+require __DIR__ . '/../controllers/automovil.php';
 
 // Run app
 $app->run();

@@ -6,15 +6,16 @@ class Usuario{
 
     public $data;
 
-    public function __construct($data){
+    public function __construct($data = array()){
         $this->data = $data;
     }
 
     public static $definition = array(
         'table' => 'usuario',
-        'primary' => 'idUsuario',
+        'primary' => 'idusuario',
         'fields' => array(
-            'idUsuario', 
+            'idusuario', 
+            'nombre',
             'apPat',
             'apMat',
             'calle',
@@ -22,7 +23,6 @@ class Usuario{
             'ciudad',
             'activo',
             'cp',
-            'Usuarios_idUsuarios',
             'rol',
             'usuario',
             'password'

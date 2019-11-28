@@ -6,19 +6,19 @@ class Automovil{
 
     public $data;
 
-    public function _construct($data){
+    public function __construct($data){
         $this->data = $data;
     }
 
     public static $definition = array(
         'table' => 'automovil',
-        'primary' => 'idAutomovil',
+        'primary' => 'idautomovil',
         'fields' => array(
-            'idAutomovil',
+            'idautomovil',
             'num_serie', 
             'version',
             'modelo',
-            'Cliente_idCliente'
+            'Cliente_idcliente'
         )
     );
 }

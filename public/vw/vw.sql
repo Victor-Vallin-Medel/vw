@@ -1,344 +1,465 @@
--- MySQL dump 10.17  Distrib 10.3.15-MariaDB, for Win64 (AMD64)
+-- phpMyAdmin SQL Dump
+-- version 4.8.3
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: mydb
--- ------------------------------------------------------
--- Server version	8.0.16
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 24-11-2019 a las 01:58:03
+-- Versión del servidor: 10.1.36-MariaDB
+-- Versión de PHP: 7.2.11
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `mydb`
+-- Base de datos: `mydb`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `mydb` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
-USE `mydb`;
+-- --------------------------------------------------------
 
 --
--- Table structure for table `automovil`
+-- Estructura de tabla para la tabla `automovil`
 --
 
-DROP TABLE IF EXISTS `automovil`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `automovil` (
-  `idAutomovil` int(11) NOT NULL AUTO_INCREMENT,
-  `num_serie` varchar(45) NOT NULL,
-  `version` varchar(45) NOT NULL,
-  `modelo` varchar(45) NOT NULL,
-  `Usuario_idUsuario` int(11) NOT NULL,
-  PRIMARY KEY (`idAutomovil`,`Usuario_idUsuario`),
-  KEY `fk_Automovil_Cliente_idx` (`Usuario_idUsuario`),
-  CONSTRAINT `fk_Automovil_Cliente` FOREIGN KEY (`Usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
+  `idautomovil` int(11) NOT NULL,
+  `nombre` varchar(45) DEFAULT NULL,
+  `num_serie` varchar(45) DEFAULT NULL,
+  `version` varchar(45) DEFAULT NULL,
+  `modelo` varchar(45) DEFAULT NULL,
+  `usuario_idusuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `automovil`
+-- Volcado de datos para la tabla `automovil`
 --
 
-LOCK TABLES `automovil` WRITE;
-/*!40000 ALTER TABLE `automovil` DISABLE KEYS */;
-/*!40000 ALTER TABLE `automovil` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `automovil` (`idautomovil`, `nombre`, `num_serie`, `version`, `modelo`, `usuario_idusuario`) VALUES
+(1, 'Jetta', '12345FHJK5678LK', 'Live', '2017', 2),
+(2, 'Passat', '6789034SFGHJK45', 'R-Line', '2019', 1);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `citas`
+-- Estructura de tabla para la tabla `citas`
 --
 
-DROP TABLE IF EXISTS `citas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `citas` (
-  `idCitas` int(11) NOT NULL AUTO_INCREMENT,
-  `fecha` datetime NOT NULL,
-  `confirmacion` varchar(1) NOT NULL,
-  `Usuario_idUsuario` int(11) NOT NULL,
-  `Automovil_idAutomovil` int(11) NOT NULL,
-  PRIMARY KEY (`idCitas`,`Usuario_idUsuario`,`Automovil_idAutomovil`),
-  KEY `fk_Citas_Cliente1_idx` (`Usuario_idUsuario`),
-  KEY `fk_Citas_Automovil1_idx` (`Automovil_idAutomovil`),
-  CONSTRAINT `fk_Citas_Automovil1` FOREIGN KEY (`Automovil_idAutomovil`) REFERENCES `automovil` (`idAutomovil`),
-  CONSTRAINT `fk_Citas_Cliente1` FOREIGN KEY (`Usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
+  `idcitas` int(11) NOT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `confirmacion` varchar(1) DEFAULT NULL,
+  `usuario_idusuario` int(11) NOT NULL,
+  `automovil_idautomovil` int(11) NOT NULL,
+  `automovil_usuario_idusuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `citas`
+-- Volcado de datos para la tabla `citas`
 --
 
-LOCK TABLES `citas` WRITE;
-/*!40000 ALTER TABLE `citas` DISABLE KEYS */;
-/*!40000 ALTER TABLE `citas` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `citas` (`idcitas`, `fecha`, `confirmacion`, `usuario_idusuario`, `automovil_idautomovil`, `automovil_usuario_idusuario`) VALUES
+(1, '2019-11-23 03:11:00', '0', 1, 2, 1),
+(2, '2019-11-29 04:12:00', '0', 2, 1, 2),
+(3, '2019-11-28 13:30:00', '1', 3, 1, 2);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `citas_has_states`
+-- Estructura de tabla para la tabla `citas_has_states`
 --
 
-DROP TABLE IF EXISTS `citas_has_states`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `citas_has_states` (
-  `Citas_idCitas` int(11) NOT NULL,
-  `states_idstates` int(11) NOT NULL,
-  PRIMARY KEY (`Citas_idCitas`,`states_idstates`),
-  KEY `fk_Citas_has_states_states1_idx` (`states_idstates`),
-  KEY `fk_Citas_has_states_Citas1_idx` (`Citas_idCitas`),
-  CONSTRAINT `fk_Citas_has_states_Citas1` FOREIGN KEY (`Citas_idCitas`) REFERENCES `citas` (`idCitas`),
-  CONSTRAINT `fk_Citas_has_states_states1` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`)
+  `citas_idcitas` int(11) NOT NULL,
+  `states_idstates` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `citas_has_states`
+-- Volcado de datos para la tabla `citas_has_states`
 --
 
-LOCK TABLES `citas_has_states` WRITE;
-/*!40000 ALTER TABLE `citas_has_states` DISABLE KEYS */;
-/*!40000 ALTER TABLE `citas_has_states` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `citas_has_states` (`citas_idcitas`, `states_idstates`) VALUES
+(1, 5),
+(2, 5),
+(3, 6);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `documento_diagnostico`
+-- Estructura de tabla para la tabla `documento_diagnostico`
 --
 
-DROP TABLE IF EXISTS `documento_diagnostico`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `documento_diagnostico` (
-  `idDocumento_Diagnostico` int(11) NOT NULL AUTO_INCREMENT,
-  `observaciones` json DEFAULT NULL,
-  `sugerencias` json DEFAULT NULL,
-  `Hoja_Recepcion_idHoja_Recepcion` int(11) NOT NULL,
-  PRIMARY KEY (`idDocumento_Diagnostico`,`Hoja_Recepcion_idHoja_Recepcion`),
-  KEY `fk_Documento_Diagnostico_Hoja_Recepcion1_idx` (`Hoja_Recepcion_idHoja_Recepcion`),
-  CONSTRAINT `fk_Documento_Diagnostico_Hoja_Recepcion1` FOREIGN KEY (`Hoja_Recepcion_idHoja_Recepcion`) REFERENCES `hoja_recepcion` (`idHoja_Recepcion`)
+  `idDocumento_diagnostico` int(11) NOT NULL,
+  `observaciones` varchar(450) DEFAULT NULL,
+  `sugerencias` varchar(450) DEFAULT NULL,
+  `hojaRecepcion_idhojaRecepcion` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `documento_diagnostico`
+-- Volcado de datos para la tabla `documento_diagnostico`
 --
 
-LOCK TABLES `documento_diagnostico` WRITE;
-/*!40000 ALTER TABLE `documento_diagnostico` DISABLE KEYS */;
-/*!40000 ALTER TABLE `documento_diagnostico` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `documento_diagnostico` (`idDocumento_diagnostico`, `observaciones`, `sugerencias`, `hojaRecepcion_idhojaRecepcion`) VALUES
+(1, 'Las balatas se estan cristalizando ', 'La cristalizacion se puede solucionar con un procedimiento de lima muy sencillo o cambiandolo por completo', 3);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `hoja_recepcion`
+-- Estructura de tabla para la tabla `hojarecepcion`
 --
 
-DROP TABLE IF EXISTS `hoja_recepcion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `hoja_recepcion` (
-  `idHoja_Recepcion` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hojarecepcion` (
+  `idhojaRecepcion` int(11) NOT NULL,
   `video` tinytext,
-  `aviso_privacidad` tinytext NOT NULL,
-  `observaciones` json DEFAULT NULL,
-  `Reparaciones_idReparaciones` int(11) NOT NULL,
-  `Usuario_idUsuario` int(11) NOT NULL,
-  `Automovil_idAutomovil` int(11) NOT NULL,
-  `Citas_idCitas` int(11) NOT NULL,
-  PRIMARY KEY (`idHoja_Recepcion`,`Reparaciones_idReparaciones`,`Usuario_idUsuario`,`Automovil_idAutomovil`,`Citas_idCitas`),
-  KEY `fk_Hoja_Recepcion_Reparaciones1_idx` (`Reparaciones_idReparaciones`),
-  KEY `fk_Hoja_Recepcion_Automovil1_idx` (`Automovil_idAutomovil`),
-  KEY `fk_Hoja_Recepcion_Citas1_idx` (`Citas_idCitas`),
-  CONSTRAINT `fk_Hoja_Recepcion_Automovil1` FOREIGN KEY (`Automovil_idAutomovil`) REFERENCES `automovil` (`idAutomovil`),
-  CONSTRAINT `fk_Hoja_Recepcion_Citas1` FOREIGN KEY (`Citas_idCitas`) REFERENCES `citas` (`idCitas`),
-  CONSTRAINT `fk_Hoja_Recepcion_Reparaciones1` FOREIGN KEY (`Reparaciones_idReparaciones`) REFERENCES `reparaciones` (`idReparaciones`)
+  `aviso_privacidad` tinytext,
+  `observaciones` varchar(450) DEFAULT NULL,
+  `usuario_idusuario` int(11) NOT NULL,
+  `automovil_idautomovil` int(11) NOT NULL,
+  `citas_idcitas` int(11) NOT NULL,
+  `reparaciones_idreparaciones` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `hoja_recepcion`
+-- Volcado de datos para la tabla `hojarecepcion`
 --
 
-LOCK TABLES `hoja_recepcion` WRITE;
-/*!40000 ALTER TABLE `hoja_recepcion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `hoja_recepcion` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `hojarecepcion` (`idhojaRecepcion`, `video`, `aviso_privacidad`, `observaciones`, `usuario_idusuario`, `automovil_idautomovil`, `citas_idcitas`, `reparaciones_idreparaciones`) VALUES
+(1, NULL, NULL, 'Revisar si las balatas estan en buenas condiciones, de igual manera la calidad de las llantas dar una valoracion', 1, 2, 1, 1),
+(2, NULL, NULL, 'Revisar el nivel de aceita de trasmision y direccion', 2, 1, 2, 2),
+(3, NULL, NULL, 'Sin observaciones', 3, 1, 3, 2);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `hoja_recepcion_has_states`
+-- Estructura de tabla para la tabla `hojarecepcion_has_states`
 --
 
-DROP TABLE IF EXISTS `hoja_recepcion_has_states`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `hoja_recepcion_has_states` (
-  `Hoja_Recepcion_idHoja_Recepcion` int(11) NOT NULL,
+CREATE TABLE `hojarecepcion_has_states` (
+  `hojaRecepcion_idhojaRecepcion` int(11) NOT NULL,
   `states_idstates` int(11) NOT NULL,
-  `idUsuario` int(11) NOT NULL,
-  PRIMARY KEY (`Hoja_Recepcion_idHoja_Recepcion`,`states_idstates`,`idUsuario`),
-  KEY `fk_Hoja_Recepcion_has_states_states1_idx` (`states_idstates`),
-  KEY `fk_Hoja_Recepcion_has_states_Hoja_Recepcion1_idx` (`Hoja_Recepcion_idHoja_Recepcion`),
-  CONSTRAINT `fk_Hoja_Recepcion_has_states_Hoja_Recepcion1` FOREIGN KEY (`Hoja_Recepcion_idHoja_Recepcion`) REFERENCES `hoja_recepcion` (`idHoja_Recepcion`),
-  CONSTRAINT `fk_Hoja_Recepcion_has_states_states1` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`)
+  `idCitas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `hoja_recepcion_has_states`
+-- Volcado de datos para la tabla `hojarecepcion_has_states`
 --
 
-LOCK TABLES `hoja_recepcion_has_states` WRITE;
-/*!40000 ALTER TABLE `hoja_recepcion_has_states` DISABLE KEYS */;
-/*!40000 ALTER TABLE `hoja_recepcion_has_states` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `hojarecepcion_has_states` (`hojaRecepcion_idhojaRecepcion`, `states_idstates`, `idCitas`) VALUES
+(3, 3, 3);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `refacciones_accesorios`
+-- Estructura de tabla para la tabla `refacciones_accesorios`
 --
 
-DROP TABLE IF EXISTS `refacciones_accesorios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `refacciones_accesorios` (
-  `idRefacciones_accesorios` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `precio` double NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `disponible` varchar(1) NOT NULL,
-  PRIMARY KEY (`idRefacciones_accesorios`)
+  `idrefacciones_accesorios` int(11) NOT NULL,
+  `nombre` varchar(45) DEFAULT NULL,
+  `precio` double DEFAULT NULL,
+  `existencia` int(11) DEFAULT NULL,
+  `disponible` varchar(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `refacciones_accesorios`
+-- Volcado de datos para la tabla `refacciones_accesorios`
 --
 
-LOCK TABLES `refacciones_accesorios` WRITE;
-/*!40000 ALTER TABLE `refacciones_accesorios` DISABLE KEYS */;
-/*!40000 ALTER TABLE `refacciones_accesorios` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `refacciones_accesorios` (`idrefacciones_accesorios`, `nombre`, `precio`, `existencia`, `disponible`) VALUES
+(1, 'Kit Servicio mayor', 800, 50, '1'),
+(2, 'Kit servicio basico', 200, 40, '1');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `reparaciones`
+-- Estructura de tabla para la tabla `reparaciones`
 --
 
-DROP TABLE IF EXISTS `reparaciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reparaciones` (
-  `idReparaciones` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
+  `idreparaciones` int(11) NOT NULL,
+  `nombre` varchar(45) DEFAULT NULL,
   `precio_aprox` double DEFAULT NULL,
-  `recomendaciones` json DEFAULT NULL,
-  PRIMARY KEY (`idReparaciones`)
+  `recomendaciones` varchar(450) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `reparaciones`
+-- Volcado de datos para la tabla `reparaciones`
 --
 
-LOCK TABLES `reparaciones` WRITE;
-/*!40000 ALTER TABLE `reparaciones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `reparaciones` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `reparaciones` (`idreparaciones`, `nombre`, `precio_aprox`, `recomendaciones`) VALUES
+(1, 'Servicio basico', 1500.25, 'Se recomienda hacer este servicio cada 5 mil kilometros dado el aceite utilizado'),
+(2, 'Servicio mayor', 3000.5, 'Se recomienda hacer este servicio cada 15 mil kilometros dado el aceite utilizado');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `reparaciones_has_refacciones_accesorios`
+-- Estructura de tabla para la tabla `reparaciones_has_refacciones_accesorios`
 --
 
-DROP TABLE IF EXISTS `reparaciones_has_refacciones_accesorios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reparaciones_has_refacciones_accesorios` (
-  `Reparaciones_idReparaciones` int(11) NOT NULL,
-  `Refacciones_accesorios_idRefacciones_accesorios` int(11) NOT NULL,
-  PRIMARY KEY (`Reparaciones_idReparaciones`,`Refacciones_accesorios_idRefacciones_accesorios`),
-  KEY `fk_Reparaciones_has_Refacciones_accesorios_Refacciones_acce_idx` (`Refacciones_accesorios_idRefacciones_accesorios`),
-  KEY `fk_Reparaciones_has_Refacciones_accesorios_Reparaciones1_idx` (`Reparaciones_idReparaciones`),
-  CONSTRAINT `fk_Reparaciones_has_Refacciones_accesorios_Refacciones_acceso1` FOREIGN KEY (`Refacciones_accesorios_idRefacciones_accesorios`) REFERENCES `refacciones_accesorios` (`idRefacciones_accesorios`),
-  CONSTRAINT `fk_Reparaciones_has_Refacciones_accesorios_Reparaciones1` FOREIGN KEY (`Reparaciones_idReparaciones`) REFERENCES `reparaciones` (`idReparaciones`)
+  `reparaciones_idreparaciones` int(11) NOT NULL,
+  `refacciones_accesorios_idrefacciones_accesorios` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `reparaciones_has_refacciones_accesorios`
+-- Volcado de datos para la tabla `reparaciones_has_refacciones_accesorios`
 --
 
-LOCK TABLES `reparaciones_has_refacciones_accesorios` WRITE;
-/*!40000 ALTER TABLE `reparaciones_has_refacciones_accesorios` DISABLE KEYS */;
-/*!40000 ALTER TABLE `reparaciones_has_refacciones_accesorios` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `reparaciones_has_refacciones_accesorios` (`reparaciones_idreparaciones`, `refacciones_accesorios_idrefacciones_accesorios`) VALUES
+(1, 2),
+(2, 1);
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `states`
+-- Estructura de tabla para la tabla `states`
 --
 
-DROP TABLE IF EXISTS `states`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `states` (
-  `idstates` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  PRIMARY KEY (`idstates`)
+  `idstates` int(11) NOT NULL,
+  `nombre` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `states`
+-- Volcado de datos para la tabla `states`
 --
 
-LOCK TABLES `states` WRITE;
-/*!40000 ALTER TABLE `states` DISABLE KEYS */;
-/*!40000 ALTER TABLE `states` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `states` (`idstates`, `nombre`) VALUES
+(1, 'recepcion'),
+(2, 'lavando'),
+(3, 'reparacion'),
+(4, 'espera asignacion mecanico'),
+(5, 'espera confirmacion cita'),
+(6, 'cita confirmada');
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estructura de tabla para la tabla `usuario`
 --
 
-DROP TABLE IF EXISTS `usuario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuario` (
-  `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `apPat` varchar(45) NOT NULL,
-  `apMat` varchar(45) NOT NULL,
+  `idusuario` int(11) NOT NULL,
+  `nombre` varchar(45) DEFAULT NULL,
+  `apPat` varchar(45) DEFAULT NULL,
+  `apMat` varchar(45) DEFAULT NULL,
   `calle` varchar(45) DEFAULT NULL,
   `colonia` varchar(45) DEFAULT NULL,
   `ciudad` varchar(45) DEFAULT NULL,
-  `activo` varchar(1) NOT NULL,
+  `activo` varchar(1) DEFAULT NULL,
   `cp` varchar(10) DEFAULT NULL,
-  `rol` varchar(45) NOT NULL,
-  `usuario` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`idUsuario`)
+  `rol` varchar(45) DEFAULT NULL,
+  `usuario` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuario`
+-- Volcado de datos para la tabla `usuario`
 --
 
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+INSERT INTO `usuario` (`idusuario`, `nombre`, `apPat`, `apMat`, `calle`, `colonia`, `ciudad`, `activo`, `cp`, `rol`, `usuario`, `password`) VALUES
+(1, 'Victor Hugo', 'Vallin', 'Medel', 'Zaragoza #75', 'Centro', 'Teocaltiche', '1', '47200', 'cliente', 'victor.vallin', '1234'),
+(2, 'Omar ', 'Salazar', 'Salazar', 'Rio eufrates', 'Colinas del rio', 'Aguascalientes', '0', '309810', 'cliente', 'omar.salazar', '1234'),
+(3, 'Mario', 'Gonzalez', 'Santoyo', 'Mision de San Juan', 'mision de Santa fe', 'Aguascalientes', '1', '20230', 'cliente', 'mario.gonzalez', '1234'),
+(4, 'Carlos Daniel', 'Molina', 'Vargas', 'Vivero del retiro', 'Casa Blanca', 'Aguascalientes', '1', '309020', 'asesor', 'carlos.molina', '1234');
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `automovil`
+--
+ALTER TABLE `automovil`
+  ADD PRIMARY KEY (`idautomovil`,`usuario_idusuario`),
+  ADD KEY `fk_automovil_usuario_idx` (`usuario_idusuario`);
+
+--
+-- Indices de la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD PRIMARY KEY (`idcitas`,`usuario_idusuario`,`automovil_idautomovil`,`automovil_usuario_idusuario`),
+  ADD KEY `fk_citas_usuario1_idx` (`usuario_idusuario`),
+  ADD KEY `fk_citas_automovil1_idx` (`automovil_idautomovil`,`automovil_usuario_idusuario`);
+
+--
+-- Indices de la tabla `citas_has_states`
+--
+ALTER TABLE `citas_has_states`
+  ADD PRIMARY KEY (`citas_idcitas`,`states_idstates`),
+  ADD KEY `fk_citas_has_states_states1_idx` (`states_idstates`),
+  ADD KEY `fk_citas_has_states_citas1_idx` (`citas_idcitas`);
+
+--
+-- Indices de la tabla `documento_diagnostico`
+--
+ALTER TABLE `documento_diagnostico`
+  ADD PRIMARY KEY (`idDocumento_diagnostico`,`hojaRecepcion_idhojaRecepcion`),
+  ADD KEY `fk_documento_diagnostico_hojaRecepcion1_idx` (`hojaRecepcion_idhojaRecepcion`);
+
+--
+-- Indices de la tabla `hojarecepcion`
+--
+ALTER TABLE `hojarecepcion`
+  ADD PRIMARY KEY (`idhojaRecepcion`,`usuario_idusuario`,`automovil_idautomovil`,`citas_idcitas`,`reparaciones_idreparaciones`),
+  ADD KEY `fk_hojaRecepcion_usuario1_idx` (`usuario_idusuario`),
+  ADD KEY `fk_hojaRecepcion_automovil1_idx` (`automovil_idautomovil`),
+  ADD KEY `fk_hojaRecepcion_citas1_idx` (`citas_idcitas`),
+  ADD KEY `fk_hojaRecepcion_reparaciones1_idx` (`reparaciones_idreparaciones`);
+
+--
+-- Indices de la tabla `hojarecepcion_has_states`
+--
+ALTER TABLE `hojarecepcion_has_states`
+  ADD PRIMARY KEY (`hojaRecepcion_idhojaRecepcion`,`states_idstates`),
+  ADD KEY `fk_hojaRecepcion_has_states_states1_idx` (`states_idstates`),
+  ADD KEY `fk_hojaRecepcion_has_states_hojaRecepcion1_idx` (`hojaRecepcion_idhojaRecepcion`);
+
+--
+-- Indices de la tabla `refacciones_accesorios`
+--
+ALTER TABLE `refacciones_accesorios`
+  ADD PRIMARY KEY (`idrefacciones_accesorios`);
+
+--
+-- Indices de la tabla `reparaciones`
+--
+ALTER TABLE `reparaciones`
+  ADD PRIMARY KEY (`idreparaciones`);
+
+--
+-- Indices de la tabla `reparaciones_has_refacciones_accesorios`
+--
+ALTER TABLE `reparaciones_has_refacciones_accesorios`
+  ADD PRIMARY KEY (`reparaciones_idreparaciones`,`refacciones_accesorios_idrefacciones_accesorios`),
+  ADD KEY `fk_reparaciones_has_refacciones_accesorios_refacciones_acce_idx` (`refacciones_accesorios_idrefacciones_accesorios`),
+  ADD KEY `fk_reparaciones_has_refacciones_accesorios_reparaciones1_idx` (`reparaciones_idreparaciones`);
+
+--
+-- Indices de la tabla `states`
+--
+ALTER TABLE `states`
+  ADD PRIMARY KEY (`idstates`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`idusuario`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `automovil`
+--
+ALTER TABLE `automovil`
+  MODIFY `idautomovil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `citas`
+--
+ALTER TABLE `citas`
+  MODIFY `idcitas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `documento_diagnostico`
+--
+ALTER TABLE `documento_diagnostico`
+  MODIFY `idDocumento_diagnostico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `hojarecepcion`
+--
+ALTER TABLE `hojarecepcion`
+  MODIFY `idhojaRecepcion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `refacciones_accesorios`
+--
+ALTER TABLE `refacciones_accesorios`
+  MODIFY `idrefacciones_accesorios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `reparaciones`
+--
+ALTER TABLE `reparaciones`
+  MODIFY `idreparaciones` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `states`
+--
+ALTER TABLE `states`
+  MODIFY `idstates` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `automovil`
+--
+ALTER TABLE `automovil`
+  ADD CONSTRAINT `fk_automovil_usuario` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `citas`
+--
+ALTER TABLE `citas`
+  ADD CONSTRAINT `fk_citas_automovil1` FOREIGN KEY (`automovil_idautomovil`,`automovil_usuario_idusuario`) REFERENCES `automovil` (`idautomovil`, `usuario_idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_citas_usuario1` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `citas_has_states`
+--
+ALTER TABLE `citas_has_states`
+  ADD CONSTRAINT `fk_citas_has_states_citas1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_citas_has_states_states1` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `documento_diagnostico`
+--
+ALTER TABLE `documento_diagnostico`
+  ADD CONSTRAINT `fk_documento_diagnostico_hojaRecepcion1` FOREIGN KEY (`hojaRecepcion_idhojaRecepcion`) REFERENCES `hojarecepcion` (`idhojaRecepcion`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `hojarecepcion`
+--
+ALTER TABLE `hojarecepcion`
+  ADD CONSTRAINT `fk_hojaRecepcion_automovil1` FOREIGN KEY (`automovil_idautomovil`) REFERENCES `automovil` (`idautomovil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_hojaRecepcion_citas1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_hojaRecepcion_reparaciones1` FOREIGN KEY (`reparaciones_idreparaciones`) REFERENCES `reparaciones` (`idreparaciones`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_hojaRecepcion_usuario1` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `hojarecepcion_has_states`
+--
+ALTER TABLE `hojarecepcion_has_states`
+  ADD CONSTRAINT `fk_hojaRecepcion_has_states_hojaRecepcion1` FOREIGN KEY (`hojaRecepcion_idhojaRecepcion`) REFERENCES `hojarecepcion` (`idhojaRecepcion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_hojaRecepcion_has_states_states1` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `reparaciones_has_refacciones_accesorios`
+--
+ALTER TABLE `reparaciones_has_refacciones_accesorios`
+  ADD CONSTRAINT `fk_reparaciones_has_refacciones_accesorios_refacciones_acceso1` FOREIGN KEY (`refacciones_accesorios_idrefacciones_accesorios`) REFERENCES `refacciones_accesorios` (`idrefacciones_accesorios`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_reparaciones_has_refacciones_accesorios_reparaciones1` FOREIGN KEY (`reparaciones_idreparaciones`) REFERENCES `reparaciones` (`idreparaciones`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2019-11-18 17:30:40
