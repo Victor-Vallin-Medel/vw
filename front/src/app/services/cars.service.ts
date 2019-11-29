@@ -23,10 +23,18 @@ export class CarsService {
    * @param uid number
    */
   getClientCars(uid: number) {
-    return this.http.get<Car []>(`${this.URL}?car.Cliente_idCliente=${uid}`).subscribe((partial: Car []) => {
+    return this.http.get<Car []>(`${this.URL}?Cliente_idCliente=${uid}`).subscribe((partial: Car []) => {
       this.cars$.next(partial);
       this.list = this.cars$.asObservable();
     });
+  }
+
+  /**
+   * Return all client cars observable.
+   * @param uid number
+   */
+  getClientCarsOf(uid: number) {
+    return this.http.get<Car []>(`${this.URL}?Cliente_idCliente=${uid}`);
   }
 
   /**

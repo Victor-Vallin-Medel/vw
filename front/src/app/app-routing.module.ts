@@ -9,6 +9,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ViewCarComponent } from './components/view-car/view-car.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ListUsersComponent } from './components/employee/list-users/list-users.component';
+import { ClientDetailsComponent } from './components/employee/client-details/client-details.component';
 
 const routes_clients: Routes = [
   { path: 'dashboard', component: HomeClientComponent, canActivate: [AuthUserGuard] },
@@ -19,6 +20,7 @@ const routes_employee: Routes = [
   { path: 'employees', component: ListUsersComponent },
   { path: 'customers', component: ListUsersComponent },
   { path: 'employee/:id', component: SettingsComponent },
+  { path: 'customer/:id', component: ClientDetailsComponent }
 ];
 
 const routes: Routes = [
