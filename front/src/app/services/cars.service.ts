@@ -38,10 +38,10 @@ export class CarsService {
   }
 
   /**
-   * Read all cars.
+   * Return all cars observable.
    */
-  getCars() {
-    return this.http.get(`${this.URL}`);
+  getCarsOf(): Observable<Car []> {
+    return this.http.get<Car []>(`${this.URL}`);
   }
 
   /**
