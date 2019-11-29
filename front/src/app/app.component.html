@@ -5,7 +5,7 @@
       <mat-icon>menu</mat-icon>
     </button>
     <img routerLink="/home" class="logo router-logo" src="assets/vw.svg" alt="Volkswagen" width="40" height="40">
-    <span routerLink="/home" class="router-logo">Volkswagen</span>
+    <span routerLink="{{session.user.rol == 'cliente'? '/dashboard' : 'home'}}" class="router-logo">Volkswagen</span>
     <span class="spacer"></span>
     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
       <mat-icon>more_vert</mat-icon>
@@ -56,6 +56,12 @@
       </mat-list-item>
       <mat-divider></mat-divider>
       
+      <h3 mat-subheader>General</h3>
+      <mat-list-item routerLink="{{session.user.rol == 'cliente'? '/dashboard' : 'home'}}" routerLinkActive="active-link">
+        <mat-icon mat-list-icon>home</mat-icon>
+        <a class="item-link" mat-line>Inicio</a>
+      </mat-list-item>
+
       <!-- Client actions -->
       <div *ngIf="session.user.rol == 'cliente'">
           <h3 mat-subheader>Administrativo</h3>
