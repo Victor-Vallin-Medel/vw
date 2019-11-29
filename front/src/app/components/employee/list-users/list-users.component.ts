@@ -23,7 +23,7 @@ export class ListUsersComponent implements OnInit {
     if (router.url == '/employees')
       this.displayedColumns = ['nombre', 'email', 'rol', 'actions'];
     else if (router.url == '/customers')
-      this.displayedColumns = ['nombre', 'email', 'dom', 'actions']
+      this.displayedColumns = ['nombre', 'email', 'calle', 'actions']
   }
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class ListUsersComponent implements OnInit {
   setDataSource() {
     this.user$.getUsersOf(1).subscribe((partial: User[]) => {
       this.dataSource = new MatTableDataSource(partial.filter(user => user.id != this.session.user.id));
-      console.log()
+
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });

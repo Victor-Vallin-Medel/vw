@@ -1,7 +1,6 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { User } from 'src/app/models/user';
 import { Car } from 'src/app/models/car';
 import { UserService } from 'src/app/services/user.service';
 import { CarsService } from 'src/app/services/cars.service';
@@ -18,10 +17,12 @@ export class ClientDetailsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  displayedColumns: string[] = ['nombre', 'version', 'modelo', 'num_serie'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<Car>;
 
-  constructor(public session: SessionService, public user$: UserService, public car$: CarsService, private active: ActivatedRoute, private location: Location, private router: Router) { }
+  constructor(public session: SessionService, public user$: UserService, public car$: CarsService, private active: ActivatedRoute, private location: Location, private router: Router) {
+    this.displayedColumns = ['id', 'version', 'modelo', 'num_serie'];
+  }
 
   ngOnInit() {
     this.setDataSource();
@@ -31,7 +32,7 @@ export class ClientDetailsComponent implements OnInit {
     this.active.params.subscribe(params => {
       this.user$.getUser(params.id);
       this.car$.getClientCarsOf(params.id).subscribe((partial: Car[]) => {
-        this.dataSource = new MatTableDataSource(partial);
+        this.dataSource =  new MatTableDataSource(partial);
 
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
