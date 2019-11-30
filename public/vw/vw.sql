@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 29, 2019 at 10:42 PM
+-- Generation Time: Nov 30, 2019 at 12:53 PM
 -- Server version: 5.7.28-0ubuntu0.18.04.4
 -- PHP Version: 7.2.24-0ubuntu0.18.04.1
 
@@ -307,7 +307,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   PRIMARY KEY (`idusuario`,`direcciones_iddirecciones`,`roles_idroles`),
   KEY `fk_usuario_direcciones1_idx` (`direcciones_iddirecciones`),
   KEY `fk_usuario_roles1_idx` (`roles_idroles`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- RELATIONS FOR TABLE `usuario`:
@@ -325,7 +325,8 @@ INSERT INTO `usuario` (`idusuario`, `nombre`, `apPat`, `apMat`, `usuario`, `pass
 (3, 'Omar', 'Salazar', 'Salazar', 'omarsalazar', 'b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79', 1, 1),
 (4, 'Carlos Daniel', 'Molina', 'Vargas', 'danielmv', 'b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79', 1, 1),
 (5, 'Mario', 'Gonzalez', 'Santoyo', 'mario', 'b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79', 1, 2),
-(6, 'Victor', 'Vallin', 'Medel', 'victorelguapo', 'b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79', 1, 2);
+(6, 'Victor', 'Vallin', 'Medel', 'victorelguapo', 'b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79', 1, 2),
+(7, 'aaaa', 'Vallin', 'Medel', 'victorelguapo', 'b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79', 1, 2);
 
 -- --------------------------------------------------------
 
