@@ -8,6 +8,7 @@ import { isNull } from 'util';
 import { BehaviorSubject } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CiudadService } from 'src/app/services/ciudad.service';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +22,11 @@ export class LoginComponent implements OnInit {
 
   employee: boolean = false;
 
-  constructor(private session: SessionService, private userService: UserService, private router: Router, private _formBuilder: FormBuilder, private snack: MatSnackBar) { }
+  constructor(private session: SessionService, private userService: UserService, public city$: CiudadService, private router: Router, private _formBuilder: FormBuilder, private snack: MatSnackBar) { }
 
   ngOnInit() {
+    this.city$.getCiudades();
+
     this.loginFormGroup = this._formBuilder.group({
       emailCtrl: ['', [Validators.required, Validators.email]],
       passwordCtrl: ['', Validators.required]
@@ -118,32 +121,28 @@ export class LoginComponent implements OnInit {
     let password: string = this.signupFormGroup.value.passwordCtrl;
 
     // FIXME: Remover getUsers function and id assing.
-    // this.userService.getUsers(1).subscribe((users: User) => {
-    //   let size = Object.keys(users).length;
-      
-    //   this.userService.postUser({
-    //     id: size + 1,
-    //     email: email,
-    //     nombre: this.signupFormGroup.value.nameCtrl,
-    //     apPat: this.signupFormGroup.value.apPatCtrl,
-    //     apMat: this.signupFormGroup.value.apMatCtrl,
-    //     rol: this.signupFormGroup.value.roleCtrl,
+    // this.userService.postUser({
+    //   email: email,
+    //   password: password,
+    //   nombre: this.signupFormGroup.value.nameCtrl,
+    //   apPat: this.signupFormGroup.value.apPatCtrl,
+    //   apMat: this.signupFormGroup.value.apMatCtrl,
+    //   roles_idroles: this.signupFormGroup.value.roleCtrl,
 
-    //     calle: (this.employee) ? '' : this.signupFormGroup.value.calleCtrl,
-    //     colonia: (this.employee) ? '' : this.signupFormGroup.value.colCtrl,
-    //     ciudad: (this.employee) ? '' : this.signupFormGroup.value.ciudadCtrl,
-    //     cp: (this.employee) ? '' : this.signupFormGroup.value.cpCtrl,
+    //   calle: (this.employee) ? '' : this.signupFormGroup.value.calleCtrl,
+    //   colonia: (this.employee) ? '' : this.signupFormGroup.value.colCtrl,
+    //   ciudad: (this.employee) ? '' : this.signupFormGroup.value.ciudadCtrl,
+    //   cp: (this.employee) ? '' : this.signupFormGroup.value.cpCtrl,
 
-    //     activo: 1,
-    //   })
-    //     .subscribe((response: User) => {
-    //       // TODO: Use session.login function to send email/password ang log in. Catch the token and save int localstorage.
-    //       this.snack.open(`Bienvenido  ${response.email}`, "Close", {
-    //         duration: 6000
-    //       });
-    //       // this.router.navigate(['home']);
+    //   activo: 1,
+    // })
+    //   .subscribe((response: User) => {
+    //     // TODO: Use session.login function to send email/password ang log in. Catch the token and save int localstorage.
+    //     this.snack.open(`Bienvenido  ${response.email}`, "Close", {
+    //       duration: 6000
     //     });
-    // });
+    //     // this.router.navigate(['home']);
+    //   });
   }
 
 }

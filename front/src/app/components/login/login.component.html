@@ -37,7 +37,7 @@
           <mat-slide-toggle color="warn" [(ngModel)]="employee" (change)="changeBuilder()" class="right" style="padding-top: 0.5rem;">Empleado</mat-slide-toggle>
         </div>
         <div mat-dialog-content>
-          <form [formGroup]="signupFormGroup" (ngSubmit)="createUserWithEmail()">
+          <form [formGroup]="signupFormGroup" (ngSubmit)="createUserWithEmail()" *ngIf="city$.list | async; let cities">
             <div class="row">
               <mat-form-field class="col s12 m6" appearance="outline">
                 <mat-label>Email</mat-label>
@@ -93,11 +93,13 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field class="col s12 m8 l4" appearance="outline">
-                  <mat-label>Ciudad</mat-label>
-                  <input matInput formControlName="ciudadCtrl" required>
-                  <mat-error *ngIf="signupFormGroup.get('ciudadCtrl').hasError('required')">
-                    Campo obligatorio.
-                  </mat-error>
+                <mat-label>Ciudad</mat-label>
+                <mat-select formControlName="ciudadCtrl" required>
+                  <mat-option *ngFor="let city of cities" [value]="city.idciudades"> {{ city.nombre }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="signupFormGroup.get('ciudadCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
                 </mat-form-field>
               <mat-form-field class="col s12 m4 l4" appearance="outline">
                 <mat-label>CP</mat-label>
