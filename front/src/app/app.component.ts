@@ -22,7 +22,7 @@ export class AppComponent {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  constructor(private router: Router, private session: SessionService, public car$: CarsService, public dialogRegister: MatDialog, public dialogSchedule: MatDialog, changeDetRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(private router: Router, public session: SessionService, public car$: CarsService, public dialogRegister: MatDialog, public dialogSchedule: MatDialog, changeDetRef: ChangeDetectorRef, media: MediaMatcher) {
     // Para cambiar el modo de Sidenav entre pantallas.
     this.mobileQuery = media.matchMedia('(max-width: 700px)');
     this._mobileQueryListener = () => changeDetRef.detectChanges();

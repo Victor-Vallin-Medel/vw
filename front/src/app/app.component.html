@@ -57,13 +57,13 @@
       <mat-divider></mat-divider>
       
       <h3 mat-subheader>General</h3>
-      <mat-list-item routerLink="{{session.user.rol == 'cliente'? '/dashboard' : 'home'}}" routerLinkActive="active-link">
+      <mat-list-item routerLink="{{session.user.roles_idroles == 2? '/dashboard' : 'home'}}" routerLinkActive="active-link">
         <mat-icon mat-list-icon>home</mat-icon>
         <a class="item-link" mat-line>Inicio</a>
       </mat-list-item>
 
       <!-- Client actions -->
-      <div *ngIf="session.user.rol == 'cliente'">
+      <div *ngIf="session.user.roles_idroles == 2">
           <h3 mat-subheader>Administrativo</h3>
           <mat-list-item (click)="openDialog('schedule')">
             <mat-icon mat-list-icon>today</mat-icon>
@@ -76,7 +76,7 @@
       </div>
 
       <!-- Employee actions -->
-      <div *ngIf="session.user.rol != 'cliente'">
+      <div *ngIf="session.user.roles_idroles != 2">
         <h3 mat-subheader>Listas</h3>
         <mat-list-item routerLink="/customers" routerLinkActive="active-link">
           <mat-icon mat-list-icon>contacts</mat-icon>
@@ -86,7 +86,7 @@
           <mat-icon mat-list-icon>directions_car</mat-icon>
           <a class="item-link" mat-line>Vehículos</a>
         </mat-list-item>
-        <mat-list-item routerLink="/employees" routerLinkActive="active-link" *ngIf="session.user.rol == 'asesor'">
+        <mat-list-item routerLink="/employees" routerLinkActive="active-link" *ngIf="session.user.roles_idroles == 1">
           <mat-icon mat-list-icon>assignment_ind</mat-icon>
           <a class="item-link" mat-line>Empleados</a>
         </mat-list-item>
