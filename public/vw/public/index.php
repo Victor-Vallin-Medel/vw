@@ -35,7 +35,7 @@ require __DIR__ . '/../config/db.php';
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = 'root';
-$dbname = 'mydb';
+$dbname = 'vw';
 
 $db = new DB( $dbhost, $dbuser, $dbpass, $dbname );
 

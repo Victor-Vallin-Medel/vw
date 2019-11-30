@@ -36,11 +36,11 @@ class DB {
             }
             $this->query->execute();
            	if ($this->query->errno) {
-				die('Unable to process MySQL query (check your params) - ' . $this->query->error);
+				//echo 'Unable to process MySQL query (check your params) - ' . $this->query->error;
            	}
 			$this->query_count++;
         } else {
-            die('Unable to prepare statement (check your syntax) - ' . $this->connection->error);
+            echo 'Unable to prepare statement (check your syntax) - ' . $this->connection->error;
         }
 		return $this;
     }

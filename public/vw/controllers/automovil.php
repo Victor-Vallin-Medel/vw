@@ -18,6 +18,13 @@ $app->group('/automoviles', function() use ($db){
         );
     });
 
+    $this->get('/estado/{estado}', function($req, $res, $args) use ($db){
+        $estado = $args['estado'];
+        return $res->getBody()->write(
+            json_encode( $db->query("SELECT * FROM automovil WHERE ") )
+        );
+    });
+
     $this->post('', function($req, $res, $args) use ($db){
         $data = $req->getParam('data');
         return $res->getBody()->write(
