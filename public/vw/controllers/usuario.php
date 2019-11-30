@@ -40,20 +40,8 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->post('',function($req, $res, $args) use ($db){
-        $direccion = array(
-            //$req->getParam('')
-        );
 
-        $usuario = array(
-            $req->getParam('nombre'),
-            $req->getParam('apPat'),
-            $req->getParam('apMat'),
-            $req->getParam('email'),
-            $req->getParam('password'),
-            $req->getParam('direcciones_iddirecciones'),
-            $req->getParam('roles_idroles')
-        );
-        $columns = array( 'nombre', 'apPat', 'apMat', 'email', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
+        $columns = array( 'nombre', 'apPat', 'apMat', 'email', 'password', 'roles_idroles', 'calle', 'colonia', 'cp', 'ciudades_idciudades' );
         //Check if information is complete
         foreach($columns as $column){
             if( !array_key_exists($column, $data) ){
@@ -67,6 +55,25 @@ $app->group('/usuarios', function() use ($db){
                 return $res->withStatus(400);
             }
         }
+
+        $direccion = array(
+            $req->getParam('calle'),
+            $req->getParam('cp'),
+            $req->getParam('colonia'),
+            $req->getParam('ciudades_idciudades')
+        );
+
+        //Insert direccion
+
+        $usuario = array(
+            $req->getParam('nombre'),
+            $req->getParam('apPat'),
+            $req->getParam('apMat'),
+            $req->getParam('email'),
+            $req->getParam('password'),
+            $req->getParam('direcciones_iddirecciones'),
+            $req->getParam('roles_idroles')
+        );
 
         //Check if username exists
         $password = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -103,7 +110,10 @@ $app->group('/usuarios', function() use ($db){
                     )
                 )
             );
-            return $res->withStatus(400);
+            return $res->withStatus(400)
+                        ->withHeader('Access-Control-Allow-Origin', '*')
+                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
         }
 
         $user = $result->fetchArray();
@@ -126,7 +136,10 @@ $app->group('/usuarios', function() use ($db){
                 'jwt' => $jwt
             );
             $res->getBody()->write( json_encode($response) );
-            return $res->withStatus(200);
+            return $res->withStatus(200)
+                        ->withHeader('Access-Control-Allow-Origin', '*')
+                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
         }
         $res->getBody()->write(
             json_encode(
@@ -135,7 +148,10 @@ $app->group('/usuarios', function() use ($db){
                 )
             )
         );
-        return $res->withStatus(400);
+        return $res->withStatus(400)
+                    ->withHeader('Access-Control-Allow-Origin', '*')
+                    ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+                    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     });
 
     $this->post('/verify-token', function($req, $res, $args){
