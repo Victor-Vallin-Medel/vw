@@ -13,14 +13,14 @@ $app->group('/usuarios', function() use ($db){
     $this->get('', function($req, $res, $args) use ($db){
         $res->withStatus(200);
         return $res->getBody()->write( 
-            json_encode( $db->query("SELECT idusuario, nombre, apPat, apMat, email, direcciones_iddirecciones, roles_idroles FROM usuario")->fetchAll() )
+            json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, u.roles_idroles, d.calle, d.colonia, d.cp, c.nombre as ciudad FROM usuario u, direcciones d, ciudades c WHERE u.direcciones_iddirecciones = d.iddirecciones AND c.idciudades = d.ciudades_idciudades")->fetchAll() )
         );
     });
 
     
     $this->get('/{id}',function($req, $res, $args) use ($db){
         $id = $args['id'];
-        $result = $db->query("SELECT idusuario, nombre, apPat, apMat, email, direcciones_iddirecciones, roles_idroles FROM usuario WHERE idusuario = $id");
+        $result = $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, u.roles_idroles, d.calle, d.colonia, d.cp, c.nombre as ciudad FROM usuario u, direcciones d, ciudades c WHERE u.direcciones_iddirecciones = d.iddirecciones AND c.idciudades = d.ciudades_idciudades AND idusuario = $id");
 
         //If user doesn't exists
         if($result->numRows()==0){
