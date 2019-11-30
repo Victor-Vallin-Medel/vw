@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject, } from 'rxjs';
 import { User } from '../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt/src/jwthelper.service';
-import { Router } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,13 +15,14 @@ export class SessionService {
 
 	private readonly URL = "http://192.168.33.10/usuarios/login";
 
-	constructor(private http: HttpClient, private jwt: JwtHelperService, private router: Router) {
+	constructor(private http: HttpClient, private jwt: JwtHelperService) {
 		this.behaviorUser = new BehaviorSubject<User>(null);
 	}
 
-	// FIXME: Crear función con servidor real.
-	login(email: string, password: string): Promise<{ token: string }> {
-		return this.http.post<{ token: string }>(this.URL, { email: email, password: password }, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, responseType: "json"}).toPromise();
+	login(email: string, password: string): Observable<{ jwt: string } | HttpErrorResponse> {
+		const body = new HttpParams().set('email', email).set('password', password);
+
+		return this.http.post<{ jwt: string }>(this.URL, body.toString(), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }});
 	}
 
 	logout() {
@@ -39,13 +39,16 @@ export class SessionService {
 
 	getTokenType(): boolean {
 		// Return true if is employee, false otherwise.
-		let payload: User = { ...this.jwt.decodeToken() };
-		return (payload.rol != "cliente");
+		let payload = this.jwt.decodeToken();
+		return (payload.data.roles_idroles != 2);
 	}
 
-	onAuthState(): Observable<User> {
-		let payload: User = { ...this.jwt.decodeToken() };
-		this.behaviorUser.next(payload);
+	onAuthState() {
+		let payload = this.jwt.decodeToken();
+		
+		if (payload != null)
+			this.behaviorUser.next(payload.data);
+
 		return this.behaviorUser.asObservable();
 	}
 

@@ -37,7 +37,7 @@ export class UpdateServiceComponent implements OnInit {
 
   goToClient() {
     this.sheetRef.dismiss();
-    this.router.navigate(['/client', this.client.id]);
+    this.router.navigate(['/client', this.client.idusuario]);
   }
 
   updateService(status: number) {

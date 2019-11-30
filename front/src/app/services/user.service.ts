@@ -24,7 +24,7 @@ export class UserService {
   }
 
   pushEmployee(userDto: User) {
-    return this.http.post(`${this.URL}${userDto.id}`, userDto);
+    return this.http.post(`${this.URL}${userDto.idusuario}`, userDto);
   }
 
   postUser(userDto: User) {
@@ -91,7 +91,7 @@ export class UserService {
   }
 
   putEmployee(userDto: User) {
-    return this.http.put(`${this.URL}${userDto.id}`, userDto);
+    return this.http.put(`${this.URL}${userDto.idusuario}`, userDto);
   }
 
   deleteUser(uid: number) {

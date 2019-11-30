@@ -1,17 +1,14 @@
 export interface User {
-    id?: number,
+    idusuario?: number,
     email: string,
     nombre: string,
     apPat: string,
     apMat?: string,
 
-    // Employee properties
-    rol: string,
+    roles_idroles: number,
 
-    // Client properties
     calle?: string,
     colonia?: string,
     ciudad?: string,
     cp?: number
-    activo?: number,
 }

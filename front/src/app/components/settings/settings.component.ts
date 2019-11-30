@@ -67,7 +67,7 @@ export class SettingsComponent implements OnInit {
    */
   callUser() {
     if (this.router.url == '/settings')
-      this.user$.getUser(this.session.user.id);
+      this.user$.getUser(this.session.user.idusuario);
     else
       this.active.params.subscribe(params => this.user$.getUser(params.id));
   }

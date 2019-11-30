@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user';
 import { isNull } from 'util';
 import { BehaviorSubject } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -81,31 +82,30 @@ export class LoginComponent implements OnInit {
 
     // Form valid.
     if(this.loginFormGroup.valid) {
-      this.session.login(email, password).then(
-        res => { // Success
+      this.session.login(email, password).subscribe(
+        (res: { jwt: string }) => { // Success
           // Check token.
-          console.log(res);
-          // if (isNull(res.token) == false) {
-          //   // Save token.
-          //   localStorage.setItem('token', res.token);
+          if (isNull(res.jwt) == false) {
+            // Save token.
+            localStorage.setItem('token', res.jwt);
 
-          //   // Get User observable.
-          //   this.session.onAuthState().subscribe((user: User) => {
-          //     this.session.user = user;
-          //     this.session.isLoggedIn = new BehaviorSubject<boolean>(true).asObservable();
+            // Get User observable.
+            this.session.onAuthState().subscribe((user: User) => {
+              this.session.user = user;
+              this.session.isLoggedIn = new BehaviorSubject<boolean>(true).asObservable();
 
-          //     // Snack welcome.
-          //     this.snack.open(`Bienvenido ${user.email}`, "Close", {
-          //       duration: 6000
-          //     });
+              // Snack welcome.
+              this.snack.open(`Bienvenido ${user.email}`, "Close", {
+                duration: 6000
+              });
 
-          //     // Redirect
-          //     this.router.navigate([(user.rol != 'cliente') ? 'home' : 'dashboard']);
-          //   })
-          // }
+              // Redirect
+              this.router.navigate([(user.roles_idroles != 2) ? 'home' : 'dashboard']);
+            })
+          }
         },
-        err => {
-          this.snack.open(err.message, "Close", {
+        (err: HttpErrorResponse) => {
+          this.snack.open(err.error.error, "Close", {
             duration: 4000
           });
         }

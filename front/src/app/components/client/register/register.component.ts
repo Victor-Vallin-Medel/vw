@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
         modelo: this.registerFormGroup.value.modelCtrl,
         version: this.registerFormGroup.value.versionCtrl,
         num_serie: this.registerFormGroup.value.serialCtrl,
-        Cliente_idCliente: this.session.user.id
+        Cliente_idCliente: this.session.user.idusuario
       }).subscribe(
         car => {
           this.dialogRef.close();

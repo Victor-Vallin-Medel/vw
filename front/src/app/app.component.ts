@@ -33,7 +33,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.session.onAuthState().subscribe((user: User) => {
-      if (user.id > 0) {
+      if (user.idusuario > 0) {
         this.session.user = user;
         this.behaviorLoggedIn.next(true);
       }
@@ -51,7 +51,7 @@ export class AppComponent {
         const dialog = this.dialogRegister.open(RegisterComponent, {
           width: '600px'
         });
-        dialog.afterClosed().subscribe(() => this.car$.getClientCars(this.session.user.id));
+        dialog.afterClosed().subscribe(() => this.car$.getClientCars(this.session.user.idusuario));
         break;
       case 'schedule':
         this.dialogSchedule.open(ScheduleComponent, {

@@ -32,7 +32,7 @@ export class ListUsersComponent implements OnInit {
 
   setDataSource() {
     this.user$.getUsersOf(1).subscribe((partial: User[]) => {
-      this.dataSource = new MatTableDataSource(partial.filter(user => user.id != this.session.user.id));
+      this.dataSource = new MatTableDataSource(partial.filter(user => user.idusuario != this.session.user.idusuario));
 
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
