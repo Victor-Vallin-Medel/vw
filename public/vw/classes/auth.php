@@ -47,7 +47,7 @@ class Auth
             $token,
             self::$secret_key,
             self::$encrypt
-        )->data;
+        );
     }
 
     private static function Aud()

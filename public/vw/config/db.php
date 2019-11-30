@@ -94,6 +94,10 @@ class DB {
 		return $this->query->affected_rows;
 	}
 
+	public function getInsertedId(){
+		return $this->query->insert_id;
+	}
+
 	private function _gettype($var) {
 	    if(is_string($var)) return 's';
 	    if(is_float($var)) return 'd';

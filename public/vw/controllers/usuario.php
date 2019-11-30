@@ -40,7 +40,14 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->post('',function($req, $res, $args) use ($db){
+        //Set response headers
+        $res->withHeader('Content-Type', 'application/json')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 
+
+        $data = $req->getParsedBody();
         $columns = array( 'nombre', 'apPat', 'apMat', 'email', 'password', 'roles_idroles', 'calle', 'colonia', 'cp', 'ciudades_idciudades' );
         //Check if information is complete
         foreach($columns as $column){
@@ -64,6 +71,19 @@ $app->group('/usuarios', function() use ($db){
         );
 
         //Insert direccion
+        $result = $db->query("INSERT INTO direcciones (calle,cp,colonia,ciudades_idciudades) VALUES (?,?,?,?)",$direccion);
+        if($result->affectedRows() != 1){
+            $res->getBody()->write(
+                json_encode(
+                    array(
+                        "error" => "Hubo un error insertando la dirección, probablemente la ciudad no existe"
+                    )
+                )
+            );
+            return $res->withStatus(400);
+        }
+
+        $direcciones_iddirecciones = $result->getInsertedId();
 
         $usuario = array(
             $req->getParam('nombre'),
@@ -71,15 +91,15 @@ $app->group('/usuarios', function() use ($db){
             $req->getParam('apMat'),
             $req->getParam('email'),
             $req->getParam('password'),
-            $req->getParam('direcciones_iddirecciones'),
+            $direcciones_iddirecciones,
             $req->getParam('roles_idroles')
         );
 
         //Check if username exists
         $password = password_hash($data['password'], PASSWORD_DEFAULT);
-        $user = array( $data['nombre'], $data['apPat'], $data['apMat'], $data['email'], $password, $data['direcciones_iddirecciones'], $data['roles_idroles']);
+        $user = array( $data['nombre'], $data['apPat'], $data['apMat'], $data['email'], $password, $direcciones_iddirecciones, $data['roles_idroles']);
         $result = $db->query("INSERT INTO usuario (nombre, apPat, apMat, email, password, direcciones_iddirecciones, roles_idroles) VALUES (?,?,?,?,?,?,?)", $user);
-        if($result->affectedRows() != 1 || $result == false){
+        if($result->affectedRows() != 1){
             $res->getBody()->write(
                 json_encode(
                     array(
@@ -95,6 +115,13 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->post('/login', function($req, $res, $args) use ($db){
+        //Set response headers
+        $res->withHeader('Content-Type', 'application/json')
+                        ->withHeader('Access-Control-Allow-Origin', '*')
+                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+
+
         $email = $req->getParam('email');
         $password = $req->getParam('password');
         $result = $db->query("SELECT email,password FROM usuario WHERE email = '$email'");
@@ -108,11 +135,7 @@ $app->group('/usuarios', function() use ($db){
                     )
                 )
             );
-            return $res->withStatus(400)
-                        ->withHeader('Content-Type', 'application/json')
-                        ->withHeader('Access-Control-Allow-Origin', '*')
-                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+            return $res->withStatus(400);
         }
 
         $user = $result->fetchArray();
@@ -120,6 +143,8 @@ $app->group('/usuarios', function() use ($db){
         if( password_verify($password, $user['password']) ){
 
             $user = $db->query("SELECT idusuario, nombre, apPat, apMat, email, direcciones_iddirecciones, roles_idroles FROM usuario WHERE email = '$email'")->fetchArray();
+            $direccion = $db->query("SELECT * FROM direcciones WHERE iddirecciones = ?", $user['direcciones_iddirecciones'])->fetchArray();
+            $ciudad = $db->query("SELECT * FROM ciudades WHERE idciudades = ?",$direccion['ciudades_idciudades'])->fetchArray();
 
             //Generate JWT
             $jwt = Auth::SignIn(array(
@@ -128,6 +153,10 @@ $app->group('/usuarios', function() use ($db){
                 "apPat" => $user['apPat'],
                 "apMat" => $user['apMat'],
                 "direcciones_iddirecciones" => $user['direcciones_iddirecciones'],
+                "calle" => $direccion['calle'],
+                "colonia" => $direccion['colonia'],
+                "cp" => $direccion['cp'],
+                "ciudad" => $ciudad['nombre'],
                 "roles_idroles" => $user['roles_idroles']
             ));
 
@@ -135,11 +164,7 @@ $app->group('/usuarios', function() use ($db){
                 'jwt' => $jwt
             );
             $res->getBody()->write( json_encode($response) );
-            return $res->withStatus(200)
-                        ->withHeader('Content-Type', 'application/json')
-                        ->withHeader('Access-Control-Allow-Origin', '*')
-                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+            return $res->withStatus(200);
         }
         $res->getBody()->write(
             json_encode(
@@ -148,11 +173,7 @@ $app->group('/usuarios', function() use ($db){
                 )
             )
         );
-        return $res->withStatus(400)
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withHeader('Access-Control-Allow-Origin', '*')
-                    ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+        return $res->withStatus(400);
     });
 
     $this->post('/verify-token', function($req, $res, $args){
