@@ -175,7 +175,6 @@ $app->group('/usuarios', function() use ($db){
         );
         return $res->withStatus(400);
     });
-    //HOLA NEGRO
 
     $this->post('/verify-token', function($req, $res, $args){
         print_r($req->getHeader('token'));
