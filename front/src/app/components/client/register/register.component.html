@@ -9,23 +9,32 @@
     <div class="row">
       <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m12">
         <mat-label>Nombre</mat-label>
-        <input matInput formControlName="nameCtrl" required cdkFocusInitial>
+        <mat-select formControlName="nameCtrl" required cdkFocusInitial>
+          <mat-option value="Golf">Golf</mat-option>
+          <mat-option value="Vento">Vento</mat-option>
+        </mat-select>
         <mat-error *ngIf="registerFormGroup.get('nameCtrl').hasError('required')">
-          Ingresa un nombre de vehículo.
+          Selecciona un vehículo.
         </mat-error>
       </mat-form-field>
       <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m8">
         <mat-label>Versión</mat-label>
-        <input matInput formControlName="versionCtrl" required cdkFocusInitial>
+        <mat-select formControlName="versionCtrl" required cdkFocusInitial>
+          <mat-option value="Style">Style</mat-option>
+          <mat-option value="GTI">GTI</mat-option>
+        </mat-select>
         <mat-error *ngIf="registerFormGroup.get('versionCtrl').hasError('required')">
-          Ingresa una versión.
+          Selecciona una versión.
         </mat-error>
       </mat-form-field>
       <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m4">
         <mat-label>Modelo</mat-label>
-        <input type="number" matInput formControlName="modelCtrl" required>
+        <mat-select type="number" matInput formControlName="modelCtrl" required>
+          <mat-option value="2018">2018</mat-option>
+          <mat-option value="2019">2019</mat-option>
+        </mat-select>
         <mat-error *ngIf="registerFormGroup.get('modelCtrl').hasError('required')">
-          Ingresa el modelo.
+          Selecciona el modelo.
         </mat-error>
       </mat-form-field>
       <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m12">

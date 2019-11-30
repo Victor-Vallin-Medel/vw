@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
 
   registerNewCar() {
      // FIXME: Remover getCars function and id assing.
-    this.carService.getCars().subscribe((cars: Car) => {
+    this.carService.getCarsOf().subscribe((cars: Car []) => {
       let size = Object.keys(cars).length;
 
       this.carService.postCar({
