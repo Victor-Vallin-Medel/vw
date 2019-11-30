@@ -40,13 +40,6 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->post('',function($req, $res, $args) use ($db){
-        //Set response headers
-        $res->withHeader('Content-Type', 'application/json')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-
-
         $data = $req->getParsedBody();
         $columns = array( 'nombre', 'apPat', 'apMat', 'email', 'password', 'roles_idroles', 'calle', 'colonia', 'cp', 'ciudades_idciudades' );
         //Check if information is complete
@@ -110,18 +103,35 @@ $app->group('/usuarios', function() use ($db){
             return $res->withStatus(400);
         }
 
-        $res->getBody()->write( json_encode($result->affectedRows()) );
+        
+
+        //Generate JWT
+        $jwt = Auth::SignIn(array(
+            "idusuario" => $user['idusuario'],
+            "email" => $user['email'],
+            "nombre" => $user['nombre'],
+            "apPat" => $user['apPat'],
+            "apMat" => $user['apMat'],
+            "direcciones_iddirecciones" => $user['direcciones_iddirecciones'],
+            "calle" => $direccion['calle'],
+            "colonia" => $direccion['colonia'],
+            "cp" => $direccion['cp'],
+            "ciudad" => $ciudad['nombre'],
+            "roles_idroles" => $user['roles_idroles']
+        ));
+
+        $response = array(
+            'jwt' => $jwt
+        );
+        $res->getBody()->write( json_encode($response) );
+
+
         return $res->withStatus(200);
     });
 
+
+
     $this->post('/login', function($req, $res, $args) use ($db){
-        //Set response headers
-        $res->withHeader('Content-Type', 'application/json')
-                        ->withHeader('Access-Control-Allow-Origin', '*')
-                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-
-
         $email = $req->getParam('email');
         $password = $req->getParam('password');
         $result = $db->query("SELECT email,password FROM usuario WHERE email = '$email'");
@@ -214,12 +224,28 @@ $app->group('/usuarios', function() use ($db){
         $columns = array( 'nombre', 'apPat', 'apMat', 'usuario', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
 
         //Check if information is complete
-        foreach($columns as $column){
-            if( !array_key_exists($column, $data) ){
+        foreach($data as $key => $value){
+            if( !in_array($key, $columns) )
+            {
                 $res->getBody()->write(
                     json_encode(
                         array(
-                            "error" => "No se ha podido insertar el usuario ya que falta el campo $column"
+                            "error" => "El campo $key no existe"
+                        )
+                    )
+                );
+                return $res->withStatus(400);
+            }
+        }
+
+        //Execute sql query foreach field
+        foreach($data as $key => $value){
+            $result = $db->query("UPDATE FROM usuario SET $key = ?",$value);
+            if( $result->affectedRows() != 1){
+                $req->getBody()->write(
+                    json_encode(
+                        array(
+                            "error" => "Ocurrio un error insertando en el campo $key. Valor: $value"
                         )
                     )
                 );
@@ -228,19 +254,6 @@ $app->group('/usuarios', function() use ($db){
         }
 
         //Check if updated
-        $password = password_hash($data['password'], PASSWORD_DEFAULT);
-        $user = array( $data['nombre'], $data['apPat'], $data['apMat'], $data['usuario'], $password, $data['direcciones_iddirecciones'], $data['roles_idroles']);
-        $result = $db->query("INSERT INTO usuario (nombre, apPat, apMat, usuario, password, direcciones_iddirecciones, roles_idroles) VALUES (?,?,?,?,?,?,?)", $user);
-        if($result->affectedRows() != 1){
-            $res->getBody()->write(
-                json_encode(
-                    array(
-                        "error" => "Ocurrio un error inesperado, puede que el nombre de usuario ya esté en uso"
-                    )
-                )
-            );
-            return $res->withStatus(400);
-        }
         $res->getBody()->write( json_encode($result->affectedRows()) );
         return $res->withStatus(200);
     });
