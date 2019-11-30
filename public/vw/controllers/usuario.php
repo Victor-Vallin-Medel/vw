@@ -1,8 +1,6 @@
 <?php
 
-use Models\Model;
 use Classes\Auth;
-use Classes\Usuario;
 
 $app->get('', function($req, $res, $args){
     return $res->getBody()->write("Ya entraron putos :v");

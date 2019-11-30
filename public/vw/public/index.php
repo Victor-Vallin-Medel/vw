@@ -55,6 +55,7 @@ require __DIR__ . '/../models/model.php';
 require __DIR__ . '/../classes/classes.php';
 require __DIR__ . '/../controllers/usuario.php';
 require __DIR__ . '/../controllers/automovil.php';
+require __DIR__ . '/../controllers/ciudades.php';
 
 // Catch-all route to serve a 404 Not Found page if none of the routes match
 // NOTE: make sure this route is defined last
