@@ -32,7 +32,7 @@ $app->group('/usuarios', function() use ($db){
             return $res->withStatus(400);
         }
 
-        $user = $result->fetchAll();
+        $user = $result->fetchArray();
         $res->withStatus(200);
         return $res->getBody()->write( 
             json_encode( $user )
@@ -78,46 +78,39 @@ $app->group('/usuarios', function() use ($db){
 
         $direcciones_iddirecciones = $result->getInsertedId();
 
-        $usuario = array(
-            $req->getParam('nombre'),
-            $req->getParam('apPat'),
-            $req->getParam('apMat'),
-            $req->getParam('email'),
-            $req->getParam('password'),
-            $direcciones_iddirecciones,
-            $req->getParam('roles_idroles')
-        );
-
         //Check if username exists
         $password = password_hash($data['password'], PASSWORD_DEFAULT);
         $user = array( $data['nombre'], $data['apPat'], $data['apMat'], $data['email'], $password, $direcciones_iddirecciones, $data['roles_idroles']);
+
         $result = $db->query("INSERT INTO usuario (nombre, apPat, apMat, email, password, direcciones_iddirecciones, roles_idroles) VALUES (?,?,?,?,?,?,?)", $user);
         if($result->affectedRows() != 1){
             $res->getBody()->write(
                 json_encode(
                     array(
-                        "error" => "Ocurrio un error inesperado, puede que el nombre de usuario ya este en uso"
+                        "error" => "Ocurrio un error inesperado, puede que el nombre de email ya este en uso"
                     )
                 )
             );
             return $res->withStatus(400);
         }
 
-        
+        $user_id = $result->getInsertedId();
+
+        $ciudad = $db->query("SELECT nombre FROM ciudades WHERE idciudades = ?",$data['ciudades_idciudades'])->fetchArray()['nombre'];
 
         //Generate JWT
         $jwt = Auth::SignIn(array(
-            "idusuario" => $user['idusuario'],
-            "email" => $user['email'],
-            "nombre" => $user['nombre'],
-            "apPat" => $user['apPat'],
-            "apMat" => $user['apMat'],
-            "direcciones_iddirecciones" => $user['direcciones_iddirecciones'],
-            "calle" => $direccion['calle'],
-            "colonia" => $direccion['colonia'],
-            "cp" => $direccion['cp'],
-            "ciudad" => $ciudad['nombre'],
-            "roles_idroles" => $user['roles_idroles']
+            "idusuario" => $user_id,
+            "email" => $data['email'],
+            "nombre" => $data['nombre'],
+            "apPat" => $data['apPat'],
+            "apMat" => $data['apMat'],
+            "direcciones_iddirecciones" => $direcciones_iddirecciones,
+            "calle" => $data['calle'],
+            "colonia" => $data['colonia'],
+            "cp" => $data['cp'],
+            "ciudad" => $ciudad,
+            "roles_idroles" => $data['roles_idroles']
         ));
 
         $response = array(
@@ -213,12 +206,6 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->put('', function($req, $res, $args) use ($db){
-        //Set response headers
-        $res->withHeader('Content-Type', 'application/json')
-                        ->withHeader('Access-Control-Allow-Origin', '*')
-                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-
         $data = $req->getParsedBody();
 
         $columns = array( 'nombre', 'apPat', 'apMat', 'usuario', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
