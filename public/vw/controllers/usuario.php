@@ -148,6 +148,7 @@ $app->group('/usuarios', function() use ($db){
 
             //Generate JWT
             $jwt = Auth::SignIn(array(
+                "idusuario" => $user['idusuario'],
                 "email" => $user['email'],
                 "nombre" => $user['nombre'],
                 "apPat" => $user['apPat'],
@@ -202,7 +203,13 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->put('', function($req, $res, $args) use ($db){
-        $data = $req->getParam('data');
+        //Set response headers
+        $res->withHeader('Content-Type', 'application/json')
+                        ->withHeader('Access-Control-Allow-Origin', '*')
+                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+
+        $data = $req->getParsedBody();
 
         $columns = array( 'nombre', 'apPat', 'apMat', 'usuario', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
 
