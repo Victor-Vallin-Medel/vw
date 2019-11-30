@@ -81,27 +81,28 @@ export class LoginComponent implements OnInit {
 
     // Form valid.
     if(this.loginFormGroup.valid) {
-      this.session.login().then(
+      this.session.login(email, password).then(
         res => { // Success
           // Check token.
-          if (isNull(res.token) == false) {
-            // Save token.
-            localStorage.setItem('token', res.token);
+          console.log(res);
+          // if (isNull(res.token) == false) {
+          //   // Save token.
+          //   localStorage.setItem('token', res.token);
 
-            // Get User observable.
-            this.session.onAuthState().subscribe((user: User) => {
-              this.session.user = user;
-              this.session.isLoggedIn = new BehaviorSubject<boolean>(true).asObservable();
+          //   // Get User observable.
+          //   this.session.onAuthState().subscribe((user: User) => {
+          //     this.session.user = user;
+          //     this.session.isLoggedIn = new BehaviorSubject<boolean>(true).asObservable();
 
-              // Snack welcome.
-              this.snack.open(`Bienvenido ${user.email}`, "Close", {
-                duration: 6000
-              });
+          //     // Snack welcome.
+          //     this.snack.open(`Bienvenido ${user.email}`, "Close", {
+          //       duration: 6000
+          //     });
 
-              // Redirect
-              this.router.navigate([(user.rol != 'cliente') ? 'home' : 'dashboard']);
-            })
-          }
+          //     // Redirect
+          //     this.router.navigate([(user.rol != 'cliente') ? 'home' : 'dashboard']);
+          //   })
+          // }
         },
         err => {
           this.snack.open(err.message, "Close", {

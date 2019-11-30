@@ -14,13 +14,15 @@ export class SessionService {
 	public isLoggedIn: Observable<boolean>;
 	private behaviorUser: BehaviorSubject<User>;
 
+	private readonly URL = "http://192.168.33.10/usuarios/login";
+
 	constructor(private http: HttpClient, private jwt: JwtHelperService, private router: Router) {
 		this.behaviorUser = new BehaviorSubject<User>(null);
 	}
 
 	// FIXME: Crear función con servidor real.
-	login(): Promise<{ token: string }> {
-		return this.http.get<{ token: string }>("http://localhost:3004/auth").toPromise();
+	login(email: string, password: string): Promise<{ token: string }> {
+		return this.http.post<{ token: string }>(this.URL, { email: email, password: password }, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, responseType: "json"}).toPromise();
 	}
 
 	logout() {
