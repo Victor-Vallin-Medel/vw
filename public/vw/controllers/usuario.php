@@ -95,8 +95,6 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->post('/login', function($req, $res, $args) use ($db){
-        $data = $req->getParam('data');
-
         $email = $req->getParam('email');
         $password = $req->getParam('password');
         $result = $db->query("SELECT email,password FROM usuario WHERE email = '$email'");
@@ -111,6 +109,7 @@ $app->group('/usuarios', function() use ($db){
                 )
             );
             return $res->withStatus(400)
+                        ->withHeader('Content-Type', 'application/json')
                         ->withHeader('Access-Control-Allow-Origin', '*')
                         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
                         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -137,6 +136,7 @@ $app->group('/usuarios', function() use ($db){
             );
             $res->getBody()->write( json_encode($response) );
             return $res->withStatus(200)
+                        ->withHeader('Content-Type', 'application/json')
                         ->withHeader('Access-Control-Allow-Origin', '*')
                         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
                         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -149,6 +149,7 @@ $app->group('/usuarios', function() use ($db){
             )
         );
         return $res->withStatus(400)
+                    ->withHeader('Content-Type', 'application/json')
                     ->withHeader('Access-Control-Allow-Origin', '*')
                     ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
                     ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
