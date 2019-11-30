@@ -13,14 +13,14 @@ $app->group('/usuarios', function() use ($db){
     $this->get('', function($req, $res, $args) use ($db){
         $res->withStatus(200);
         return $res->getBody()->write( 
-            json_encode( $db->query("SELECT idusuario, nombre, apPat, apMat, usuario, direcciones_iddirecciones, roles_idroles FROM usuario")->fetchAll() )
+            json_encode( $db->query("SELECT idusuario, nombre, apPat, apMat, email, direcciones_iddirecciones, roles_idroles FROM usuario")->fetchAll() )
         );
     });
 
     
     $this->get('/{id}',function($req, $res, $args) use ($db){
         $id = $args['id'];
-        $result = $db->query("SELECT idusuario, nombre, apPat, apMat, usuario, direcciones_iddirecciones, roles_idroles FROM usuario WHERE idusuario = $id");
+        $result = $db->query("SELECT idusuario, nombre, apPat, apMat, email, direcciones_iddirecciones, roles_idroles FROM usuario WHERE idusuario = $id");
 
         //If user doesn't exists
         if($result->numRows()==0){
@@ -40,8 +40,20 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->post('',function($req, $res, $args) use ($db){
-        $data = $req->getParam('data');
-        $columns = array( 'nombre', 'apPat', 'apMat', 'usuario', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
+        $direccion = array(
+            //$req->getParam('')
+        );
+
+        $usuario = array(
+            $req->getParam('nombre'),
+            $req->getParam('apPat'),
+            $req->getParam('apMat'),
+            $req->getParam('email'),
+            $req->getParam('password'),
+            $req->getParam('direcciones_iddirecciones'),
+            $req->getParam('roles_idroles')
+        );
+        $columns = array( 'nombre', 'apPat', 'apMat', 'email', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
         //Check if information is complete
         foreach($columns as $column){
             if( !array_key_exists($column, $data) ){
@@ -58,8 +70,8 @@ $app->group('/usuarios', function() use ($db){
 
         //Check if username exists
         $password = password_hash($data['password'], PASSWORD_DEFAULT);
-        $user = array( $data['nombre'], $data['apPat'], $data['apMat'], $data['usuario'], $password, $data['direcciones_iddirecciones'], $data['roles_idroles']);
-        $result = $db->query("INSERT INTO usuario (nombre, apPat, apMat, usuario, password, direcciones_iddirecciones, roles_idroles) VALUES (?,?,?,?,?,?,?)", $user);
+        $user = array( $data['nombre'], $data['apPat'], $data['apMat'], $data['email'], $password, $data['direcciones_iddirecciones'], $data['roles_idroles']);
+        $result = $db->query("INSERT INTO usuario (nombre, apPat, apMat, email, password, direcciones_iddirecciones, roles_idroles) VALUES (?,?,?,?,?,?,?)", $user);
         if($result->affectedRows() != 1 || $result == false){
             $res->getBody()->write(
                 json_encode(
@@ -78,9 +90,9 @@ $app->group('/usuarios', function() use ($db){
     $this->post('/login', function($req, $res, $args) use ($db){
         $data = $req->getParam('data');
 
-        $usuario = $data['usuario'];
-        $password = $data['password'];
-        $result = $db->query("SELECT usuario,password FROM usuario WHERE usuario = '$usuario'");
+        $email = $req->getParam('email');
+        $password = $req->getParam('password');
+        $result = $db->query("SELECT email,password FROM usuario WHERE email = '$email'");
 
         //If user doesn't exists
         if($result->numRows() != 1 ){
@@ -98,11 +110,11 @@ $app->group('/usuarios', function() use ($db){
         //CHECK PASSWORD
         if( password_verify($password, $user['password']) ){
 
-            $user = $db->query("SELECT idusuario, nombre, apPat, apMat, usuario, direcciones_iddirecciones, roles_idroles FROM usuario WHERE usuario = '$usuario'")->fetchArray();
+            $user = $db->query("SELECT idusuario, nombre, apPat, apMat, email, direcciones_iddirecciones, roles_idroles FROM usuario WHERE email = '$email'")->fetchArray();
 
             //Generate JWT
             $jwt = Auth::SignIn(array(
-                "usuario" => $user['usuario'],
+                "email" => $user['email'],
                 "nombre" => $user['nombre'],
                 "apPat" => $user['apPat'],
                 "apMat" => $user['apMat'],
