@@ -71,6 +71,7 @@ export class ListUsersComponent implements OnInit {
         this.snack.open(`Empleado eliminado.`, 'Cerrar', {
           duration: 8000,
         });
+        this.setDataSource("empleados");
       },
       (error: HttpErrorResponse) => this.snack.open(error.error.error, 'Cerrar', {
         duration: 8000,
