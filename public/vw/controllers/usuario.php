@@ -207,7 +207,7 @@ $app->group('/usuarios', function() use ($db){
         $id_usuario = $args['id'];
         $data = $req->getParsedBody();
 
-        $columns = array( 'nombre', 'apPat', 'apMat', 'usuario', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
+        $columns = array( 'nombre', 'apPat', 'apMat', 'email', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
 
         //Check if information is complete
         foreach($data as $key => $value){
