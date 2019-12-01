@@ -5,15 +5,15 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class RolesPipe implements PipeTransform {
 
-  transform(value: string, args?: any): string {
+  transform(value: number, args?: any): string {
     switch (value) {
-      case '1':
-        return "Asesor"
+      case 1:
+        return "Administrador"
         break;
-      case '2':
+      case 3:
         return "Mecánico";
         break;
-      case '3':
+      case 4:
         return "Aseador";
         break;
 

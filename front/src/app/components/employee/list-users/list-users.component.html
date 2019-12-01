@@ -45,7 +45,7 @@
         <th mat-header-cell *matHeaderCellDef> Acciones </th>
         <td mat-cell *matCellDef="let row">
           <div *ngIf="router.url == '/employees'; else view">
-            <button mat-icon-button class=btn-actions color="primary" [routerLink]="['/employee', row.id]">
+            <button mat-icon-button class=btn-actions color="primary" [routerLink]="['/employee', row.idusuario]">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button class=btn-actions color="warn" [swal]="delUser">
@@ -61,7 +61,7 @@
             </swal>
           </div>
           <ng-template #view>
-            <button mat-icon-button class=btn-actions color="primary" [routerLink]="['/customer', row.id]">
+            <button mat-icon-button class=btn-actions color="primary" [routerLink]="['/customer', row.idusuario]">
               <mat-icon>forward</mat-icon>
             </button>
           </ng-template>
