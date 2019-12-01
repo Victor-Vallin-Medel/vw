@@ -67,13 +67,13 @@ export class ListUsersComponent implements OnInit {
 
   deleteEmployee(uid: number) {
     this.user$.deleteUser(uid).subscribe(
-      partial => {
+      (partial) => {
         this.snack.open(`Empleado eliminado.`, 'Cerrar', {
           duration: 8000,
         });
-        this.setDataSource("empleados");
+        this.goBack();
       },
-      error => this.snack.open(`Ocurrió un error.`, 'Cerrar', {
+      (error: HttpErrorResponse) => this.snack.open(error.error.error, 'Cerrar', {
         duration: 8000,
       })
     );

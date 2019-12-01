@@ -99,12 +99,7 @@ export class UserService {
   }
 
   deleteUser(uid: number) {
-    return this.http.delete(`${this.URL}${uid}`);
+    return this.http.delete(`${this.URL}/${uid}`);
   }
-
-  deleteEmployee(uid: string) {
-    return this.http.delete(`${this.URL}${uid}`);
-  }
-
   
 }

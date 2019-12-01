@@ -57,7 +57,7 @@
               text="¿Deseas eliminar al empleado {{row.nombre}} {{row.apPat}} {{row.ApMat}}"
               showCancelButton="true"
               cancelButtonText="Cancelar"
-              (confirm)="deleteEmployee(row.id)">
+              (confirm)="deleteEmployee(row.idusuario)">
             </swal>
           </div>
           <ng-template #view>
