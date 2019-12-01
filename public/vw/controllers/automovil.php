@@ -14,7 +14,7 @@ $app->group('/automoviles', function() use ($db){
     $this->get('/{id}', function($req, $res, $args) use ($db){
         $id = $args['id'];
         return $res->getBody()->write(
-            json_encode( $db->query("SELECT * FROM automovil WHERE idautomovil = $id")->fetchAll() )
+            json_encode( $db->query("SELECT * FROM automovil WHERE idautomovil = $id")->fetchArray() )
         );
     });
 
