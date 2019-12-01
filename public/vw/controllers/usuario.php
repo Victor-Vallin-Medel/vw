@@ -203,7 +203,8 @@ $app->group('/usuarios', function() use ($db){
         return $res->withStatus(200);
     });
 
-    $this->put('', function($req, $res, $args) use ($db){
+    $this->put('/{id}', function($req, $res, $args) use ($db){
+        $id_usuario = $args['id'];
         $data = $req->getParsedBody();
 
         $columns = array( 'nombre', 'apPat', 'apMat', 'usuario', 'password', 'direcciones_iddirecciones', 'roles_idroles' );
@@ -225,7 +226,7 @@ $app->group('/usuarios', function() use ($db){
 
         //Execute sql query foreach field
         foreach($data as $key => $value){
-            $result = $db->query("UPDATE FROM usuario SET $key = ?",$value);
+             $result = $db->query("UPDATE FROM usuario SET $key = ? WHERE idusuario = $id_usuario",$value);
             if( $result->affectedRows() != 1){
                 $req->getBody()->write(
                     json_encode(
@@ -247,13 +248,13 @@ $app->group('/usuarios', function() use ($db){
 
 $app->get('/clientes', function($req, $res, $args) use ($db){
     return $res->getBody()->write(
-        json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.usuario, u.direcciones_iddirecciones, u.roles_idroles FROM usuario u,direcciones d,roles r WHERE u.roles_idroles = r.idroles AND r.nombre LIKE 'Cliente'")->fetchAll() )
+        json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, u.roles_idroles FROM usuario u,direcciones d,roles r WHERE u.roles_idroles = r.idroles AND r.nombre LIKE 'Cliente'")->fetchAll() )
     );
 });
 
 $app->get('/empleados', function($req, $res, $args) use ($db){
     return $res->getBody()->write(
-        json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.usuario, u.direcciones_iddirecciones, u.roles_idroles FROM usuario u,direcciones d,roles r WHERE u.roles_idroles = r.idroles AND r.nombre LIKE 'Administrador'")->fetchAll() )
+        json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, u.roles_idroles FROM usuario u,direcciones d,roles r WHERE u.roles_idroles = r.idroles AND r.nombre LIKE 'Administrador'")->fetchAll() )
     );
 });
 ?>

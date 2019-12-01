@@ -48,14 +48,14 @@ $app->add(function ($req, $res, $next) {
     return $response
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+            ->withHeader('Content-Type', 'application/json');
 });
 
-require __DIR__ . '/../models/model.php';
-require __DIR__ . '/../classes/classes.php';
 require __DIR__ . '/../controllers/usuario.php';
 require __DIR__ . '/../controllers/automovil.php';
 require __DIR__ . '/../controllers/ciudades.php';
+require __DIR__ . '/../controllers/direcciones.php';
 
 // Catch-all route to serve a 404 Not Found page if none of the routes match
 // NOTE: make sure this route is defined last
