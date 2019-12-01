@@ -113,7 +113,7 @@ CREATE TABLE `direcciones` (
   PRIMARY KEY (`iddirecciones`,`ciudades_idciudades`),
   KEY `fk_direcciones_ciudades_idx` (`ciudades_idciudades`),
   CONSTRAINT `fk_direcciones_ciudades` FOREIGN KEY (`ciudades_idciudades`) REFERENCES `ciudades` (`idciudades`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `direcciones` (
 
 LOCK TABLES `direcciones` WRITE;
 /*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
-INSERT INTO `direcciones` VALUES (1,'Granjenito 114','20240','Barrio Del Encino',1);
+INSERT INTO `direcciones` VALUES (1,'Granjenito 114','20240','Barrio Del Encino',1),(2,'Paseo del Olivar 123','34832','Negrolandia',1),(3,'Paseo del Olivar 123','34832','Negrolandia',1),(4,'Paseo del Olivar 123','34832','Negrolandia',1),(5,'Paseo del Olivar 123','34832','Negrolandia',1),(6,'Paseo del Olivar 123','34832','Negrolandia',1),(7,'Paseo del Olivar 123','34832','Negrolandia',1),(8,'Paseo del Olivar 123','34832','Negrolandia',1),(9,'Paseo del Olivar 123','34832','Negrolandia',1),(10,'Paseo del Olivar 123','34832','Negrolandia',1),(11,'Paseo del Olivar 123','34832','Negrolandia',1),(12,'Paseo del Olivar 123','34832','Negrolandia',1),(13,'calle nueva alv','34832','Negrolandia',1);
 /*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,7 +294,7 @@ CREATE TABLE `roles` (
   `idroles` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idroles`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +303,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'Administrador'),(2,'Cliente');
+INSERT INTO `roles` VALUES (1,'Administrador'),(2,'Cliente'),(3,'Mecanico'),(4,'Aseador');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,7 +352,7 @@ CREATE TABLE `usuario` (
   KEY `fk_usuario_roles1_idx` (`roles_idroles`),
   CONSTRAINT `fk_usuario_direcciones1` FOREIGN KEY (`direcciones_iddirecciones`) REFERENCES `direcciones` (`iddirecciones`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_usuario_roles1` FOREIGN KEY (`roles_idroles`) REFERENCES `roles` (`idroles`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -361,7 +361,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (3,'Omar','Salazar','Salazar','omarsalazar','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(4,'Carlos Daniel','Molina','Vargas','danielmv','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(5,'Mario','Gonzalez','Santoyo','mario','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,2),(6,'Victor','Vallin','Medel','victorelguapo','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,2),(17,'Omar','Prueba','2','omarcin','$2y$10$oS6oGT8m5/FHb0vaM3eiqev.9AcKGgKzVT0vSt4W4bK/CtSTc/KOu',1,2);
+INSERT INTO `usuario` VALUES (3,'AAAAasds','asdzxc','zxcxc','omarsalazar','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(4,'Carlos Daniel','Molina','Vargas','danielmv','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(5,'Mario','Gonzalez','Santoyo','mario','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(6,'Victor','Vallin','Medel','victorelguapo','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,2),(17,'Omar','Prueba','2','omarcin','$2y$10$oS6oGT8m5/FHb0vaM3eiqev.9AcKGgKzVT0vSt4W4bK/CtSTc/KOu',1,2),(24,'Molinita','Prueba','2','aja@asd.com','$2y$10$CfSnb/iOmPIB3RNl5P2/o.baZ2LCbv9iUyoW4.yAqCOPV9U8mYjRu',12,2),(25,'Molinita','Prueba','2','ajaaa@asd.com','$2y$10$g.hElhRMfvY/T9FuDFR6eurp4LBfDrvayWp9g2tRGmGDdedDB3uCa',13,2);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,6 +390,7 @@ CREATE TABLE `usuario_has_automovil` (
 
 LOCK TABLES `usuario_has_automovil` WRITE;
 /*!40000 ALTER TABLE `usuario_has_automovil` DISABLE KEYS */;
+INSERT INTO `usuario_has_automovil` VALUES (3,1,'234235');
 /*!40000 ALTER TABLE `usuario_has_automovil` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -402,4 +403,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-30 13:04:32
+-- Dump completed on 2019-12-01 12:01:00
