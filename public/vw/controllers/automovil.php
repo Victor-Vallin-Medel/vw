@@ -61,8 +61,31 @@ $app->group('/automoviles', function() use ($db){
     });
 
     $this->get('/vista/registrados', function($req, $res, $args) use ($db){
+        $result = $db->query("SELECT ua.usuario_idusuario, ua.automovil_idautomovil, ua.numserie, a.nombre, a.version, a.modelo, u.nombre as unombre, u.apPat, u.apMat  FROM usuario u,usuario_has_automovil ua, automovil a WHERE ua.automovil_idautomovil = a.idautomovil AND ua.usuario_idusuario = u.idusuario")->fetchAll();
+
+        $autos = array();
+
+        foreach($result as $row){
+            $usuario = array(
+                "idusuario" => $row['usuario_idusuario'],
+                "nombre" => $row['unombre'],
+                "apPat" => $row['apPat'],
+                "apMat" => $row['apMat']
+            );
+
+            $auto = array(
+                "usuario_idusuario" => $row['usuario_idusuario'],
+                "automovil_idautomovil" => $row['automovil_idautomovil'],
+                "numserie" => $row['numserie'],
+                "version" => $row['version'],
+                "modelo" => $row['modelo'],
+                "usuario" => $usuario
+            );
+            array_push($autos, $auto);
+        }
+
         $res->getBody()->write(
-            json_encode($db->query("SELECT ua.usuario_idusuario, ua.automovil_idautomovil, ua.numserie, a.nombre, a.version, a.modelo  FROM usuario_has_automovil ua, automovil a WHERE ua.automovil_idautomovil = a.idautomovil")->fetchAll())
+            json_encode($autos)
         );
         return $res->withStatus(200);
     });
