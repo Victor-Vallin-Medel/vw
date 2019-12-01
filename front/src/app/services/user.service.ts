@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../models/user';
 import { Observable, BehaviorSubject } from 'rxjs';
 
@@ -8,7 +8,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class UserService {
 
-  private readonly URL = 'http://localhost:3004/users/';
+  private options = { headers: new HttpHeaders().set("Content-Type", "application/x-www-form-urlencoded") };
+  private readonly URL = 'http://192.168.33.10/usuarios';
 
   /* List (Array), Current (Interface) para mostrar en las vistas */
   list: Observable<User []> = new Observable<User []>(null);
@@ -27,8 +28,12 @@ export class UserService {
     return this.http.post(`${this.URL}${userDto.idusuario}`, userDto);
   }
 
-  postUser(userDto: User) {
-    return this.http.post(`${this.URL}`, userDto);
+  /**
+   * Return jwt to log in.
+   * @param userDto User object
+   */
+  postUser(userDto: {}): Observable<{ jwt: string }> {
+    return this.http.post<{ jwt: string }>(`${this.URL}`, userDto);
   }
 
   /**
@@ -36,7 +41,7 @@ export class UserService {
    * @param uid number
    */
   getUser(uid: number) {
-    return this.http.get<User>(`${this.URL}${uid}`).subscribe((partial: User) => {
+    return this.http.get<User>(`${this.URL}/${uid}`, this.options).subscribe((partial: User) => {
       this.current$.next(partial);
       this.current = this.current$.asObservable();
     });

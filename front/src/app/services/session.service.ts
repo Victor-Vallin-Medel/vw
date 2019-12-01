@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, } from 'rxjs';
 import { User } from '../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt/src/jwthelper.service';
@@ -13,6 +13,7 @@ export class SessionService {
 	public isLoggedIn: Observable<boolean>;
 	private behaviorUser: BehaviorSubject<User>;
 
+	private options = { headers: new HttpHeaders().set("Content-Type", "application/x-www-form-urlencoded") };
 	private readonly URL = "http://192.168.33.10/usuarios/login";
 
 	constructor(private http: HttpClient, private jwt: JwtHelperService) {
@@ -22,7 +23,7 @@ export class SessionService {
 	login(email: string, password: string): Observable<{ jwt: string } | HttpErrorResponse> {
 		const body = new HttpParams().set('email', email).set('password', password);
 
-		return this.http.post<{ jwt: string }>(this.URL, body.toString(), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }});
+		return this.http.post<{ jwt: string }>(this.URL, body.toString(), this.options);
 	}
 
 	logout() {

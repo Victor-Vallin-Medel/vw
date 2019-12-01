@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       nameCtrl: ['', Validators.required],
       apPatCtrl: ['', Validators.required],
       apMatCtrl: [''],
-      roleCtrl: ['cliente', Validators.required],
+      roleCtrl: [2, Validators.required],
       calleCtrl: ['', Validators.required],
       colCtrl: ['', Validators.required],
       ciudadCtrl: ['', Validators.required],
@@ -48,35 +48,38 @@ export class LoginComponent implements OnInit {
 
   // Change the inputs to user type.
   changeBuilder() {
-    const calleCtrl = this.signupFormGroup.get('calleCtrl');
-    const colCtrl = this.signupFormGroup.get('colCtrl');
-    const ciudadCtrl = this.signupFormGroup.get('ciudadCtrl');
-    const cpCtrl = this.signupFormGroup.get('cpCtrl');
     const roleCtrl = this.signupFormGroup.get('roleCtrl');
 
     if (this.employee) {
-      calleCtrl.setValidators(null);
-      colCtrl.setValidators(null);
-      ciudadCtrl.setValidators(null);
-      cpCtrl.setValidators(null);
-
       // Clear role value.
       roleCtrl.setValue('');
     }
     else {
-      calleCtrl.setValidators([Validators.required]);
-      colCtrl.setValidators([Validators.required]);
-      ciudadCtrl.setValidators([Validators.required]);
-      cpCtrl.setValidators([Validators.required]);
-
       // Set default value to role.
-      roleCtrl.setValue('cliente');
+      roleCtrl.setValue(2);
     }
+  }
 
-    calleCtrl.updateValueAndValidity();
-    colCtrl.updateValueAndValidity();
-    ciudadCtrl.updateValueAndValidity();
-    cpCtrl.updateValueAndValidity();
+  setJwt(res: { jwt: string }) {
+    // Check token.
+    if (isNull(res.jwt) == false) {
+      // Save token.
+      localStorage.setItem('token', res.jwt);
+
+      // Get User observable.
+      this.session.onAuthState().subscribe((user: User) => {
+        this.session.user = user;
+        this.session.isLoggedIn = new BehaviorSubject<boolean>(true).asObservable();
+
+        // Snack welcome.
+        this.snack.open(`Bienvenido ${user.email}`, "Close", {
+          duration: 6000
+        });
+
+        // Redirect
+        this.router.navigate([(user.roles_idroles != 2) ? 'home' : 'dashboard']);
+      })
+    }
   }
 
   signInWithEmail() {
@@ -86,27 +89,7 @@ export class LoginComponent implements OnInit {
     // Form valid.
     if(this.loginFormGroup.valid) {
       this.session.login(email, password).subscribe(
-        (res: { jwt: string }) => { // Success
-          // Check token.
-          if (isNull(res.jwt) == false) {
-            // Save token.
-            localStorage.setItem('token', res.jwt);
-
-            // Get User observable.
-            this.session.onAuthState().subscribe((user: User) => {
-              this.session.user = user;
-              this.session.isLoggedIn = new BehaviorSubject<boolean>(true).asObservable();
-
-              // Snack welcome.
-              this.snack.open(`Bienvenido ${user.email}`, "Close", {
-                duration: 6000
-              });
-
-              // Redirect
-              this.router.navigate([(user.roles_idroles != 2) ? 'home' : 'dashboard']);
-            })
-          }
-        },
+        (res: { jwt: string }) => this.setJwt(res),
         (err: HttpErrorResponse) => {
           this.snack.open(err.error.error, "Close", {
             duration: 4000
@@ -120,29 +103,25 @@ export class LoginComponent implements OnInit {
     let email: string = this.signupFormGroup.value.emailCtrl;
     let password: string = this.signupFormGroup.value.passwordCtrl;
 
-    // FIXME: Remover getUsers function and id assing.
-    // this.userService.postUser({
-    //   email: email,
-    //   password: password,
-    //   nombre: this.signupFormGroup.value.nameCtrl,
-    //   apPat: this.signupFormGroup.value.apPatCtrl,
-    //   apMat: this.signupFormGroup.value.apMatCtrl,
-    //   roles_idroles: this.signupFormGroup.value.roleCtrl,
+    this.userService.postUser({
+      email: email,
+      password: password,
+      nombre: this.signupFormGroup.value.nameCtrl,
+      apPat: this.signupFormGroup.value.apPatCtrl,
+      apMat: this.signupFormGroup.value.apMatCtrl,
+      roles_idroles: parseInt(this.signupFormGroup.value.roleCtrl),
 
-    //   calle: (this.employee) ? '' : this.signupFormGroup.value.calleCtrl,
-    //   colonia: (this.employee) ? '' : this.signupFormGroup.value.colCtrl,
-    //   ciudad: (this.employee) ? '' : this.signupFormGroup.value.ciudadCtrl,
-    //   cp: (this.employee) ? '' : this.signupFormGroup.value.cpCtrl,
-
-    //   activo: 1,
-    // })
-    //   .subscribe((response: User) => {
-    //     // TODO: Use session.login function to send email/password ang log in. Catch the token and save int localstorage.
-    //     this.snack.open(`Bienvenido  ${response.email}`, "Close", {
-    //       duration: 6000
-    //     });
-    //     // this.router.navigate(['home']);
-    //   });
+      calle: this.signupFormGroup.value.calleCtrl,
+      colonia: this.signupFormGroup.value.colCtrl,
+      ciudades_idciudades: parseInt(this.signupFormGroup.value.ciudadCtrl),
+      cp: parseInt(this.signupFormGroup.value.cpCtrl),
+    })
+      .subscribe(
+        (res: { jwt: string }) => this.setJwt(res),
+        (err: HttpErrorResponse) => this.snack.open(err.error.error, '', {
+          duration: 6000
+        })
+      );
   }
 
 }
