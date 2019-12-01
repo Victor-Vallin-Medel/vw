@@ -20,7 +20,7 @@ $app->group('/automoviles', function() use ($db){
 
     $this->get('/', function($req, $res, $args) use ($db){
         $params = $req->getQueryParams();
-        $user_id = $params['user_id'];
+        $user_id = $params['idusuario'];
         $res->getBody()->write(
             json_encode(
                 $db->query("SELECT * FROM usuario_has_automovil WHERE usuario_idusuario = $user_id")->fetchAll()
