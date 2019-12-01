@@ -203,7 +203,7 @@ $app->group('/usuarios', function() use ($db){
         return $res->withStatus(200);
     });
 
-    $this->put('/{id}', function($req, $res, $args) use ($db){
+    $this->patch('/{id}', function($req, $res, $args) use ($db){
         $id_usuario = $args['id'];
         $data = $req->getParsedBody();
 
@@ -226,7 +226,14 @@ $app->group('/usuarios', function() use ($db){
 
         //Execute sql query foreach field
         foreach($data as $key => $value){
-             $result = $db->query("UPDATE FROM usuario SET $key = ? WHERE idusuario = $id_usuario",array($value) );
+            if(gettype($value) == 'string'){
+                $query = "UPDATE usuario SET $key = '$value' WHERE idusuario = $id_usuario";
+            }
+            else{
+                $query = "UPDATE usuario SET $key = $value WHERE idusuario = $id_usuario";
+            }
+            $result = $db->query($query);
+            /*
             if( $result->affectedRows() != 1){
                 $req->getBody()->write(
                     json_encode(
@@ -237,10 +244,11 @@ $app->group('/usuarios', function() use ($db){
                 );
                 return $res->withStatus(400);
             }
+            */
         }
 
         //Check if updated
-        $res->getBody()->write( json_encode($result->affectedRows()) );
+        //$res->getBody()->write( json_encode($result->affectedRows()) );
         return $res->withStatus(200);
     });
 
