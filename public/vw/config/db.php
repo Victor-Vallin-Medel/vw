@@ -41,7 +41,8 @@ class DB {
 			$this->query_count++;
         } else {
             echo 'Unable to prepare statement (check your syntax) - ' . $this->connection->error;
-        }
+		}
+		//print_r($this->query);
 		return $this;
     }
 

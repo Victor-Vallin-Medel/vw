@@ -98,9 +98,28 @@ $app->group('/automoviles', function() use ($db){
         );
     });
 
-    $this->post('', function($req, $res, $args) use ($db){
-        $automovil = $req->getParsedBody();
+    $this->post('/', function($req, $res, $args) use ($db){
+        
+    });
 
+    $this->post('/', function($req, $res, $args) use ($db){
+        $user_id = $req->getQueryParams()['idusuario'];
+        $data = $req->getParsedBody();
+        $usuario_auto = array( $data['usuario_idusuario'], $data['automovil_idautomovil'], $data['numserie'] );
+        $result = $db->query("INSERT INTO usuario_has_automovil VALUES (?,?,?)", $usuario_auto);
+
+        if($result->affectedRows() != 1){
+            $res->getBody()->write(
+                json_encode(
+                    array(
+                        "error" => "Ocurrió un error inesperado, probablemente el numero de serie ya está registrado"
+                    )
+                )
+            );
+            return $res->withStatus(400);
+        }
+
+        return $res->withStatus(200);
     });
 
     $this->put('', function($req, $res, $args) use ($db){

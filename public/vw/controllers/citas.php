@@ -17,13 +17,13 @@ $app->group('/citas',function() use ($db){
         return $res->withStatus(200);
     });
 
-    $this->post('/', function($req, $res, $args) use ($db){
+    $this->post('', function($req, $res, $args) use ($db){
         $data = $req->getParsedBody();
 
         $columns = array('fecha', 'confirmacion', 'automovil_idautomovil', 'usuario_idusuario');
 
         foreach($columns as $column){
-            if( !array_key_exists($data, $column) ){
+            if( !array_key_exists($column, $data) ){
                 $res->getBody()->write(
                     json_encode(
                         array(
@@ -39,7 +39,7 @@ $app->group('/citas',function() use ($db){
 
         $result = $db->query("INSERT INTO citas (fecha, confirmacion, automovil_idautomovil, usuario_idusuario) VALUES (?,?,?,?)", $cita);
         
-        if($result->affectedRows() == 0 ){
+        if($result->affectedRows() != 1 ){
             $res->getBody()->write(
                 json_encode(
                     array(
@@ -55,9 +55,33 @@ $app->group('/citas',function() use ($db){
 
     $this->patch('/{id}', function($req, $res, $args) use ($db){
         $id = $args['id'];
-        return $res->getBody()->write(
-            json_encode()
-        );
+        $cita = $req->getParsedBody();
+        
+        $columns = array('fecha', 'confirmacion', 'automovil_idautomovil', 'usuario_idusuario');
+
+        foreach($cita as $key => $value){
+
+            if( !in_array($key, $columns) ){
+                $res->getBody()->write(
+                    json_encode(
+                        array(
+                            "error" => "No existe el campo $key"
+                        )
+                    )
+                );
+                return $res->withStatus(400);
+            }
+
+            if(gettype($value) == 'string'){
+                $query = "UPDATE citas SET $key = '$value' WHERE idcitas = $id";
+            }
+            else{
+                $query = "UPDATE citas SET $key = $value WHERE idcitas= $id";
+            }
+            $result = $db->query($query);
+        }
+
+        return $res->withStatus(200);
     });
 
     $this->delete('/{id}', function($req, $res, $args) use ($db){

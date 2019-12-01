@@ -1,4 +1,5 @@
 <?php
+
 if (PHP_SAPI == 'cli-server') {
     // To help the built-in PHP dev server, check if the request was actually for
     // something which should probably be served as a static file
@@ -43,7 +44,24 @@ $app->options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
 
+//Import classes
+require __DIR__ . '/../classes/auth.php';
+use Classes\Auth;
+
 $app->add(function ($req, $res, $next) {
+
+    /*
+    $auth = $req->getHeader('Authorization')[0];
+    if($auth == ""){
+        //No token
+    }
+    $token = explode(" ",$auth)[1];
+    $parsed_token = Auth::GetData($token);
+    print_r($parsed_token);
+
+    echo $req->getUri()->getPath();
+    */
+
     $response = $next($req, $res);
     return $response
             ->withHeader('Access-Control-Allow-Origin', '*')
@@ -52,11 +70,11 @@ $app->add(function ($req, $res, $next) {
             ->withHeader('Content-Type', 'application/json');
 });
 
-require __DIR__ . '/../classes/auth.php';
 require __DIR__ . '/../controllers/usuario.php';
 require __DIR__ . '/../controllers/automovil.php';
 require __DIR__ . '/../controllers/ciudades.php';
 require __DIR__ . '/../controllers/direcciones.php';
+require __DIR__ . '/../controllers/citas.php';
 
 // Catch-all route to serve a 404 Not Found page if none of the routes match
 // NOTE: make sure this route is defined last

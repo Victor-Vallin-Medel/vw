@@ -1,5 +1,4 @@
 <?php
-
 use Classes\Auth;
 
 $app->get('', function($req, $res, $args){
