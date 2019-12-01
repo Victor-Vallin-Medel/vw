@@ -16,8 +16,11 @@ export class CarsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  displayedColumns: string[] = ['nombre', 'version', 'modelo', 'num_serie'];
-  dataSource: MatTableDataSource<Car>;
+  columnsCat: string[] = ['nombre', 'version', 'modelo'];
+  columnsReg: string[] = ['nombre', 'version', 'modelo', 'numserie'];
+
+  dataCat: MatTableDataSource<Car>;
+  dataReg: MatTableDataSource<Car>;
 
   constructor(public session: SessionService, public car$: CarsService, private location: Location, private router: Router) { }
 
@@ -26,20 +29,29 @@ export class CarsComponent implements OnInit {
   }
 
   setDataSource() {
-    this.car$.getCarsOf().subscribe((partial: Car[]) => {
-      this.dataSource =  new MatTableDataSource(partial);
+    this.car$.getCarsOf("").subscribe((partial: Car[]) => {
+      this.dataCat =  new MatTableDataSource(partial);
 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.dataCat.paginator = this.paginator;
+      this.dataCat.sort = this.sort;
+    });
+
+    this.car$.getCarsOf("/vista/registrados").subscribe((partial: Car[]) => {
+      this.dataReg =  new MatTableDataSource(partial);
+
+      this.dataReg.paginator = this.paginator;
+      this.dataReg.sort = this.sort;
     });
   }
 
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataCat.filter = filterValue.trim().toLowerCase();
+    this.dataReg.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    if (this.dataCat.paginator)
+      this.dataCat.paginator.firstPage();
+    if (this.dataReg.paginator)
+      this.dataCat.paginator.firstPage();
   }
 
   goBack() {
