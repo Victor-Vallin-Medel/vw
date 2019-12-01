@@ -244,7 +244,7 @@ $app->group('/usuarios', function() use ($db){
         $id_direcciones = $args['id'];
         $direccion = $req->getParsedBody();
 
-        $columns = array( 'calle', 'colonia', 'cp', 'ciudad_idciudad' );
+        $columns = array( 'calle', 'colonia', 'cp', 'ciudades_idciudades' );
 
         //Check if information is complete
         foreach($direccion as $key => $value){
