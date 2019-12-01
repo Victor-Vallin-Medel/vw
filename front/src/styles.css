@@ -12,6 +12,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .spinner {
     margin: auto;
   }
+
+  .aligned-with-icon-relative{
+    position: relative;
+    top: -5px;
+    margin-left: 5px;
+  }
   
   /* Animaciones */
   
