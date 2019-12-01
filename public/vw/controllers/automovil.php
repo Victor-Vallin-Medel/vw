@@ -24,7 +24,7 @@ $app->group('/automoviles', function() use ($db){
         $user_id = $params['idusuario'];
         $res->getBody()->write(
             json_encode(
-                $db->query("SELECT * FROM usuario_has_automovil WHERE usuario_idusuario = $user_id")->fetchAll()
+                $db->query("SELECT ua.*, a.* FROM usuario_has_automovil ua, automovil a WHERE ua.usuario_idusuario = $user_id AND a.idautomovil = ua.automovil_idautomovil")->fetchAll()
             )
         );
     });
@@ -79,6 +79,7 @@ $app->group('/automoviles', function() use ($db){
                 "numserie" => $row['numserie'],
                 "version" => $row['version'],
                 "modelo" => $row['modelo'],
+                "nombre" => $row['nombre'],
                 "usuario" => $usuario
             );
             array_push($autos, $auto);
