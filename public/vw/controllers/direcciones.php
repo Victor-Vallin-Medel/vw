@@ -53,6 +53,11 @@ $app->group('/direcciones', function() use($db){
             )
         );
     });
+
+    $this->put('/{id}', function($req, $res, $args){
+        $id = $args['id'];
+        
+    });
 });
 
 ?>
