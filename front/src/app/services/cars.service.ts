@@ -8,7 +8,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class CarsService {
 
-  readonly URL: string = 'http://localhost:3004/cars/';
+  readonly URL: string = 'http://192.168.33.10/automoviles';
 
   /* List (Array), Current (Interface) para mostrar en las vistas */
   list: Observable<Car []>;
@@ -23,7 +23,7 @@ export class CarsService {
    * @param uid number
    */
   getClientCars(uid: number) {
-    return this.http.get<Car []>(`${this.URL}?Cliente_idCliente=${uid}`).subscribe((partial: Car []) => {
+    return this.http.get<Car []>(`${this.URL}/?idusuario=${uid}`).subscribe((partial: Car []) => {
       this.cars$.next(partial);
       this.list = this.cars$.asObservable();
     });
@@ -34,14 +34,15 @@ export class CarsService {
    * @param uid number
    */
   getClientCarsOf(uid: number) {
-    return this.http.get<Car []>(`${this.URL}?Cliente_idCliente=${uid}`);
+    return this.http.get<Car []>(`${this.URL}/?idusuario=${uid}`);
   }
 
   /**
    * Return all cars observable.
+   * @param route string
    */
-  getCarsOf(): Observable<Car []> {
-    return this.http.get<Car []>(`${this.URL}`);
+  getCarsOf(route: string): Observable<Car [] | [{}]> {
+    return this.http.get<Car [] | [{}]>(`${this.URL}${route}`);
   }
 
   /**

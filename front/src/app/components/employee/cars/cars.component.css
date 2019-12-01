@@ -1,9 +1,17 @@
-.see-item { color: teal; }
+.see-item {
+    color: teal;
+}
 
-.mt { margin-bottom: 10px; }
+.mt {
+    margin-bottom: 10px;
+}
 
 table {
     width: 100%;
+}
+
+td, th {
+    width: 25%;
 }
 
 .tab-content {
@@ -19,4 +27,35 @@ table {
 
 .btn-actions {
     margin: -7px;
+}
+
+tr.detail-row {
+    height: 0;
+}
+
+tr.car-row:not(.example-expanded-row):hover {
+    background: rgb(226, 226, 226);
+    cursor: pointer;
+}
+
+tr.car-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.car-row td {
+    border-bottom-width: 0;
+}
+
+.car-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.car-detail p {
+    margin: auto;
+    padding: 0.5rem;
+}
+
+.car-detail p a {
+    text-decoration: none;
 }
