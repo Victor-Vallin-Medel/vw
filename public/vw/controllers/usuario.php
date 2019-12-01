@@ -94,7 +94,7 @@ $app->group('/usuarios', function() use ($db){
 
         $user_id = $result->getInsertedId();
 
-        $ciudad = $db->query("SELECT nombre FROM ciudades WHERE idciudades = ?",$data['ciudades_idciudades'])->fetchArray()['nombre'];
+        $ciudad = $db->query("SELECT idciudades,nombre FROM ciudades WHERE idciudades = ?",$data['ciudades_idciudades'])->fetchArray();
 
         //Generate JWT
         $jwt = Auth::SignIn(array(
@@ -107,7 +107,8 @@ $app->group('/usuarios', function() use ($db){
             "calle" => $data['calle'],
             "colonia" => $data['colonia'],
             "cp" => $data['cp'],
-            "ciudad" => $ciudad,
+            "ciudad" => $ciudad['nombre'],
+            "idciudad" => $ciudad['idciudades'],
             "roles_idroles" => $data['roles_idroles']
         ));
 
@@ -159,6 +160,7 @@ $app->group('/usuarios', function() use ($db){
                 "colonia" => $direccion['colonia'],
                 "cp" => $direccion['cp'],
                 "ciudad" => $ciudad['nombre'],
+                "idciudades" => $ciudad['idciudades'],
                 "roles_idroles" => $user['roles_idroles']
             ));
 

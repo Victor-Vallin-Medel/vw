@@ -18,6 +18,16 @@ $app->group('/automoviles', function() use ($db){
         );
     });
 
+    $this->get('/', function($req, $res, $args) use ($db){
+        $params = $req->getQueryParams();
+        $user_id = $params['user_id'];
+        $res->getBody()->write(
+            json_encode(
+                $db->query("SELECT * FROM usuario_has_automovil WHERE usuario_idusuario = $user_id")->fetchAll()
+            )
+        );
+    });
+
     $this->get('/estado/{estado}', function($req, $res, $args) use ($db){
         $estado = $args['estado'];
         return $res->getBody()->write(
@@ -26,10 +36,8 @@ $app->group('/automoviles', function() use ($db){
     });
 
     $this->post('', function($req, $res, $args) use ($db){
-        $data = $req->getParam('data');
-        return $res->getBody()->write(
-            json_encode( Model::insertObject($db, new Automovil($data) ) )
-        );
+        $automovil = $req->getParsedBody();
+
     });
 
     $this->put('', function($req, $res, $args) use ($db){
