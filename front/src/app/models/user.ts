@@ -7,8 +7,11 @@ export interface User {
 
     roles_idroles: number,
 
+    direcciones_iddirecciones: number
     calle?: string,
     colonia?: string,
-    ciudad?: string,
     cp?: number
+
+    ciudades_idciudades: number,
+    ciudad?: string,
 }

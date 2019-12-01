@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="row" align="end">
-          <button mat-icon-button [color]="edit? 'accent' : 'primary'" class="btn-actions" (click)="edit = !edit" [matTooltip]="edit? 'Cancelar' : 'Editar'">
+          <button mat-icon-button [color]="edit? 'accent' : 'primary'" class="btn-actions" (click)="toggleEdit(user)" [matTooltip]="edit? 'Cancelar' : 'Editar'">
             <mat-icon>{{ edit? 'close' : 'edit' }}</mat-icon>
           </button>
           <button mat-icon-button color="warn" class="btn-actions" *ngIf="session.user.roles_idroles == 1 && router.url != '/settings'" matTooltip="Eliminar"
@@ -47,7 +47,7 @@
               icon: 'question', showCancelButton: true,
               confirmButtonText: 'Eliminar',
               cancelButtonText: 'Cancelar' }"
-            (confirm)="deleteEmployee(user.id)">
+            (confirm)="deleteEmployee(user.idusuario)">
               <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -66,7 +66,7 @@
           General
         </ng-template>
         <!-- Form to update user. -->
-        <form [formGroup]="generalFormGroup" (ngSubmit)="updateUser(generalFormGroup, user.id)" class="form-tab">
+        <form [formGroup]="generalFormGroup" (ngSubmit)="updateUser(generalFormGroup, user.idusuario, 1)" class="form-tab">
           <div class="row">
             <mat-form-field appearance="outline" class="col s12 m4">
               <mat-label>Nombre</mat-label>
@@ -88,7 +88,7 @@
             </mat-form-field>
           </div>
           <div class="row">
-            <mat-form-field class="col s12" appearance="outline" [ngClass]="(session.user.rol == 'asesor' && router.url == '/employees')? 'l7' : 'l12'">
+            <mat-form-field class="col s12" appearance="outline" [ngClass]="(session.user.roles_idroles == 1 && router.url == '/employees')? 'l7' : 'l12'">
               <mat-label>Email</mat-label>
               <input [(ngModel)]="user.email" matInput formControlName="emailCtrl" required cdkFocusInitial>
               <mat-error *ngIf="generalFormGroup.get('emailCtrl').hasError('required')">
@@ -99,13 +99,13 @@
                 Debes ingresar un correo válido.
               </mat-error>
             </mat-form-field>
-            <div class="col s12 l5" *ngIf="session.user.rol == 'asesor' && router.url == '/employees'">
-              <mat-radio-group [(ngModel)]="user.rol" class="row" formControlName="rolCtrl">
-                <mat-radio-button value="asesor" class="col s4 l6 radio-button">Asesor</mat-radio-button>
-                <mat-radio-button value="mecánico" class="col s4 l6 radio-button">Mecánico</mat-radio-button>
-                <mat-radio-button value="aseador" class="col s4 l6 radio-button">Aseador</mat-radio-button>
+            <div class="col s12" *ngIf="session.user.roles_idroles == 1 && router.url != '/settings'">
+              <mat-radio-group [(ngModel)]="user.roles_idroles" class="row" formControlName="roles_idrolesCtrl">
+                <mat-radio-button [value]="1" class="col s6 m4 radio-button">Asesor</mat-radio-button>
+                <mat-radio-button [value]="3" class="col s6 m4 radio-button">Mecánico</mat-radio-button>
+                <mat-radio-button [value]="4" class="col s6 m4 radio-button">Aseador</mat-radio-button>
               </mat-radio-group>
-              <mat-error *ngIf="generalFormGroup.get('rolCtrl').hasError('required')">
+              <mat-error *ngIf="generalFormGroup.get('roles_idrolesCtrl').hasError('required')">
                 Campo obligatorio.
               </mat-error>
             </div>
@@ -118,13 +118,13 @@
       </mat-tab>
 
       <!-- Dirección -->
-      <mat-tab *ngIf="session.user.rol == 'cliente'">
+      <mat-tab>
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">room</mat-icon>
           Domicilio
         </ng-template>
         <!-- Form to update dom -->
-        <form [formGroup]="locationFormGroup" (ngSubmit)="updateUser(locationFormGroup, user.id)" class="form-tab">
+        <form [formGroup]="locationFormGroup" (ngSubmit)="updateUser(locationFormGroup, user.direcciones_iddirecciones, 2)" class="form-tab" *ngIf="city$.list | async; let cities">
           <div class="row">
             <mat-form-field appearance="outline" class="col s12">
               <mat-label>Calle</mat-label>
@@ -141,9 +141,12 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="col s12 m8 l4" appearance="outline">
+              <!-- <p>{{user | json}}</p> -->
               <mat-label>Ciudad</mat-label>
-              <input matInput [(ngModel)]="user.ciudad" formControlName="ciudadCtrl" required>
-              <mat-error *ngIf="locationFormGroup.get('ciudadCtrl').hasError('required')">
+              <mat-select [(ngModel)]="user.ciudades_idciudades" formControlName="ciudades_idciudadesCtrl" required>
+                <mat-option *ngFor="let city of cities" [value]="city.idciudades"> {{ city.nombre }} </mat-option>
+              </mat-select>
+              <mat-error *ngIf="locationFormGroup.get('ciudades_idciudadesCtrl').hasError('required')">
                 Campo obligatorio.
               </mat-error>
             </mat-form-field>
@@ -168,7 +171,7 @@
           Contraseña
         </ng-template>
         <!-- Form to update password -->
-        <form [formGroup]="securityFormGroup" (ngSubmit)="updateUser(securityFormGroup, user.id)" class="form-tab">
+        <form [formGroup]="securityFormGroup" (ngSubmit)="updateUser(securityFormGroup, user.idusuario, 3)" class="form-tab">
             <div class="row">
               <mat-form-field appearance="outline" class="col s12">
                 <mat-label>Contraseña</mat-label>

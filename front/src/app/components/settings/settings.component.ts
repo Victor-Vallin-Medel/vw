@@ -5,8 +5,9 @@ import { MatSnackBar, ErrorStateMatcher } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
 import { UserService } from 'src/app/services/user.service';
-import { map } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { User } from 'src/app/models/user';
+import { CiudadService } from 'src/app/services/ciudad.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -29,21 +30,23 @@ export class SettingsComponent implements OnInit {
   public locationFormGroup: FormGroup;
   public securityFormGroup: FormGroup;
 
+  public userCopy: User;
+
   public matcher = new MyErrorStateMatcher();
 
-  constructor(public session: SessionService, public user$: UserService, private active: ActivatedRoute, private location: Location, private _formBuilder: FormBuilder, private snack: MatSnackBar, public router: Router) {
+  constructor(public session: SessionService, public user$: UserService, public city$: CiudadService, private active: ActivatedRoute, private location: Location, private _formBuilder: FormBuilder, private snack: MatSnackBar, public router: Router) {
     this.generalFormGroup = this._formBuilder.group({
       emailCtrl: ['', [Validators.required, Validators.email]],
       nombreCtrl: ['', Validators.required],
       apPatCtrl: ['', Validators.required],
       apMatCtrl: [''],
-      rolCtrl: [''], //FIXME: Añadir controlador requerido en empleado.
+      roles_idrolesCtrl: [''], //FIXME: Añadir controlador requerido en empleado.
     });
 
     this.locationFormGroup = this._formBuilder.group({
       calleCtrl: ['', Validators.required],
       coloniaCtrl: ['', Validators.required],
-      ciudadCtrl: ['', Validators.required],
+      ciudades_idciudadesCtrl: ['', Validators.required],
       cpCtrl: ['', Validators.required],
     });
 
@@ -60,6 +63,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.callUser();
+    this.city$.getCiudades();
   }
 
   /**
@@ -87,17 +91,44 @@ export class SettingsComponent implements OnInit {
    * Update User info
    * @param group FromGroup
    * @param uid number
+   * @param type number - 1= Gener, 2= Domicilio, 3=Password
    */
-  updateUser(group: FormGroup, uid: number) {
+  updateUser(group: FormGroup, id: number, type: number) {
+    let route: string = "";
     let data, source = [];
 
-    data = Object.assign({}, Object.entries(group.value).forEach(([name, value]) => {
+    switch (type) {
+      case 2:
+        route = "/direcciones"
+        break;
+    
+      default:
+        route = "";
+        break;
+    }
+
+    Object.entries(group.value).forEach(([name, value]) => {
       if (name != 'confirmCtrl')
         source[name.slice(0, name.length - 4)] = value;
-    }));
-    
-    this.user$.putUser(data, uid);
+    })
+
+    data = Object.assign({}, source);
+
+    this.user$.patchUser(data, id, route).subscribe(
+      (res) => this.snack.open('Usuario actualizado.', 'Close', { duration: 6000 }),
+      (err: HttpErrorResponse) => {
+        this.user$.current$.next(this.userCopy);
+        this.user$.current = this.user$.current$.asObservable();
+
+        this.snack.open(err.error.error, 'Close', { duration: 6000 })
+      }
+    );
     // FIXME: Call observable?. Set MD5(password)?
+  }
+
+  toggleEdit(current: User) {
+    this.edit = !this.edit;
+    this.userCopy = { ...current };
   }
 
   deleteEmployee(uid: number) {

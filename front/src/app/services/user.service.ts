@@ -86,13 +86,12 @@ export class UserService {
 
   /**
    * Update user info.
-   * @param userDto any
+   * @param userDto { }
+   * @param id number
+   * @param route string
    */
-  putUser(userDto: any, uid: number) {
-    return this.http.put<User>(`${this.URL}${uid}`, userDto).subscribe((partial: User) => {
-      this.current$.next(partial);
-      this.current = this.current$.asObservable();
-    });
+  patchUser(userDto: { }, id: number, route: string) {
+    return this.http.patch(`${this.URL}${route}/${id}`, userDto);
   }
 
   putEmployee(userDto: User) {
