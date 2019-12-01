@@ -233,22 +233,43 @@ $app->group('/usuarios', function() use ($db){
                 $query = "UPDATE usuario SET $key = $value WHERE idusuario = $id_usuario";
             }
             $result = $db->query($query);
-            /*
-            if( $result->affectedRows() != 1){
-                $req->getBody()->write(
+        }
+
+        return $res->withStatus(200);
+    });
+
+    $this->patch('/direcciones/{id}', function($req, $res, $args) use ($db){
+        $id_direcciones = $args['id'];
+        $direccion = $req->getParsedBody();
+
+        $columns = array( 'calle', 'colonia', 'cp', 'ciudad_idciudad' );
+
+        //Check if information is complete
+        foreach($direccion as $key => $value){
+            if( !in_array($key, $columns) )
+            {
+                $res->getBody()->write(
                     json_encode(
                         array(
-                            "error" => "Ocurrio un error insertando en el campo $key. Valor: $value"
+                            "error" => "El campo $key no existe"
                         )
                     )
                 );
                 return $res->withStatus(400);
             }
-            */
         }
 
-        //Check if updated
-        //$res->getBody()->write( json_encode($result->affectedRows()) );
+        //Execute sql query foreach field
+        foreach($direccion as $key => $value){
+            if(gettype($value) == 'string'){
+                $query = "UPDATE direcciones SET $key = '$value' WHERE iddirecciones = $id_direcciones";
+            }
+            else{
+                $query = "UPDATE direcciones SET $key = $value WHERE iddirecciones= $id_direcciones";
+            }
+            $result = $db->query($query);
+        }
+
         return $res->withStatus(200);
     });
 

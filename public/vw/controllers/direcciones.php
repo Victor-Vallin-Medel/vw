@@ -55,8 +55,38 @@ $app->group('/direcciones', function() use($db){
     });
 
     $this->put('/{id}', function($req, $res, $args){
-        $id = $args['id'];
-        
+        $id_direcciones = $args['id'];
+        $direccion = $req->getParsedBody();
+
+        $columns = array( 'calle', 'colonia', 'cp', 'ciudad_idciudad' );
+
+        //Check if information is complete
+        foreach($direccion as $key => $value){
+            if( !in_array($key, $columns) )
+            {
+                $res->getBody()->write(
+                    json_encode(
+                        array(
+                            "error" => "El campo $key no existe"
+                        )
+                    )
+                );
+                return $res->withStatus(400);
+            }
+        }
+
+        //Execute sql query foreach field
+        foreach($direccion as $key => $value){
+            if(gettype($value) == 'string'){
+                $query = "UPDATE direcciones SET $key = '$value' WHERE iddirecciones = $id_direcciones";
+            }
+            else{
+                $query = "UPDATE direcciones SET $key = $value WHERE iddirecciones= $id_direcciones";
+            }
+            $result = $db->query($query);
+        }
+
+        return $res->withStatus(200);
     });
 });
 
