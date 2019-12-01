@@ -8,7 +8,6 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 export class UserService {
 
-  private options = { headers: new HttpHeaders().set("Content-Type", "application/x-www-form-urlencoded") };
   private readonly URL = 'http://192.168.33.10/usuarios';
 
   /* List (Array), Current (Interface) para mostrar en las vistas */
@@ -41,7 +40,7 @@ export class UserService {
    * @param uid number
    */
   getUser(uid: number) {
-    return this.http.get<User>(`${this.URL}/${uid}`, this.options).subscribe((partial: User) => {
+    return this.http.get<User>(`${this.URL}/${uid}`).subscribe((partial: User) => {
       this.current$.next(partial);
       this.current = this.current$.asObservable();
     });

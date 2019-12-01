@@ -101,7 +101,7 @@ export function getToken(): string {
       config: {
         tokenGetter: getToken,
         skipWhenExpired: true,
-        whitelistedDomains: ['192.168.33.10']
+        whitelistedDomains: ['http://192.168.33.10/']
       }
     })
   ],
