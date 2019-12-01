@@ -52,6 +52,7 @@ $app->add(function ($req, $res, $next) {
             ->withHeader('Content-Type', 'application/json');
 });
 
+require __DIR__ . '/../classes/auth.php';
 require __DIR__ . '/../controllers/usuario.php';
 require __DIR__ . '/../controllers/automovil.php';
 require __DIR__ . '/../controllers/ciudades.php';
