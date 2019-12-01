@@ -31,26 +31,26 @@ export class RegisterComponent implements OnInit {
     this.carService.getCarsOf().subscribe((cars: Car [ ]) => {
       let size = Object.keys(cars).length;
 
-      this.carService.postCar({
-        idAutomovil: size + 1,
-        nombre: this.registerFormGroup.value.nameCtrl,
-        modelo: this.registerFormGroup.value.modelCtrl,
-        version: this.registerFormGroup.value.versionCtrl,
-        num_serie: this.registerFormGroup.value.serialCtrl,
-        Cliente_idCliente: this.session.user.idusuario
-      }).subscribe(
-        car => {
-          this.dialogRef.close();
-          this.snack.open("¡Vehículo registrado!", "Close", {
-            duration: 8000
-          });
-        },
-        error => {
-          this.snack.open(error, "Close", {
-            duration: 8000
-          });
-        }
-      );
+      // this.carService.postCar({
+      //   idAutomovil: size + 1,
+      //   nombre: this.registerFormGroup.value.nameCtrl,
+      //   modelo: this.registerFormGroup.value.modelCtrl,
+      //   version: this.registerFormGroup.value.versionCtrl,
+      //   num_serie: this.registerFormGroup.value.serialCtrl,
+      //   Cliente_idCliente: this.session.user.idusuario
+      // }).subscribe(
+      //   car => {
+      //     this.dialogRef.close();
+      //     this.snack.open("¡Vehículo registrado!", "Close", {
+      //       duration: 8000
+      //     });
+      //   },
+      //   error => {
+      //     this.snack.open(error, "Close", {
+      //       duration: 8000
+      //     });
+      //   }
+      // );
     })
   }
 

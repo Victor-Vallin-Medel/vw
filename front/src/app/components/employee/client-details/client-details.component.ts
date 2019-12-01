@@ -21,7 +21,7 @@ export class ClientDetailsComponent implements OnInit {
   dataSource: MatTableDataSource<Car>;
 
   constructor(public session: SessionService, public user$: UserService, public car$: CarsService, private active: ActivatedRoute, private location: Location, private router: Router) {
-    this.displayedColumns = ['nombre', 'version', 'modelo', 'num_serie'];
+    this.displayedColumns = ['nombre', 'version', 'modelo', 'numserie'];
   }
 
   ngOnInit() {

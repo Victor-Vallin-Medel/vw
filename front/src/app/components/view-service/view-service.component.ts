@@ -15,7 +15,7 @@ export class ViewServiceComponent implements OnInit {
   order: Observable<{}>;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public car: Car, private sheetRef: MatBottomSheetRef, private orderService: OrderService) {
-    this.order = this.orderService.getOrderAlive(car.idAutomovil);
+    this.order = this.orderService.getOrderAlive(car.idautomovil);
   }
 
   ngOnInit() {
