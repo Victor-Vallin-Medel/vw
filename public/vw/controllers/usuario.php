@@ -275,13 +275,13 @@ $app->group('/usuarios', function() use ($db){
 
     $this->get('/rol/clientes', function($req, $res, $args) use ($db){
         return $res->getBody()->write(
-            json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d, ciudades c WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles = 1")->fetchAll() )
+            json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d, ciudades c WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles = 2")->fetchAll() )
         );
     });
 
     $this->get('/rol/empleados', function($req, $res, $args) use ($db){
         return $res->getBody()->write(
-            json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d, ciudades c WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles <> 1")->fetchAll() )
+            json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d, ciudades c WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles <> 2")->fetchAll() )
         );
     });
 });
