@@ -61,11 +61,11 @@ export class UserService {
 
   /**
    * Get the Observable Users
-   * @param type number 1 = Employees | 0 = Customers
+   * @param type string empleados | clientes
    */
-  getUsersOf(type: number) {
+  getUsersOf(type: string) {
     // FIXME: Add filter with type.
-    return this.http.get<User []>(`${this.URL}`);
+    return this.http.get<User []>(`${this.URL}/rol/${type}`);
   }
 
   getClients() {

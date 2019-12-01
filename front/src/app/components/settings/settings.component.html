@@ -17,11 +17,11 @@
       </mat-card-header>
       <mat-card-content>
         <div class="row">
-          <div class="col s12 m6" *ngIf="user.rol != 'cliente'">
+          <div class="col s12 m6" *ngIf="user.roles_idroles != 2">
             <button mat-icon-button matTooltip="Rol" matTooltipPosition="right">
               <mat-icon style="color: teal;">record_voice_over</mat-icon>
             </button>
-            {{user.rol | uppercase}}
+            {{user.roles_idroles | uppercase}}
           </div>
           <div class="col s12 m6">
             <button mat-icon-button>
@@ -29,7 +29,7 @@
             </button>
             {{user.email}}
           </div>
-          <div class="col s12" *ngIf="user.rol == 'cliente'">
+          <div class="col s12" *ngIf="user.roles_idroles == 2">
             <button mat-icon-button>
               <mat-icon style="color: teal;">room</mat-icon>
             </button>
@@ -40,7 +40,7 @@
           <button mat-icon-button [color]="edit? 'accent' : 'primary'" class="btn-actions" (click)="edit = !edit" [matTooltip]="edit? 'Cancelar' : 'Editar'">
             <mat-icon>{{ edit? 'close' : 'edit' }}</mat-icon>
           </button>
-          <button mat-icon-button color="warn" class="btn-actions" *ngIf="session.user.rol == 'asesor' && router.url != '/settings'" matTooltip="Eliminar"
+          <button mat-icon-button color="warn" class="btn-actions" *ngIf="session.user.roles_idroles == 1 && router.url != '/settings'" matTooltip="Eliminar"
             [swal]="{
               title: 'Accion irreversible',
               text: '¿Deseas eliminar al empleado?',

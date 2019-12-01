@@ -19,19 +19,21 @@ export class ListUsersComponent implements OnInit {
   displayedColumns: string[];
   dataSource: MatTableDataSource<User>;
 
-  constructor(public session: SessionService, public user$: UserService, private location: Location, public router: Router, private snack: MatSnackBar, public dialog: MatDialog) {
-    if (router.url == '/employees')
-      this.displayedColumns = ['nombre', 'email', 'rol', 'actions'];
-    else if (router.url == '/customers')
-      this.displayedColumns = ['nombre', 'email', 'calle', 'actions']
-  }
+  constructor(public session: SessionService, public user$: UserService, private location: Location, public router: Router, private snack: MatSnackBar, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.setDataSource();
+    if (this.router.url == '/employees') {
+      this.displayedColumns = ['nombre', 'email', 'rol', 'actions'];
+      this.setDataSource("empleados");
+    }
+    else if (this.router.url == '/customers'){
+      this.displayedColumns = ['nombre', 'email', 'calle', 'actions']
+      this.setDataSource("clientes");
+    }
   }
 
-  setDataSource() {
-    this.user$.getUsersOf(1).subscribe((partial: User[]) => {
+  setDataSource(type: string) {
+    this.user$.getUsersOf(type).subscribe((partial: User[]) => {
       this.dataSource = new MatTableDataSource(partial.filter(user => user.idusuario != this.session.user.idusuario));
 
       this.dataSource.paginator = this.paginator;
