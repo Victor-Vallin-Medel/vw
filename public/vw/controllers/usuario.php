@@ -226,7 +226,7 @@ $app->group('/usuarios', function() use ($db){
 
         //Execute sql query foreach field
         foreach($data as $key => $value){
-             $result = $db->query("UPDATE FROM usuario SET $key = ? WHERE idusuario = $id_usuario",$value);
+             $result = $db->query("UPDATE FROM usuario SET $key = ? WHERE idusuario = $id_usuario",array($value) );
             if( $result->affectedRows() != 1){
                 $req->getBody()->write(
                     json_encode(
@@ -244,17 +244,16 @@ $app->group('/usuarios', function() use ($db){
         return $res->withStatus(200);
     });
 
-});
+    $this->get('/rol/clientes', function($req, $res, $args) use ($db){
+        return $res->getBody()->write(
+            json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d,roles r, ciudades c WHERE u.roles_idroles = r.idroles AND u.direcciones_iddirecciones = d.iddirecciones AND r.nombre LIKE 'Cliente'")->fetchAll() )
+        );
+    });
 
-$app->get('/clientes', function($req, $res, $args) use ($db){
-    return $res->getBody()->write(
-        json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d,roles r, ciudades c WHERE u.roles_idroles = r.idroles AND u.direcciones_iddirecciones = d.iddirecciones AND r.nombre LIKE 'Cliente'")->fetchAll() )
-    );
-});
-
-$app->get('/empleados', function($req, $res, $args) use ($db){
-    return $res->getBody()->write(
-        json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d,roles r, ciudades c WHERE u.roles_idroles = r.idroles AND u.direcciones_iddirecciones = d.iddirecciones AND r.nombre LIKE 'Administrador'")->fetchAll() )
-    );
+    $this->get('/rol/empleados', function($req, $res, $args) use ($db){
+        return $res->getBody()->write(
+            json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d,roles r, ciudades c WHERE u.roles_idroles = r.idroles AND u.direcciones_iddirecciones = d.iddirecciones AND r.nombre LIKE 'Administrador'")->fetchAll() )
+        );
+    });
 });
 ?>
