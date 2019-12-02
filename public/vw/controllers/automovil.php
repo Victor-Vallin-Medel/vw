@@ -29,6 +29,32 @@ $app->group('/automoviles', function() use ($db){
         );
     });
 
+    //Cantidad by idusuario
+    $this->get('/cantidad/', function($req, $res, $args) use($db){
+        $params = $req->getQueryParams();
+        $user_id = $params['idusuario'];
+
+        $result = $db->query("SELECT COUNT(*) as cantidad FROM usuario_has_automovil WHERE usuario_idusuario = $user_id GROUP BY usuario_idusuario");
+        if($result->numRows() == 0){
+            $res->getBody()->write(
+                json_encode(
+                    array(
+                        "cantidad" => 0
+                    )
+                )
+            );
+            return $res->withStatus(200);
+        }
+        $cantidad = $result->fetchArray();
+        $res->getBody()->write(
+            json_encode(
+                $cantidad
+            )
+        );
+
+        return $res->withStatus(200);
+    });
+
     $this->get('/vista/distinct', function($req, $res, $args) use($db){
 
         $nombres = $db->query("SELECT DISTINCT nombre FROM automovil")->fetchAll();
