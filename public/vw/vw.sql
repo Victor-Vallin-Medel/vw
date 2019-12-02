@@ -138,9 +138,12 @@ CREATE TABLE `hojaRecepcion` (
   `idhojaRecepcion` int(11) NOT NULL AUTO_INCREMENT,
   `observaciones` json DEFAULT NULL,
   `citas_idcitas` int(11) NOT NULL,
+  `states_idstates` int(11) DEFAULT NULL,
   PRIMARY KEY (`idhojaRecepcion`,`citas_idcitas`),
   KEY `fk_hojaRecepcion_1_idx` (`citas_idcitas`),
-  CONSTRAINT `fk_hojaRecepcion_1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_hojaRecepcion_2_idx` (`states_idstates`),
+  CONSTRAINT `fk_hojaRecepcion_1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_hojaRecepcion_2` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -150,7 +153,7 @@ CREATE TABLE `hojaRecepcion` (
 
 LOCK TABLES `hojaRecepcion` WRITE;
 /*!40000 ALTER TABLE `hojaRecepcion` DISABLE KEYS */;
-INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1);
+INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL);
 /*!40000 ALTER TABLE `hojaRecepcion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,33 +182,6 @@ CREATE TABLE `hojaRecepcion_has_reparaciones` (
 LOCK TABLES `hojaRecepcion_has_reparaciones` WRITE;
 /*!40000 ALTER TABLE `hojaRecepcion_has_reparaciones` DISABLE KEYS */;
 /*!40000 ALTER TABLE `hojaRecepcion_has_reparaciones` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `hojaRecepcion_has_states`
---
-
-DROP TABLE IF EXISTS `hojaRecepcion_has_states`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `hojaRecepcion_has_states` (
-  `hojaRecepcion_idhojaRecepcion` int(11) NOT NULL,
-  `states_idstates` int(11) NOT NULL,
-  PRIMARY KEY (`hojaRecepcion_idhojaRecepcion`,`states_idstates`),
-  KEY `fk_hojaRecepcion_has_states_states1_idx` (`states_idstates`),
-  KEY `fk_hojaRecepcion_has_states_hojaRecepcion1_idx` (`hojaRecepcion_idhojaRecepcion`),
-  CONSTRAINT `fk_hojaRecepcion_has_states_hojaRecepcion1` FOREIGN KEY (`hojaRecepcion_idhojaRecepcion`) REFERENCES `hojaRecepcion` (`idhojaRecepcion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_hojaRecepcion_has_states_states1` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `hojaRecepcion_has_states`
---
-
-LOCK TABLES `hojaRecepcion_has_states` WRITE;
-/*!40000 ALTER TABLE `hojaRecepcion_has_states` DISABLE KEYS */;
-/*!40000 ALTER TABLE `hojaRecepcion_has_states` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -405,4 +381,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-01 19:31:01
+-- Dump completed on 2019-12-01 21:47:04

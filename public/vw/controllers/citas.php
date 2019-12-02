@@ -2,7 +2,7 @@
 
 
 $app->group('/citas',function() use ($db){
-    $this->get('/', function($req, $res, $args) use ($db){
+    $this->get('', function($req, $res, $args) use ($db){
         $res->getBody()->write(
             json_encode( $db->query("SELECT * FROM citas")->fetchAll() )
         );
