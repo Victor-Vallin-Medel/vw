@@ -3,28 +3,28 @@
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <p [matBadge]="status.espera" matBadgeOverlap="false">En espera de llegada</p>
+        <p [matBadge]="status.espera" matBadgeOverlap="false">Citas sin confirmar</p>
       </mat-panel-title>
       <!-- <mat-panel-description>
         Description
       </mat-panel-description> -->
     </mat-expansion-panel-header>
 
-    <div class="row">
-      <div *ngFor="let order of orders">
-        <div class="col s12 m6 l4 xl3" *ngIf="order.status == 2">
+    <div class="row" *ngIf="date$.list | async; let dates">
+      <div *ngFor="let cita of dates">
+        <div class="col s12 m6 l4 xl3" *ngIf="cita.confirmacion == 0">
           <mat-card>
             <mat-card-header>
-              <mat-card-title>{{order.dateReception | date: short}}</mat-card-title>
-              <mat-card-subtitle>{{order.time}}:00 hrs</mat-card-subtitle>
+              <mat-card-title>{{cita.fecha | date: 'mediumDate'}}</mat-card-title>
+              <mat-card-subtitle>{{cita.fecha | date: 'shortTime'}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
               <mat-chip-list>
-                <mat-chip color="primary" selected>{{order.fk_plates_car}}</mat-chip>
+                <mat-chip color="primary" selected>{{cita.numserie}}</mat-chip>
               </mat-chip-list>
             </mat-card-content>
             <mat-card-actions align=end>
-              <button mat-raised-button color="accent" (click)="openService(order)">Ver orden</button>
+              <button mat-raised-button color="accent" (click)="openService(cita)">Ver orden</button>
             </mat-card-actions>
           </mat-card>
         </div>

@@ -8,6 +8,10 @@ import { CarsService } from 'src/app/services/cars.service';
 import { UserService } from 'src/app/services/user.service';
 import { Car } from 'src/app/models/car';
 import { User } from 'src/app/models/user';
+import { Cita } from 'src/app/models/cita';
+import { CitaService } from 'src/app/services/cita.service';
+import { SessionService } from 'src/app/services/session.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-update-service',
@@ -20,39 +24,41 @@ export class UpdateServiceComponent implements OnInit {
   client: User;
   employee: Observable<{}>;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public order: Order, private orderService: OrderService, private carService: CarsService, private userService: UserService, private router: Router, private sheetRef: MatBottomSheetRef, private snack: MatSnackBar) {
-    if (this.router.url == '/home') {
-      // this.afAuth.auth.onAuthStateChanged(user => {
-      //   if (user) {
-      //     this.employee = this.employeeService.getEmployee(user.uid);
-      //   }
-      // })
-    }
-  }
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public cita: Cita, public session: SessionService, public date$: CitaService, public car$: CarsService, public user$: UserService, public router: Router, private sheetRef: MatBottomSheetRef, private snack: MatSnackBar) { }
 
   ngOnInit() {
     // this.carService.getCar(this.order.fk_plates_car).subscribe((car: Car) => this.car = car);
-    this.userService.getClient(this.order.fk_client).subscribe((client: User) => this.client = client);
+    // this.userService.getClient(this.order.fk_client).subscribe((client: User) => this.client = client);
+
+    this.car$.getCar(this.cita.numserie);
+    this.user$.getUser(this.cita.usuario_idusuario);
   }
 
-  goToClient() {
+  goToClient(uid: number) {
     this.sheetRef.dismiss();
-    this.router.navigate(['/client', this.client.idusuario]);
+    this.router.navigate(['/customer', uid]);
   }
 
-  updateService(status: number) {
-    console.log(status);
-    if (status == 6) {
-      // this.carService.putCar(this.order.fk_plates_car, 0).subscribe();
-      this.order.dateDelivery = new Date();
-    }
-    this.order.status = status;
-    this.orderService.updateService(this.order).subscribe((order: Order) => {
-      this.snack.open(`Servicio actualizado.`, 'Close', {
-        duration: 8000
-      })
-      this.sheetRef.dismiss();
-    })
+  confirmService(status: number) {
+    this.date$.patchCita(this.cita.idcitas).subscribe(
+      (res) => {
+        this.sheetRef.dismiss();
+        this.snack.open("¡Cita confirmada!", 'Close', { duration: 6000 });
+      },
+      (err: HttpErrorResponse) => this.snack.open(err.error.error, 'Close', { duration: 6000 })
+    )
+    // console.log(status);
+    // if (status == 6) {
+    //   // this.carService.putCar(this.order.fk_plates_car, 0).subscribe();
+    //   this.order.dateDelivery = new Date();
+    // }
+    // this.order.status = status;
+    // this.orderService.updateService(this.order).subscribe((order: Order) => {
+    //   this.snack.open(`Servicio actualizado.`, 'Close', {
+    //     duration: 8000
+    //   })
+    //   this.sheetRef.dismiss();
+    // })
   }
 
 }

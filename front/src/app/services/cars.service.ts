@@ -63,10 +63,13 @@ export class CarsService {
 
   /**
    * Read one car.
-   * @param id number
+   * @param numserie number
    */
-  getCar(id: number) {
-    return this.http.get<Car>(`${this.URL}${id}`);
+  getCar(numserie: string) {
+    return this.http.get<Car>(`${this.URL}/?numserie=${numserie}`).subscribe((partial: Car) => {
+      this.car$.next(partial);
+      this.current = this.car$.asObservable();
+    });
   }
 
   /**

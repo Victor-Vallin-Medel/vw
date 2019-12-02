@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Order } from 'src/app/models/order';
 import { OrderService } from 'src/app/services/order.service';
 import { UpdateServiceComponent } from '../update-service/update-service.component';
+import { CitaService } from 'src/app/services/cita.service';
+import { Cita } from 'src/app/models/cita';
 
 @Component({
   selector: 'app-home',
@@ -20,9 +22,10 @@ export class HomeComponent implements OnInit {
     lavando: 0,
   }
 
-  constructor(private orderService: OrderService, private sheetService: MatBottomSheet, private router: Router) { }
+  constructor(public date$: CitaService, private orderService: OrderService, private sheetService: MatBottomSheet, private router: Router) { }
 
   ngOnInit() {
+    this.date$.getCitas();
     // this.afAuth.auth.onAuthStateChanged(user => {
     //   if (user) {
     //     this.orderService.getAllOrders().subscribe((orders: Order []) => {
@@ -55,9 +58,9 @@ export class HomeComponent implements OnInit {
     // })
   }
 
-  openService(order: Order) {
+  openService(cita: Cita) {
     const ref = this.sheetService.open(UpdateServiceComponent, {
-      data: order
+      data: cita
     });
 
     ref.afterDismissed().subscribe(() => {

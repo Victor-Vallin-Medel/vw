@@ -20,10 +20,36 @@ export class CitaService {
   constructor(private http:HttpClient) { }
 
   /**
+   * Read one date.
+   * @param uid number
+   */
+  getCita(uid: number) {
+    return this.http.get<Cita>(`${this.URL}/${uid}`).subscribe((partial: Cita) => {
+      console.log(partial);
+      this.cita$.next(partial);
+      this.current = this.cita$.asObservable();
+    })
+  }
+
+  /**
+   * Read dates
+   */
+  getCitas() {
+    return this.http.get<Cita []>(`${this.URL}`).subscribe((partial: Cita []) => {
+      this.citas$.next(partial);
+      this.list = this.citas$.asObservable();
+    });
+  }
+
+  /**
    * Create a date.
    * @param citaDto Cita
    */
-  postCar(citaDto: Cita) {
+  postCita(citaDto: Cita) {
     return this.http.post(`${this.URL}`, citaDto);
+  }
+
+  patchCita(uid: number) {
+    return this.http.patch(`${this.URL}/${uid}`, { confirmacion: "1" });
   }
 }
