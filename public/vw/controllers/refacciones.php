@@ -2,7 +2,7 @@
 
 $app->group('/refacciones', function() use ($db){
 
-    $this->get('', function($req, $res, $args){
+    $this->get('', function($req, $res, $args) use($db){
         $res->getBody()->write(
             json_encode(
                 $db->query("SELECT * FROM refacciones")->fetchAll()
@@ -25,10 +25,13 @@ $app->group('/refacciones', function() use ($db){
     $this->get('/', function($req, $res, $args) use ($db){
         $params = $req->getQueryParams();
         $id_reparacion = $params['idreparaciones'];
+
+        $result = $db->query("SELECT rr.reparaciones_idreparaciones, rr.refacciones_idrefacciones, rp.idreparaciones, rp.descripcion. rp.precio as reparacion_precio, rp.existencia as reparacion_existencia, r.idrefacciones, r.nombre, r.precio as refacciones_precio, r.existencia FROM reparaciones_has_refacciones rr, reparaciones rp, refacciones r WHERE rr.reparaciones_idreparaciones = $id_reparacion AND r.idrefacciones = rr.refacciones_idrefacciones AND rr.reparaciones_idreparaciones = rp.idreparaciones")->fetchAll();
+
+        $refaccion = array();
+
         $res->getBody()->write(
-            json_encode(
-                $db->query("SELECT * FROM reparaciones_has_refacciones rr, reparaciones rp, refacciones r WHERE rr.reparaciones_idreparaciones = $id_reparacion AND r.idrefacciones = rr.refacciones_idrefacciones AND rr.reparaciones_idreparaciones = rp.idreparaciones")->fetchAll()
-            )
+            json_encode(array())
         );
         $res->withStatus(200);
     });

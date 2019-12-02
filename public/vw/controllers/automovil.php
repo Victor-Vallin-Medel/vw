@@ -43,6 +43,7 @@ $app->group('/automoviles', function() use ($db){
             );
             return $res->withStatus(200);
         }
+
         return $res->withStatus(400);
     });
 
@@ -132,6 +133,52 @@ $app->group('/automoviles', function() use ($db){
             json_encode($autos)
         );
         return $res->withStatus(200);
+    });
+
+    $this->get('/vista/registrados/', function($req, $res, $args) use($db){
+        $params = $req->getQueryParams();
+        foreach($params as $key => $value){
+            $result = $db->query("SELECT ua.usuario_idusuario, ua.automovil_idautomovil, ua.numserie, a.nombre, a.version, a.modelo, u.nombre as unombre, u.apPat, u.apMat  FROM usuario u,usuario_has_automovil ua, automovil a WHERE ua.automovil_idautomovil = a.idautomovil AND ua.usuario_idusuario = u.idusuario AND a.$key = '$value'")->fetchAll();
+
+            $autos = array();
+    
+            foreach($result as $row){
+                $usuario = array(
+                    "idusuario" => $row['usuario_idusuario'],
+                    "nombre" => $row['unombre'],
+                    "apPat" => $row['apPat'],
+                    "apMat" => $row['apMat']
+                );
+    
+                $auto = array(
+                    "usuario_idusuario" => $row['usuario_idusuario'],
+                    "automovil_idautomovil" => $row['automovil_idautomovil'],
+                    "numserie" => $row['numserie'],
+                    "version" => $row['version'],
+                    "modelo" => $row['modelo'],
+                    "nombre" => $row['nombre'],
+                    "usuario" => $usuario
+                );
+                array_push($autos, $auto);
+            }
+    
+            $res->getBody()->write(
+                json_encode($autos)
+            );
+            return $res->withStatus(200);
+        }
+    });
+
+    $this->get('/vista/catalogo/', function($req, $res, $args) use($db){
+        $params = $req->getQueryParams();
+        foreach($params as $key => $value){
+            $res->getBody()->write(
+                json_encode(
+                    $db->query("SELECT * FROM automovil WHERE $key = '$value'")->fetchAll()
+                )
+            );
+            return $res->withStatus(200);
+        }
     });
 
     $this->get('/estado/{estado}', function($req, $res, $args) use ($db){

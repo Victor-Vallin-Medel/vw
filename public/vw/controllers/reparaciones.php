@@ -2,7 +2,7 @@
 
 $app->group('/reparaciones', function() use ($db){
 
-    $this->get('', function($req, $res, $args){
+    $this->get('', function($req, $res, $args) use($db){
         $res->getBody()->write(
             json_encode(
                 $db->query("SELECT * FROM reparaciones")->fetchAll()
@@ -52,6 +52,41 @@ $app->group('/reparaciones', function() use ($db){
             return $res->withStatus(400);
         }
         return $res->withStatus(200);
+    });
+
+    $this->post('/', function($req, $res, $args) use ($db){
+        $params = $req->getQueryParams();
+        $data = $req->getParsedBody();
+        //Add refaccion to reparacion
+        if( isset($params['idreparaciones']) ){
+            if( !isset($data['reparaciones_idreparaciones']) && !isset($data['refacciones_idrefacciones']) ){
+                $res->getBody()->write(
+                    json_encode(
+                        array(
+                            "error" => "Faltan datos"
+                        )
+                    )
+                );
+                return $res->withStatus(400);
+            }
+
+            $r = array( $data['reparaciones_idreparaciones'], $data['refacciones_idrefacciones'] );
+            $result = $db->query("INSERT INTO reparaciones_has_refacciones (reparaciones_idreparaciones, refacciones_idrefacciones) VALUES (?,?)", $r);
+
+            if( $result->affectedRows()!=1 ){
+                $res->getBody()->write(
+                    json_encode(
+                        array(
+                            "error" => "Ocurrió un error insertando los datos"
+                        )
+                    )
+                );
+                return $res->withStatus(400);
+            }
+
+            return $res->withStatus(200);
+        }
+
     });
 
     $this->patch('/{id}', function($req, $res, $args) use($db){
