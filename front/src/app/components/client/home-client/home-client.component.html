@@ -1,9 +1,9 @@
 <h1 mat-dialog-title>Mis vehículos <mat-icon color="primary">directions_car</mat-icon></h1>
-<mat-accordion *ngIf="car$.list | async; let cars">
+<mat-accordion *ngIf="car$.list | async; let cars; else loading">
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <p [matBadge]="cars.length" matBadgeOverlap="false">Registrados</p>
+        <p [matBadge]="cantidad" matBadgeOverlap="false">Registrados</p>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -16,12 +16,12 @@
           </mat-card-header>
           <mat-card-content>
             <mat-chip-list>
-              <mat-chip color="primary" selected>{{car.num_serie}}</mat-chip>
+              <mat-chip color="primary" selected>{{car.numserie}}</mat-chip>
               <mat-chip color="accent" selected>{{car.version}}</mat-chip>
             </mat-chip-list>
           </mat-card-content>
           <mat-card-actions align=end>
-            <button mat-icon-button class="see-item" [routerLink]="['/car', car.idAutomovil]"><mat-icon>visibility</mat-icon></button>
+            <button mat-icon-button class="see-item" [routerLink]="['/car', car.idautomovil]"><mat-icon>visibility</mat-icon></button>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -61,8 +61,11 @@
   </mat-expansion-panel>
 
 </mat-accordion>
+
+<ng-template #loading><app-loading></app-loading></ng-template>
+
 <br>
-<br>
+
 <mat-divider></mat-divider>
 <h1 mat-dialog-title>Historial de servicios <mat-icon color="primary">local_library</mat-icon></h1>
 <table mat-table [dataSource]="orders" class="mat-elevation-z8">

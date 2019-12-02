@@ -17,6 +17,7 @@ import { SessionService } from 'src/app/services/session.service';
 export class HomeClientComponent implements OnInit {
 
   orders: Order[] = [];
+  cantidad: number;
   displayedColumns: string[] = ['fk_plates_car', 'dateReception', 'time',];
 
   constructor(private session: SessionService, public car$: CarsService, private orderService: OrderService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
@@ -27,6 +28,10 @@ export class HomeClientComponent implements OnInit {
     // this.orderService.getUserOrders(user.uid).subscribe((orders: Order[]) => this.orders = orders);
     // Get Client cars.
     this.car$.getClientCars(this.session.user.idusuario);
+    this.car$.getNumberCarsClient(this.session.user.idusuario).subscribe((partial: { cantidad: number}) => {
+      this.cantidad = partial.cantidad;
+    });
+    
   }
 
   openOrderService(order: Order) {

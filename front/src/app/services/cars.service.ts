@@ -19,6 +19,10 @@ export class CarsService {
 
   constructor(private http:HttpClient) { }
   
+  getNumberCarsClient(uid: number) {
+    return this.http.get<{ cantidad: number }>(`${this.URL}/cantidad/?idusuario=${uid}`);
+  }
+
   /**
    * Read all client cars.
    * @param uid number
