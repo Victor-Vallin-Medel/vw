@@ -49,7 +49,7 @@ export class ScheduleComponent implements OnInit {
 
     let fecha = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), time));
     
-    this.date$.postCar({
+    this.date$.postCita({
       fecha: fecha.toISOString().slice(0, 19).replace('T', ' '),
       confirmacion: 0,
       usuario_idusuario: this.session.user.idusuario,
