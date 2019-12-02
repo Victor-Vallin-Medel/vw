@@ -5,9 +5,9 @@
     </button>
   </div>
   <mat-divider></mat-divider>
-  <form [formGroup]="scheduleFormGroup" (ngSubmit)="registerNewService()" class="form-padding">
+  <form [formGroup]="scheduleFormGroup" (ngSubmit)="registerNewService()" class="form-padding" *ngIf="car$.list | async; let cars">
     <div class="row">
-      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s6 m6 l4">
+      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s6">
         <mat-label>Fecha</mat-label>
         <input [min]="minDate" [max]="maxDate" [matDatepickerFilter]="dayFilter" matInput [matDatepicker]="picker" formControlName="dateCtrl" required>
         <mat-error *ngIf="scheduleFormGroup.get('dateCtrl').hasError('required')">
@@ -16,7 +16,7 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="mobileQuery.matches" #picker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s6 m6 l4">
+      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s6">
         <mat-label>Hora</mat-label>
         <mat-select formControlName="timeCtrl" required>
           <mat-option *ngFor="let hour of hours" [value]="hour">
@@ -27,21 +27,17 @@
           Selecciona una hora.
         </mat-error>
       </mat-form-field>
-      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m12 l4">
+      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12">
         <mat-label>Vehículo</mat-label>
         <mat-select formControlName="carCtrl" required>
-          <mat-option *ngFor="let car of cars" [value]="car.plates">
-            {{car.name}} <i>{{car.model}}</i>, Placas: {{car.plates}}
+          <mat-option *ngFor="let car of cars" [value]="car.numserie">
+            {{car.nombre}} {{car.version}} <i>{{car.modelo}}</i>, No. serie: {{car.numserie}}
           </mat-option>
           <mat-option *ngIf="cars.length == 0" disabled>No tienes vehículos registrados.</mat-option>
         </mat-select>
         <mat-error *ngIf="scheduleFormGroup.get('carCtrl').hasError('required')">
           Selecciona un vehículo.
         </mat-error>
-      </mat-form-field>
-      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12">
-        <mat-label>Observaciones del vehículo</mat-label>
-        <textarea formControlName="observationCtrl" matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
       </mat-form-field>
       <button type="submit" mat-raised-button color="primary" class="col s12"
         [disabled]="scheduleFormGroup.invalid">Registrar</button>
