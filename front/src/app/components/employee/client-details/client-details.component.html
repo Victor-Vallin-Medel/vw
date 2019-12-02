@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<div *ngIf="user$.current | async; let user">
+<div *ngIf="user$.current | async; let user; else loading">
   <!-- Ficha de usuario -->
   <div class="col s12">
     <mat-card>
@@ -40,7 +40,7 @@
 
 <!-- Cars -->
 <div class="row">
-  <h4 mat-dialog-title>Vehículos <mat-icon color="primary">directions_car</mat-icon></h4>
+  <h4 mat-dialog-title>Vehículos <mat-icon color="primary" [matBadge]="cantidad" matBadgeColor="foreground" matBadgeOverlap="false">directions_car</mat-icon></h4>
 
   <mat-form-field>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
@@ -78,6 +78,10 @@
       </tr>
     </table>
 
+    <app-loading *ngIf="isLoading"></app-loading>
+
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
   </div>
 </div>
+
+<ng-template #loading><app-loading></app-loading></ng-template>

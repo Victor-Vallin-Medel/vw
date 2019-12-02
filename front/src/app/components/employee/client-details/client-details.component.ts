@@ -14,6 +14,9 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 })
 export class ClientDetailsComponent implements OnInit {
 
+  cantidad: number;
+  isLoading: boolean = true;
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -31,11 +34,14 @@ export class ClientDetailsComponent implements OnInit {
   setDataSource() {
     this.active.params.subscribe(params => {
       this.user$.getUser(params.id);
+      this.car$.getNumberCarsClient(params.id).subscribe((partial: { cantidad: number }) => this.cantidad = partial.cantidad);
       this.car$.getClientCarsOf(params.id).subscribe((partial: Car[]) => {
         this.dataSource =  new MatTableDataSource(partial);
 
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+
+        this.isLoading = false;
       });
     });
   }
