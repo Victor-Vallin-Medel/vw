@@ -40,6 +40,7 @@ import { ViewCarComponent } from './components/view-car/view-car.component';
 import { HistoryServiceComponent } from './components/history-service/history-service.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 import { RegisterComponent } from './components/client/register/register.component';
@@ -84,7 +85,8 @@ export function getToken(): string {
     StatusPipe,
     RolesPipe,
     NotFoundComponent,
-    SettingsComponent
+    SettingsComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
