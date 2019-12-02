@@ -14,6 +14,7 @@ export class CarsService {
   list: Observable<Car []>;
   current: Observable<Car>;
   
+  car$: BehaviorSubject<Car> = new BehaviorSubject<Car>(null);
   cars$: BehaviorSubject<Car []> = new BehaviorSubject<Car []>([]);
 
   constructor(private http:HttpClient) { }
@@ -38,6 +39,17 @@ export class CarsService {
   }
 
   /**
+   * Read all cars.
+   *  @param route string
+   */
+  getCars(route: string) {
+    return this.http.get<Car [] | [{}]>(`${this.URL}${route}`).subscribe((partial: Car []) => {
+      this.cars$.next(partial);
+      this.list = this.cars$.asObservable();
+    });
+  }
+
+  /**
    * Return all cars observable.
    * @param route string
    */
@@ -57,8 +69,8 @@ export class CarsService {
    * Create a car.
    * @param carDto Car
    */
-  postCar(carDto: Car) {
-    return this.http.post(`${this.URL}`, carDto);
+  postCar(carDto: any) {
+    return this.http.post(`${this.URL}/?idusuario=${carDto.usuario_idusuario}`, carDto);
   }
 
   /**

@@ -5,45 +5,64 @@
     </button>
   </div>
   <mat-divider></mat-divider>
-  <form [formGroup]="registerFormGroup" (ngSubmit)="registerNewCar()" class="form-padding">
-    <div class="row">
-      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m12">
-        <mat-label>Nombre</mat-label>
-        <mat-select formControlName="nameCtrl" required cdkFocusInitial>
-          <mat-option value="Golf">Golf</mat-option>
-          <mat-option value="Vento">Vento</mat-option>
-        </mat-select>
-        <mat-error *ngIf="registerFormGroup.get('nameCtrl').hasError('required')">
-          Selecciona un vehículo.
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m8">
-        <mat-label>Versión</mat-label>
-        <mat-select formControlName="versionCtrl" required cdkFocusInitial>
-          <mat-option value="Style">Style</mat-option>
-          <mat-option value="GTI">GTI</mat-option>
-        </mat-select>
-        <mat-error *ngIf="registerFormGroup.get('versionCtrl').hasError('required')">
-          Selecciona una versión.
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m4">
-        <mat-label>Modelo</mat-label>
-        <mat-select type="number" matInput formControlName="modelCtrl" required>
-          <mat-option value="2018">2018</mat-option>
-          <mat-option value="2019">2019</mat-option>
-        </mat-select>
-        <mat-error *ngIf="registerFormGroup.get('modelCtrl').hasError('required')">
-          Selecciona el modelo.
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m12">
-        <mat-label>No. serie</mat-label>
-        <input matInput formControlName="serialCtrl" required>
-        <mat-error *ngIf="registerFormGroup.get('serialCtrl').hasError('required')">
-          Ingresa las placas.
-        </mat-error>
-      </mat-form-field>
-      <button type="submit" mat-raised-button color="primary" class="col s12" [disabled]="registerFormGroup.invalid">Registrar</button>
-    </div>
+  <form [formGroup]="registerFormGroup" (ngSubmit)="registerNewCar()" class="form-padding" *ngIf="car$.current | async;">
+
+    <mat-horizontal-stepper formArrayName="formArray" linear #stepper>
+      <mat-step formGroupName="0" [stepControl]="formArray?.get([0])" [editable]="false">
+        <div class="row">
+          <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m6">
+            <mat-label>Nombre</mat-label>
+            <mat-select formControlName="nameCtrl" (selectionChange)="filtering($event.value, 1)" required cdkFocusInitial>
+              <mat-option *ngFor="let name of nameList" [value]="name"> {{name}} </mat-option>
+            </mat-select>
+            <mat-error>Selecciona un vehículo.</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12 m6">
+            <mat-label>No. serie</mat-label>
+            <input matInput formControlName="serialCtrl" required>
+            <mat-error>Ingresa las placas.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div align="end">
+          <button mat-icon-button matStepperNext type="button"><mat-icon>keyboard_arrow_right</mat-icon></button>
+        </div>
+      </mat-step>
+      <mat-step formGroupName="1" [stepControl]="formArray?.get([1])" [editable]="false">
+        
+        <div class="row">
+          <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12">
+            <mat-label>Versión</mat-label>
+            <mat-select formControlName="versionCtrl" (selectionChange)="filtering($event.value, 2)" required>
+              <mat-option *ngFor="let version of versionList" [value]="version"> {{version}} </mat-option>
+            </mat-select>
+            <mat-error>Selecciona una versión.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div align="end">
+          <button mat-icon-button matStepperNext type="button"><mat-icon>keyboard_arrow_right</mat-icon></button>
+        </div>
+      </mat-step>
+      
+      <mat-step formGroupName="2" [stepControl]="formArray?.get([2])" [editable]="false">
+
+        <div class="row">
+          <mat-form-field hideRequiredMarker=true appearance="legacy" class="col s12">
+            <mat-label>Modelo</mat-label>
+            <mat-select type="number" matInput formControlName="modelCtrl" required>
+              <mat-option *ngFor="let model of modelList" [value]="model"> {{model}} </mat-option>
+            </mat-select>
+            <mat-error>Selecciona el modelo.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div align="end">
+          <button mat-icon-button matStepperPrevious type="button" color="warn" (click)="stepper.reset()"><mat-icon>undo</mat-icon></button>
+          <button type="submit" mat-icon-button color="primary" [disabled]="registerFormGroup.invalid"><mat-icon>save</mat-icon></button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+
   </form>
