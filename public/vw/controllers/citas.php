@@ -12,7 +12,7 @@ $app->group('/citas',function() use ($db){
     $this->get('/{id}', function($req, $res, $args) use ($db){
         $id = $args['id'];
         $res->getBody()->write(
-            json_encode( $db->query("SELECT * FROM citas idcitas = $id")->fetchArray() )
+            json_encode( $db->query("SELECT * FROM citas WHERE idcitas = $id")->fetchArray() )
         );
         return $res->withStatus(200);
     });

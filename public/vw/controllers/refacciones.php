@@ -21,6 +21,10 @@ $app->group('/refacciones', function() use ($db){
         return $res->withStatus(200);
     });
 
+    $this->get('/', function($req, $res, $args) use ($db){
+        
+    });
+
     $this->post('', function($req, $res, $args) use($db){
         $data = $req->getParsedBody();
 
