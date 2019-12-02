@@ -102,6 +102,7 @@ $app->group('/automoviles', function() use ($db){
         
     });
 
+    //Add usuario_has_automovil
     $this->post('/', function($req, $res, $args) use ($db){
         $user_id = $req->getQueryParams()['idusuario'];
         $data = $req->getParsedBody();

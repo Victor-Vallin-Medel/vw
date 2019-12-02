@@ -20,7 +20,7 @@ $app->group('/citas',function() use ($db){
     $this->post('', function($req, $res, $args) use ($db){
         $data = $req->getParsedBody();
 
-        $columns = array('fecha', 'confirmacion', 'automovil_idautomovil', 'usuario_idusuario');
+        $columns = array('fecha', 'confirmacion', 'numserie', 'usuario_idusuario');
 
         foreach($columns as $column){
             if( !array_key_exists($column, $data) ){
@@ -35,9 +35,9 @@ $app->group('/citas',function() use ($db){
             }
         }
 
-        $cita = array( $data['fecha'], $data['confirmacion'], $data['automovil_idautomovil'], $data['usuario_idusuario'] );
+        $cita = array( $data['fecha'], $data['confirmacion'], $data['numserie'], $data['usuario_idusuario'] );
 
-        $result = $db->query("INSERT INTO citas (fecha, confirmacion, automovil_idautomovil, usuario_idusuario) VALUES (?,?,?,?)", $cita);
+        $result = $db->query("INSERT INTO citas (fecha, confirmacion, numserie, usuario_idusuario) VALUES (?,?,?,?)", $cita);
         
         if($result->affectedRows() != 1 ){
             $res->getBody()->write(
@@ -57,7 +57,7 @@ $app->group('/citas',function() use ($db){
         $id = $args['id'];
         $cita = $req->getParsedBody();
         
-        $columns = array('fecha', 'confirmacion', 'automovil_idautomovil', 'usuario_idusuario');
+        $columns = array('fecha', 'confirmacion', 'numserie', 'usuario_idusuario');
 
         foreach($cita as $key => $value){
 

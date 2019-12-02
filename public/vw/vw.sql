@@ -51,17 +51,17 @@ DROP TABLE IF EXISTS `citas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `citas` (
-  `idcitas` int(11) NOT NULL,
+  `idcitas` int(11) NOT NULL AUTO_INCREMENT,
   `fecha` datetime DEFAULT NULL,
   `confirmacion` varchar(1) DEFAULT NULL,
-  `automovil_idautomovil` int(11) NOT NULL,
   `usuario_idusuario` int(11) NOT NULL,
-  PRIMARY KEY (`idcitas`,`automovil_idautomovil`,`usuario_idusuario`),
-  KEY `fk_citas_automovil1_idx` (`automovil_idautomovil`),
+  `numserie` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idcitas`,`usuario_idusuario`),
   KEY `fk_citas_usuario1_idx` (`usuario_idusuario`),
-  CONSTRAINT `fk_citas_automovil1` FOREIGN KEY (`automovil_idautomovil`) REFERENCES `automovil` (`idautomovil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `fk_citas_numserie1_idx` (`numserie`),
+  CONSTRAINT `fk_citas_numserie1` FOREIGN KEY (`numserie`) REFERENCES `usuario_has_automovil` (`numserie`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_citas_usuario1` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,6 +70,7 @@ CREATE TABLE `citas` (
 
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
+INSERT INTO `citas` VALUES (1,'2019-12-12 00:00:00','1',6,NULL),(2,'2019-01-01 00:00:00','0',6,NULL),(3,'2019-10-12 00:00:00','0',6,NULL),(4,'2019-11-12 00:00:00','0',6,NULL),(5,'1998-02-01 00:00:00','1',6,NULL),(6,'1998-02-01 00:00:00','1',6,NULL),(7,'1998-02-01 00:00:00','1',6,NULL);
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,12 +137,11 @@ DROP TABLE IF EXISTS `hojaRecepcion`;
 CREATE TABLE `hojaRecepcion` (
   `idhojaRecepcion` int(11) NOT NULL AUTO_INCREMENT,
   `observaciones` json DEFAULT NULL,
-  `fotosAuto` json DEFAULT NULL,
   `citas_idcitas` int(11) NOT NULL,
   PRIMARY KEY (`idhojaRecepcion`,`citas_idcitas`),
-  KEY `fk_hojaRecepcion_citas1_idx` (`citas_idcitas`),
-  CONSTRAINT `fk_hojaRecepcion_citas1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `fk_hojaRecepcion_1_idx` (`citas_idcitas`),
+  CONSTRAINT `fk_hojaRecepcion_1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,6 +150,7 @@ CREATE TABLE `hojaRecepcion` (
 
 LOCK TABLES `hojaRecepcion` WRITE;
 /*!40000 ALTER TABLE `hojaRecepcion` DISABLE KEYS */;
+INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1);
 /*!40000 ALTER TABLE `hojaRecepcion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,7 +362,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (3,'AAAAasds','asdzxc','zxcxc','omarsalazar','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(4,'Carlos Daniel','Molina','Vargas','danielmv','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(5,'Mario','Gonzalez','Santoyo','mario','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(6,'Victor','Vallin','Medel','victorelguapo','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,2),(17,'Omar','Prueba','2','omarcin','$2y$10$oS6oGT8m5/FHb0vaM3eiqev.9AcKGgKzVT0vSt4W4bK/CtSTc/KOu',1,2),(24,'Molinita','Prueba','2','aja@asd.com','$2y$10$CfSnb/iOmPIB3RNl5P2/o.baZ2LCbv9iUyoW4.yAqCOPV9U8mYjRu',12,2),(25,'Molinita','Prueba','2','ajaaa@asd.com','$2y$10$g.hElhRMfvY/T9FuDFR6eurp4LBfDrvayWp9g2tRGmGDdedDB3uCa',13,2);
+INSERT INTO `usuario` VALUES (3,'AAAAasds','asdzxc','zxcxc','omarsalazar','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(4,'Carlos Daniel','Molina','Vargas','danielmv','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(5,'Mario','Gonzalez','Santoyo','mario','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,1),(6,'Victor','Vallin','Medel','victorelguapo','b221d9dbb083a7f33428d7c2a3c3198ae925614d70210e28716ccaa7cd4ddb79',1,2),(17,'Omar','Prueba','2','omarcin','$2y$10$oS6oGT8m5/FHb0vaM3eiqev.9AcKGgKzVT0vSt4W4bK/CtSTc/KOu',1,2),(25,'Molinita','Prueba','2','ajaaa@asd.com','$2y$10$g.hElhRMfvY/T9FuDFR6eurp4LBfDrvayWp9g2tRGmGDdedDB3uCa',13,2);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,6 +378,7 @@ CREATE TABLE `usuario_has_automovil` (
   `automovil_idautomovil` int(11) NOT NULL,
   `numserie` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`usuario_idusuario`,`automovil_idautomovil`),
+  UNIQUE KEY `numserie_UNIQUE` (`numserie`),
   KEY `fk_usuario_has_automovil_automovil1_idx` (`automovil_idautomovil`),
   KEY `fk_usuario_has_automovil_usuario1_idx` (`usuario_idusuario`),
   CONSTRAINT `fk_usuario_has_automovil_automovil1` FOREIGN KEY (`automovil_idautomovil`) REFERENCES `automovil` (`idautomovil`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -390,7 +392,7 @@ CREATE TABLE `usuario_has_automovil` (
 
 LOCK TABLES `usuario_has_automovil` WRITE;
 /*!40000 ALTER TABLE `usuario_has_automovil` DISABLE KEYS */;
-INSERT INTO `usuario_has_automovil` VALUES (3,1,'234235');
+INSERT INTO `usuario_has_automovil` VALUES (3,1,'234235'),(3,3,'23443');
 /*!40000 ALTER TABLE `usuario_has_automovil` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -403,4 +405,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-01 12:01:00
+-- Dump completed on 2019-12-01 19:31:01

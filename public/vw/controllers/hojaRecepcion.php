@@ -55,8 +55,41 @@ $app->group('/hojas', function() use($db){
     });
 
     $this->patch('', function($req, $res, $args) use ($db){
+        $data = $req->getParsedBody();
 
+        $columns = array('observaciones', 'citas_idcitas');
 
+        foreach($data as $key => $value){
+            if( !in_array($key, $columns) ){
+                $res->getBody()->write(
+                    json_encode(
+                        array(
+                            "error" => "No existe el campo $key"
+                        )
+                    )
+                );
+                return $res->withStatus(400);
+            }
+        }
+
+        foreach($data as $key => $value){
+            if( gettype($value) == 'string' )
+                $result = $db->query("UPDATE FROM hojaRecepcion SET $key = '$value'");
+            else
+                $result = $db->query("UPDATE FROM hojaRecepcion SET $key = $value");
+            if($result->affectedRows() != 1){
+                $res->getBody()->write(
+                    json_encode(
+                        array(
+                            "error" => "No existe el campo $key"
+                        )
+                    )
+                );
+                return $res->withStatus(400);
+            }
+        }
+
+        return $res->withStatus(200);
     });
 
     $this->delete('/{id}', function($req, $res, $args) use ($db){
