@@ -75,6 +75,7 @@ require __DIR__ . '/../controllers/automovil.php';
 require __DIR__ . '/../controllers/ciudades.php';
 require __DIR__ . '/../controllers/direcciones.php';
 require __DIR__ . '/../controllers/citas.php';
+require __DIR__ . '/../controllers/hojaRecepcion.php';
 
 // Catch-all route to serve a 404 Not Found page if none of the routes match
 // NOTE: make sure this route is defined last

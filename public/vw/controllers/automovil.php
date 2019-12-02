@@ -98,7 +98,7 @@ $app->group('/automoviles', function() use ($db){
         );
     });
 
-    $this->post('/', function($req, $res, $args) use ($db){
+    $this->post('', function($req, $res, $args) use ($db){
         
     });
 
