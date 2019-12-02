@@ -21,8 +21,16 @@ $app->group('/refacciones', function() use ($db){
         return $res->withStatus(200);
     });
 
+    //Get all refacciones by idreparacion
     $this->get('/', function($req, $res, $args) use ($db){
-        
+        $params = $req->getQueryParams();
+        $id_reparacion = $params['idreparaciones'];
+        $res->getBody()->write(
+            json_encode(
+                $db->query("SELECT * FROM reparaciones_has_refacciones rr, reparaciones rp, refacciones r WHERE rr.reparaciones_idreparaciones = $id_reparacion AND r.idrefacciones = rr.refacciones_idrefacciones AND rr.reparaciones_idreparaciones = rp.idreparaciones")->fetchAll()
+            )
+        );
+        $res->withStatus(200);
     });
 
     $this->post('', function($req, $res, $args) use($db){

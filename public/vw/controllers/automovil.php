@@ -20,13 +20,30 @@ $app->group('/automoviles', function() use ($db){
 
     //With QueryString ?idusuario={id}
     $this->get('/', function($req, $res, $args) use ($db){
+
+        //Get all automoviles of a user
         $params = $req->getQueryParams();
-        $user_id = $params['idusuario'];
-        $res->getBody()->write(
-            json_encode(
-                $db->query("SELECT ua.*, a.* FROM usuario_has_automovil ua, automovil a WHERE ua.usuario_idusuario = $user_id AND a.idautomovil = ua.automovil_idautomovil")->fetchAll()
-            )
-        );
+        if( isset($params['idusuario']) ){
+            $user_id = $params['idusuario'];
+            $res->getBody()->write(
+                json_encode(
+                    $db->query("SELECT ua.*, a.* FROM usuario_has_automovil ua, automovil a WHERE ua.usuario_idusuario = $user_id AND a.idautomovil = ua.automovil_idautomovil")->fetchAll()
+                )
+            );
+            return $res->withStatus(200);
+        }
+        
+        //Get by numserie
+        if( isset($params['numserie']) ){
+            $numserie = $params['numserie'];
+            $res->getBody()->write(
+                json_encode(
+                    $db->query("SELECT a.* FROM automovil a, usuario_has_automovil ua WHERE ua.numserie = '$numserie' AND ua.automovil_idautomovil = a.idautomovil")->fetchArray()
+                )
+            );
+            return $res->withStatus(200);
+        }
+        return $res->withStatus(400);
     });
 
     //Cantidad by idusuario
