@@ -2,8 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Order } from 'src/app/models/order';
-import { OrderService } from 'src/app/services/order.service';
 import { CarsService } from 'src/app/services/cars.service';
 import { UserService } from 'src/app/services/user.service';
 import { Car } from 'src/app/models/car';

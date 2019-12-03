@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CarsService } from '../../../services/cars.service';
 import { Car } from "../../../models/car";
 import { Order } from '../../../models/order';
-import { OrderService } from '../../../services/order.service';
+import { HojaService } from '../../../services/order.service';
 import { MatBottomSheet } from '@angular/material';
 import { HistoryServiceComponent } from '../../history-service/history-service.component';
 import { ViewServiceComponent } from '../../view-service/view-service.component';
@@ -20,7 +20,7 @@ export class HomeClientComponent implements OnInit {
   cantidad: number;
   displayedColumns: string[] = ['fk_plates_car', 'dateReception', 'time',];
 
-  constructor(private session: SessionService, public car$: CarsService, private orderService: OrderService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
+  constructor(private session: SessionService, public car$: CarsService, private orderService: HojaService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
 
   }
 

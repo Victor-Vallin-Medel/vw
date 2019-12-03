@@ -5,9 +5,6 @@
       <mat-panel-title>
         <p [matBadge]="status.espera" matBadgeOverlap="false">Citas sin confirmar</p>
       </mat-panel-title>
-      <!-- <mat-panel-description>
-        Description
-      </mat-panel-description> -->
     </mat-expansion-panel-header>
 
     <div class="row" *ngIf="date$.list | async; let dates">
@@ -37,29 +34,21 @@
       <mat-panel-title>
         <p [matBadge]="status.recepcion" matBadgeOverlap="false">En recepción</p>
       </mat-panel-title>
-      <!-- <mat-panel-description>
-          Description
-        </mat-panel-description> -->
     </mat-expansion-panel-header>
   
     <div class="row">
-      <div *ngFor="let order of orders">
-        <div class="col s12 m6 l4 xl3" *ngIf="order.status == 3">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>{{order.dateReception | date: short}}</mat-card-title>
-              <mat-card-subtitle>{{order.time}}:00 hrs</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <mat-chip-list>
-                <mat-chip color="primary" selected>{{order.fk_plates_car}}</mat-chip>
-              </mat-chip-list>
-            </mat-card-content>
-            <mat-card-actions align=end>
-              <button mat-raised-button color="accent" (click)="openService(order)">Ver orden</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
+      <div>
+        <mat-list>
+          <article *ngFor="let i of [1,2,3,4,5,6,7,8]">
+            <mat-list-item>
+              <mat-icon mat-list-icon color="primary">assignment</mat-icon>
+              <h4 mat-line>Omar Salazar Salazar</h4>
+              <p mat-line>Vento StartLine 2019 <i>(123456789)</i><p>
+              <button mat-icon-button color="accent"><mat-icon>post_add</mat-icon></button>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </article>
+        </mat-list>
       </div>
     </div>
   </mat-expansion-panel>
@@ -79,7 +68,7 @@
         <div class="col s12 m6 l4 xl3" *ngIf="order.status == 4">
           <mat-card>
             <mat-card-header>
-              <mat-card-title>{{order.dateReception | date: short}}</mat-card-title>
+              <mat-card-title>{{order.dateReception | date: 'mediumDate'}}</mat-card-title>
               <mat-card-subtitle>{{order.time}}:00 hrs</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
@@ -111,7 +100,7 @@
         <div class="col s12 m6 l4 xl3" *ngIf="order.status == 5">
           <mat-card>
             <mat-card-header>
-              <mat-card-title>{{order.dateReception | date: short}}</mat-card-title>
+              <mat-card-title>{{order.dateReception | date: 'MediumDate'}}</mat-card-title>
               <mat-card-subtitle>{{order.time}}:00 hrs</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>

@@ -4,7 +4,7 @@ import { MatBottomSheet } from '@angular/material';
 import { Router } from '@angular/router';
 import { Chart } from "chart.js";
 import { Order } from 'src/app/models/order';
-import { OrderService } from 'src/app/services/order.service';
+import { HojaService } from 'src/app/services/order.service';
 import { HistoryServiceComponent } from '../../history-service/history-service.component';
 
 export interface dataDates {
@@ -25,7 +25,7 @@ export class OrdersComponent implements OnInit {
   dataDates: dataDates = { labels: [], getMonth: [], data: [] };
   displayedColumns: string[] = ['fk_plates_car', 'dateReception', 'time',];
 
-  constructor(private orderService: OrderService, private location: Location, private sheetService: MatBottomSheet, private router: Router) { }
+  constructor(private orderService: HojaService, private location: Location, private sheetService: MatBottomSheet, private router: Router) { }
 
   ngOnInit() {
     // this.afAuth.auth.onAuthStateChanged(user => {

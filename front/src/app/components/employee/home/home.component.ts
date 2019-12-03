@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { MatBottomSheet } from '@angular/material';
 import { Router } from '@angular/router';
 import { Order } from 'src/app/models/order';
-import { OrderService } from 'src/app/services/order.service';
+import { HojaService } from 'src/app/services/order.service';
 import { UpdateServiceComponent } from '../update-service/update-service.component';
 import { CitaService } from 'src/app/services/cita.service';
 import { Cita } from 'src/app/models/cita';
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     lavando: 0,
   }
 
-  constructor(public date$: CitaService, private orderService: OrderService, private sheetService: MatBottomSheet, private router: Router) { }
+  constructor(public date$: CitaService, private orderService: HojaService, private sheetService: MatBottomSheet, private router: Router) { }
 
   ngOnInit() {
     this.date$.getCitas();

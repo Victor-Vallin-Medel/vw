@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { Car } from '../../models/car';
-import { OrderService } from '../../services/order.service';
+import { HojaService } from '../../services/order.service';
 import { Order } from '../../models/order';
 import { Observable } from 'rxjs';
 
@@ -14,7 +14,7 @@ export class ViewServiceComponent implements OnInit {
 
   order: Observable<{}>;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public car: Car, private sheetRef: MatBottomSheetRef, private orderService: OrderService) {
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public car: Car, private sheetRef: MatBottomSheetRef, private orderService: HojaService) {
     this.order = this.orderService.getOrderAlive(car.idautomovil);
   }
 

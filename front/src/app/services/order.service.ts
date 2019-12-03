@@ -5,7 +5,7 @@ import { Order } from '../models/order';
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class HojaService {
 
   readonly URL: string = 'https://us-central1-volkswagen-6510d.cloudfunctions.net/app/api/orders/';
 
