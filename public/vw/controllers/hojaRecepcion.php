@@ -27,7 +27,8 @@ $app->group('/hojas', function() use($db){
                 'idautomovil' => $row['idautomovil'],
                 'nombre' => $row['automovil_nombre'],
                 'modelo' => $row['automovil_modelo'],
-                'version' => $row['automovil_version']
+                'version' => $row['automovil_version'],
+                'numserie' => $row['numserie']
             );
 
             $hoja = array(
