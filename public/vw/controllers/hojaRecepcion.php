@@ -34,6 +34,7 @@ $app->group('/hojas', function() use($db){
                 'idhojaRecepcion' => $row['idhojaRecepcion'],
                 'observaciones' => $row['observaciones'],
                 'citas_idcitas' => $row['idcitas'],
+                'states_idstates' => $row['states_idstates'],
                 'usuario' => $usuario,
                 'cita' => $cita,
                 'automovil' => $auto
