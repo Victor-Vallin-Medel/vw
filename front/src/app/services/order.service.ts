@@ -30,23 +30,7 @@ export class HojaService {
     });
   }
 
-  getAllOrders() {
-    return this.http.get(`${this.URL}`);
-  }
-
-  getUserOrders(uid) {
-    return this.http.get(`${this.URL}user/${uid}`);
-  }
-
-  getOrderAlive(id) {
-    return this.http.get(`${this.URL}alive/${id}`);
-  }
-
-  postOrder(orderDto: Order) {
-    return this.http.post(`${this.URL}`, orderDto);
-  }
-
-  updateService(orderDto: Order) {
-    return this.http.put(`${this.URL}${orderDto.ref}`, orderDto);
+  patchHoja(state: number) {
+    return this.http.patch(`${this.URL}`, { states_idstates: state });
   }
 }

@@ -24,7 +24,7 @@ export class ViewServiceComponent implements OnInit {
   }
 
   openSheetInfo(order: Hoja) {
-    this.sheetInfo.open(SetsheetComponent), { data: order };
+    this.sheetInfo.open(SetsheetComponent, { data: order, width: '450px' });
   }
 
 }

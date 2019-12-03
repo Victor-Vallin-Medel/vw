@@ -1,17 +1,30 @@
-<div class="example-card">
-    <mat-card-header>
-        <mat-card-title>Shiba Inu</mat-card-title>
-        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <p>
-            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-            bred for hunting.
-        </p>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-    </mat-card-actions>
+<!-- <div class="flex-container flex-between">
+    <h1 mat-dialog-title class="flex-child">Cita de servicio</h1>
+    <button mat-icon-button mat-dialog-close>
+    <mat-icon class="flex-child">close</mat-icon>
+    </button>
 </div>
+<mat-divider></mat-divider> -->
+<mat-card-header>
+    <mat-card-title> {{data.usuario.nombre}} {{data.usuario.apPat}} {{data.usuario.apMat}} </mat-card-title>
+    <mat-card-subtitle> {{data.automovil.nombre}} {{data.automovil.version}} {{data.automovil.modelo}} <i>({{data.automovil.numserie}})</i> </mat-card-subtitle>
+</mat-card-header>
+<mat-divider></mat-divider><br>
+<mat-card-content>
+    <div class="row">
+        <div class="col s6"><mat-icon style="color: teal;">today</mat-icon> <span class="aligned-with-icon-relative"> {{data.cita.fecha | date: 'mediumDate'}} </span></div>
+        <div class="col s6"><mat-icon style="color: teal;">access_time</mat-icon> <span class="aligned-with-icon-relative"> {{data.cita.fecha | date: 'shortTime'}} </span></div>
+        <br><br>
+        <div class="col s12"> {{data.states_idstates | status}} </div>
+    </div>
+    <!-- <form class="example-form">
+        <div class="row">
+            <mat-form-field class="example-full-width" class="col s12">
+                <textarea matInput placeholder="Leave a comment"></textarea>
+            </mat-form-field>
+        </div>
+    </form> -->
+</mat-card-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" (click)="update()" *ngIf="right">Actualizar</button>
+</mat-dialog-actions>

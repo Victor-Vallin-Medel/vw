@@ -7,19 +7,19 @@ export class StatusPipe implements PipeTransform {
 
   transform(value: number, args?: any): string {
     switch (value) {
-      case 2:
+      case 1:
         return "En espera de llegada."
         break;
-      case 3:
+      case 2:
         return "En recepción.";
         break;
-      case 4:
+      case 3:
         return "Reparando.";
         break;
-      case 5:
+      case 4:
         return "Lavando.";
         break;
-      case 6:
+      case 5:
         return "Finalizado";
         break;
     
