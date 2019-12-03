@@ -17,6 +17,7 @@
         <br><br>
         <div class="col s12"> {{data.states_idstates | status}} </div>
     </div>
+    <!-- En espera de llegada -->
     <!-- <form class="example-form">
         <div class="row">
             <mat-form-field class="example-full-width" class="col s12">
@@ -24,7 +25,19 @@
             </mat-form-field>
         </div>
     </form> -->
+
+    <!-- Reparando -->
+    <div *ngIf="data.states_idstates == 3 && right && ref$.list | async; let refs">
+        <mat-divider></mat-divider>
+        <mat-selection-list #rep [(ngModel)]="selectedRefs">
+            <mat-list-option *ngFor="let ref of refs" [value]="ref.idreparaciones">
+                {{ ref.parser.nombre }}
+            </mat-list-option>
+        </mat-selection-list>
+        
+        <p> Reparaciones seleccionadas: {{rep.selectedOptions.selected.length}} </p>
+    </div>
 </mat-card-content>
 <mat-dialog-actions align="end">
-    <button mat-raised-button color="primary" (click)="update()" *ngIf="right">Actualizar</button>
+    <button mat-raised-button [color]="data.states_idstates != 3? 'primary': 'accent'" (click)="update()" *ngIf="right"> {{ data.states_idstates != 3? 'Actualizar': 'Solicitar'}} </button>
 </mat-dialog-actions>

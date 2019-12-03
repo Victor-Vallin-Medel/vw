@@ -66,7 +66,7 @@
   
     <mat-list>
       <div *ngFor="let order of orders">
-        <app-view-service *ngIf="order.states_idstates == 5" [order]="order" (reload)="ngOnInit()"></app-view-service>
+        <app-view-service *ngIf="order.states_idstates == 3 || order.states_idstates == 4" [order]="order" (reload)="ngOnInit()"></app-view-service>
       </div>
     </mat-list>
   </mat-expansion-panel>
@@ -80,7 +80,7 @@
   
     <mat-list>
       <div *ngFor="let order of orders">
-        <app-view-service *ngIf="order.states_idstates == 7" [order]="order" (reload)="ngOnInit()"></app-view-service>
+        <app-view-service *ngIf="order.states_idstates == 5" [order]="order" (reload)="ngOnInit()"></app-view-service>
       </div>
     </mat-list>
   </mat-expansion-panel>

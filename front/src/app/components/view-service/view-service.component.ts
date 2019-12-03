@@ -25,7 +25,7 @@ export class ViewServiceComponent implements OnInit {
   }
 
   openSheetInfo(order: Hoja) {
-    const modal = this.sheetInfo.open(SetsheetComponent, { data: order, width: '450px' });
+    const modal = this.sheetInfo.open(SetsheetComponent, { data: order, width: '450px', autoFocus: false });
     
     modal.afterClosed().subscribe(() => this.reload.emit(true));
   }
