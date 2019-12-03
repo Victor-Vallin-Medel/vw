@@ -10,52 +10,10 @@ table {
     width: 100%;
 }
 
-td, th {
-    width: 25%;
+tr, th {
+    width: 20%;
 }
 
-.tab-content {
-    width: 95%;
-    margin: auto;
-    padding: 18px 0;
-}
-
-.mat-form-field {
-    font-size: 14px;
-    width: 100%;
-}
-
-.btn-actions {
-    margin: -7px;
-}
-
-tr.detail-row {
-    height: 0;
-}
-
-tr.car-row:not(.example-expanded-row):hover {
-    background: rgb(226, 226, 226);
-    cursor: pointer;
-}
-
-tr.car-row:not(.example-expanded-row):active {
-    background: #efefef;
-}
-
-.car-row td {
-    border-bottom-width: 0;
-}
-
-.car-detail {
-    overflow: hidden;
-    display: flex;
-}
-
-.car-detail p {
-    margin: auto;
-    padding: 0.5rem;
-}
-
-.car-detail p a {
+a {
     text-decoration: none;
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Car } from '../models/car';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { UserCar } from '../models/usercar';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,15 @@ export class CarsService {
   cars$: BehaviorSubject<Car []> = new BehaviorSubject<Car []>([]);
 
   constructor(private http:HttpClient) { }
-  
+
+  getDistincts() {
+    return this.http.get<{ nombre: string [], version: string [], modelo: string []}>(`${this.URL}/vista/distinct`);
+  }
+
+  /**
+   * Cantidad de carros registrados del usuario.
+   * @param uid number
+   */  
   getNumberCarsClient(uid: number) {
     return this.http.get<{ cantidad: number }>(`${this.URL}/cantidad/?idusuario=${uid}`);
   }
@@ -57,8 +66,8 @@ export class CarsService {
    * Return all cars observable.
    * @param route string
    */
-  getCarsOf(route: string): Observable<Car [] | [{}]> {
-    return this.http.get<Car [] | [{}]>(`${this.URL}${route}`);
+  getCarsOf(route: string): Observable<Car [] | UserCar []> {
+    return this.http.get<Car [] | UserCar []>(`${this.URL}${route}`);
   }
 
   /**
