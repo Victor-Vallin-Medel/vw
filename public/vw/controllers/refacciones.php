@@ -26,12 +26,10 @@ $app->group('/refacciones', function() use ($db){
         $params = $req->getQueryParams();
         $id_reparacion = $params['idreparaciones'];
 
-        $result = $db->query("SELECT rr.reparaciones_idreparaciones, rr.refacciones_idrefacciones, rp.idreparaciones, rp.descripcion. rp.precio as reparacion_precio, rp.existencia as reparacion_existencia, r.idrefacciones, r.nombre, r.precio as refacciones_precio, r.existencia FROM reparaciones_has_refacciones rr, reparaciones rp, refacciones r WHERE rr.reparaciones_idreparaciones = $id_reparacion AND r.idrefacciones = rr.refacciones_idrefacciones AND rr.reparaciones_idreparaciones = rp.idreparaciones")->fetchAll();
-
-        $refaccion = array();
-
         $res->getBody()->write(
-            json_encode(array())
+            json_encode(
+                $result = $db->query("SELECT refacciones_idrefacciones as idrefaccion, refacciones_nombre as nombre, refacciones_precio as precio, refacciones_existencia as existencia FROM reparaciones_refacciones WHERE reparaciones_idreparaciones = $id_reparacion")->fetchAll()
+            )
         );
         $res->withStatus(200);
     });

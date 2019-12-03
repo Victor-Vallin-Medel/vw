@@ -61,7 +61,7 @@ CREATE TABLE `citas` (
   KEY `fk_citas_numserie1_idx` (`numserie`),
   CONSTRAINT `fk_citas_numserie1` FOREIGN KEY (`numserie`) REFERENCES `usuario_has_automovil` (`numserie`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_citas_usuario1` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `citas` (
 
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
-INSERT INTO `citas` VALUES (1,'2019-12-12 00:00:00','1',6,NULL),(2,'2019-01-01 00:00:00','0',6,NULL),(3,'2019-10-12 00:00:00','0',6,NULL),(4,'2019-11-12 00:00:00','0',6,NULL),(5,'1998-02-01 00:00:00','1',6,NULL),(6,'1998-02-01 00:00:00','1',6,NULL),(7,'1998-02-01 00:00:00','1',6,NULL),(8,'2019-12-10 10:00:00','0',25,'123456789');
+INSERT INTO `citas` VALUES (1,'2019-12-12 00:00:00','1',6,NULL),(2,'2019-01-01 00:00:00','0',6,NULL),(3,'2019-10-12 00:00:00','0',6,NULL),(4,'2019-11-12 00:00:00','0',6,NULL),(5,'1998-02-01 00:00:00','1',6,NULL),(6,'1998-02-01 00:00:00','1',6,NULL),(7,'1998-02-01 00:00:00','1',6,NULL),(8,'2019-12-10 10:00:00','0',25,'123456789'),(9,'2019-12-01 10:00:00','0',25,'123456789');
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +144,7 @@ CREATE TABLE `hojaRecepcion` (
   KEY `fk_hojaRecepcion_2_idx` (`states_idstates`),
   CONSTRAINT `fk_hojaRecepcion_1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_hojaRecepcion_2` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +153,7 @@ CREATE TABLE `hojaRecepcion` (
 
 LOCK TABLES `hojaRecepcion` WRITE;
 /*!40000 ALTER TABLE `hojaRecepcion` DISABLE KEYS */;
-INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(2,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(3,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(4,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(5,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(6,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL);
+INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(2,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(3,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(4,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(5,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(6,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(7,NULL,9,NULL);
 /*!40000 ALTER TABLE `hojaRecepcion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,6 +181,7 @@ CREATE TABLE `hojaRecepcion_has_reparaciones` (
 
 LOCK TABLES `hojaRecepcion_has_reparaciones` WRITE;
 /*!40000 ALTER TABLE `hojaRecepcion_has_reparaciones` DISABLE KEYS */;
+INSERT INTO `hojaRecepcion_has_reparaciones` VALUES (1,1),(2,1),(3,1),(1,2);
 /*!40000 ALTER TABLE `hojaRecepcion_has_reparaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +198,7 @@ CREATE TABLE `refacciones` (
   `precio` double DEFAULT NULL,
   `existencia` int(11) DEFAULT NULL,
   PRIMARY KEY (`idrefacciones`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,6 +207,7 @@ CREATE TABLE `refacciones` (
 
 LOCK TABLES `refacciones` WRITE;
 /*!40000 ALTER TABLE `refacciones` DISABLE KEYS */;
+INSERT INTO `refacciones` VALUES (1,'Kit de servicio',300.5,2),(2,'Amortiguadores',1290,4);
 /*!40000 ALTER TABLE `refacciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +223,7 @@ CREATE TABLE `reparaciones` (
   `descripcion` json DEFAULT NULL,
   `precio` double DEFAULT NULL,
   PRIMARY KEY (`idreparaciones`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,6 +232,7 @@ CREATE TABLE `reparaciones` (
 
 LOCK TABLES `reparaciones` WRITE;
 /*!40000 ALTER TABLE `reparaciones` DISABLE KEYS */;
+INSERT INTO `reparaciones` VALUES (1,'{\"nombre\": \"Servicio\", \"descripcion\": \"Cambio de aceite, etc\"}',1234.23),(2,'{\"nombre\": \"Ajuste de suspensión\", \"descripcion\": \"Cambio de amortiguadores alv, etc\"}',6543.33);
 /*!40000 ALTER TABLE `reparaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,8 +260,43 @@ CREATE TABLE `reparaciones_has_refacciones` (
 
 LOCK TABLES `reparaciones_has_refacciones` WRITE;
 /*!40000 ALTER TABLE `reparaciones_has_refacciones` DISABLE KEYS */;
+INSERT INTO `reparaciones_has_refacciones` VALUES (1,1),(2,2);
 /*!40000 ALTER TABLE `reparaciones_has_refacciones` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `reparaciones_refacciones`
+--
+
+DROP TABLE IF EXISTS `reparaciones_refacciones`;
+/*!50001 DROP VIEW IF EXISTS `reparaciones_refacciones`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `reparaciones_refacciones` AS SELECT 
+ 1 AS `reparaciones_idreparaciones`,
+ 1 AS `refacciones_idrefacciones`,
+ 1 AS `reparaciones_nombre`,
+ 1 AS `reparaciones_descripcion`,
+ 1 AS `reparaciones_precio`,
+ 1 AS `refacciones_nombre`,
+ 1 AS `refacciones_precio`,
+ 1 AS `refacciones_existencia`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `reparaciones_view`
+--
+
+DROP TABLE IF EXISTS `reparaciones_view`;
+/*!50001 DROP VIEW IF EXISTS `reparaciones_view`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `reparaciones_view` AS SELECT 
+ 1 AS `idreparaciones`,
+ 1 AS `nombre`,
+ 1 AS `descripcion`,
+ 1 AS `precio`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `roles`
@@ -371,6 +409,42 @@ LOCK TABLES `usuario_has_automovil` WRITE;
 INSERT INTO `usuario_has_automovil` VALUES (25,4,'123456789'),(3,1,'234235'),(3,3,'23443');
 /*!40000 ALTER TABLE `usuario_has_automovil` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `reparaciones_refacciones`
+--
+
+/*!50001 DROP VIEW IF EXISTS `reparaciones_refacciones`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `reparaciones_refacciones` AS select `rr`.`reparaciones_idreparaciones` AS `reparaciones_idreparaciones`,`rr`.`refacciones_idrefacciones` AS `refacciones_idrefacciones`,json_unquote(json_extract(`rp`.`descripcion`,'$.nombre')) AS `reparaciones_nombre`,json_unquote(json_extract(`rp`.`descripcion`,'$.descripcion')) AS `reparaciones_descripcion`,`rp`.`precio` AS `reparaciones_precio`,`r`.`nombre` AS `refacciones_nombre`,`r`.`precio` AS `refacciones_precio`,`r`.`existencia` AS `refacciones_existencia` from ((`reparaciones_has_refacciones` `rr` join `reparaciones` `rp`) join `refacciones` `r`) where ((`rr`.`refacciones_idrefacciones` = `r`.`idrefacciones`) and (`rr`.`reparaciones_idreparaciones` = `rp`.`idreparaciones`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `reparaciones_view`
+--
+
+/*!50001 DROP VIEW IF EXISTS `reparaciones_view`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `reparaciones_view` AS select `rp`.`idreparaciones` AS `idreparaciones`,json_unquote(json_extract(`rp`.`descripcion`,'$.nombre')) AS `nombre`,json_unquote(json_extract(`rp`.`descripcion`,'$.descripcion')) AS `descripcion`,`rp`.`precio` AS `precio` from `reparaciones` `rp` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -381,4 +455,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-01 22:06:19
+-- Dump completed on 2019-12-02 19:08:48
