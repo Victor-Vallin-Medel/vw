@@ -34,6 +34,7 @@ export class CarsComponent implements OnInit {
 
   expandedCar: {} | null;
 
+  isLoading: boolean = true;
   groupBy: string = "Vehículos";
   groups: Observable<{ nombre: string [], version: string [], modelo: string [] }>;
 
@@ -68,6 +69,8 @@ export class CarsComponent implements OnInit {
 
       this.dataCat.paginator = this.paginator;
       this.dataCat.sort = this.sort;
+
+      this.isLoading = false;
     });
   }
 

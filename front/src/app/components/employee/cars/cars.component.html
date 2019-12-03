@@ -45,7 +45,7 @@
     <mat-tab label="Catálogo">
       <div class="row">
         <div>
-          <table mat-table [dataSource]="dataCat" matSort>
+          <table mat-table [dataSource]="dataCat" matSort class="animated fadeIn">
       
             <!-- Nombre Column -->
             <ng-container matColumnDef="nombre">
@@ -69,6 +69,8 @@
             <tr mat-row *matRowDef="let row; columns: columnsCat;">
             </tr>
           </table>
+
+          <app-loading *ngIf="isLoading"></app-loading>
       
           <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
         </div>
@@ -78,7 +80,7 @@
     <mat-tab label="Registrados">
       <div class="row">
         <div>
-          <table mat-table [dataSource]="dataReg">
+          <table mat-table [dataSource]="dataReg" class="animated fadeIn">
       
             <!-- Nombre Column -->
             <ng-container matColumnDef="nombre">
