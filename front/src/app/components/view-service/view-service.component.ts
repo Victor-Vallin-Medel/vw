@@ -1,9 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { Component, OnInit, Input } from '@angular/core';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog } from '@angular/material';
 import { Car } from '../../models/car';
 import { HojaService } from '../../services/order.service';
-import { Order } from '../../models/order';
 import { Observable } from 'rxjs';
+import { Hoja } from 'src/app/models/hoja';
+import { SetsheetComponent } from '../employee/setsheet/setsheet.component';
 
 @Component({
   selector: 'app-view-service',
@@ -12,13 +13,18 @@ import { Observable } from 'rxjs';
 })
 export class ViewServiceComponent implements OnInit {
 
-  order: Observable<{}>;
+  @Input() order: Hoja;
+  // order: Observable<{}>;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public car: Car, private sheetRef: MatBottomSheetRef, private orderService: HojaService) {
-    this.order = this.orderService.getOrderAlive(car.idautomovil);
+  constructor(public orderService: HojaService, private sheetInfo: MatDialog) {
+    // this.order = this.orderService.getOrderAlive(car.idautomovil);
   }
 
   ngOnInit() {
+  }
+
+  openSheetInfo(order: Hoja) {
+    this.sheetInfo.open(SetsheetComponent), { data: order };
   }
 
 }

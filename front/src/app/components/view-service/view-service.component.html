@@ -1,46 +1,10 @@
-<section *ngIf="order | async; let order; else loading" class="animated fadeIn">
-  <div class="flex-container flex-between">
-    <h1 mat-card-title class="flex-child">Orden de servicio</h1>
-    <h3 class="flex-child">{{order[0].dateReception | date: short}} - {{order[0].time}}:00 hrs</h3>
-  </div>
-  <mat-divider></mat-divider>
-  <div class="container font-top">
-    <h4>Estado de servicio:</h4>
-    <div class="flex-container flex-around">
-      <p class="flex-child">
-        <span *ngIf="order.dateDelivery == null; else deliverySpan">En servicio o en espera de entrega.</span>
-        <ng-template #deliverySpan>Fecha de entrega: {{order[0].dateDelivery | date: short}}</ng-template>
-      </p>
-      <div class="flex-child">
-        <div *ngIf="order.dateDelivery == null; else deliveryIcon">
-          <button mat-icon-button color="warn">
-            <mat-icon>remove_circle</mat-icon>
-          </button>
-        </div>
-        <ng-template #deliveryIcon>
-          <button mat-icon-button style="color: forestgreen;">
-            <mat-icon>check_circle</mat-icon>
-          </button>
-        </ng-template>
-      </div>
-    </div>
-    <div class="flex-container flex-around">
-      <div class="flex-child">
-        Estado: {{order[0].status | status}}
-      </div>
-    </div>
-    <br>
-    <h4>Datos del vehículo:</h4>
-    <mat-chip-list class="flex-container flex-around">
-      <mat-chip color="primary" selected class="flex-child">{{car.name}}</mat-chip>
-      <mat-chip color="accent" selected class="flex-child">{{car.version}}</mat-chip>
-      <mat-chip style="background-color: crimson;" selected class="flex-child">{{car.model}}</mat-chip>
-      <mat-chip style="background-color: teal;" selected class="flex-child">{{car.plates}}</mat-chip>
-    </mat-chip-list>
-  </div>
-</section>
-<ng-template #loading>
-  <div class="load">
-    <mat-spinner class="spinner"></mat-spinner>
-  </div>
-</ng-template>
+<mat-list-item>
+  <mat-icon mat-list-icon color="primary">assignment</mat-icon>
+  <h4 mat-line>Omar Salazar Salazar</h4>
+  <p mat-line>Vento StartLine 2019 <i>(123456789)</i>
+    <p>
+      <button mat-icon-button color="accent" (click)="openSheetInfo(order)">
+        <mat-icon>post_add</mat-icon>
+      </button>
+</mat-list-item>
+<mat-divider></mat-divider>

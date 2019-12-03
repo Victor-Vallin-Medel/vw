@@ -56,6 +56,7 @@ import { ListUsersComponent } from './components/employee/list-users/list-users.
 import { OrdersComponent } from './components/employee/orders/orders.component';
 
 import { RolesPipe } from './pipes/roles.pipe';
+import { SetsheetComponent } from './components/employee/setsheet/setsheet.component';
 
 export function getToken(): string {
   return localStorage.getItem('token');
@@ -86,7 +87,8 @@ export function getToken(): string {
     RolesPipe,
     NotFoundComponent,
     SettingsComponent,
-    LoadingComponent
+    LoadingComponent,
+    SetsheetComponent
   ],
   imports: [
     BrowserModule,
@@ -120,7 +122,8 @@ export function getToken(): string {
     ScheduleComponent,
     ViewServiceComponent,
     HistoryServiceComponent,
-    UpdateServiceComponent
+    UpdateServiceComponent,
+    SetsheetComponent
   ],
   bootstrap: [AppComponent]
 })
