@@ -20,6 +20,21 @@ $app->group('/hojas', function() use($db){
         );
     });
 
+    $this->get('/', function($req, $res, $args) use($db){
+        $params = $req->getQueryParams();
+        if( isset($params['idstates']) ){
+            $state = $params['idstates'];
+            $res->getBody()->write(
+                json_encode(
+                    $db->query("SELECT * FROM hojaRecepcion WHERE states_idstates = $state")->fetchAll()
+                )
+            );
+            return $res->withStatus(200);
+        }
+
+        return $res->withStatus(400);
+    });
+
     $this->post('', function($req, $res, $args) use ($db){
         $data = $req->getParsedBody();
 
