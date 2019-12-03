@@ -3,9 +3,48 @@
 $app->group('/hojas', function() use($db){
 
     $this->get('', function($req, $res, $args) use ($db){
+
+
+        $result = $db->query("SELECT * FROM citas_completas")->fetchAll();
+
+        $hojas = array();
+
+        foreach($result as $row){
+            $usuario = array(
+                "idusuario" => $row['idusuario'],
+                'nombre' => $row['usuario_nombre'],
+                'apPat' => $row['usuario_apPat'],
+                'apMat' => $row['usuario_apMat'],
+            );
+
+            $cita = array(
+                'idcitas' => $row['idcitas'],
+                'confirmacion' => $row['confirmacion'],
+                'fecha' => $row['fecha']
+            );
+
+            $auto = array(
+                'idautomovil' => $row['idautomovil'],
+                'nombre' => $row['automovil_nombre'],
+                'modelo' => $row['automovil_modelo'],
+                'version' => $row['automovil_version']
+            );
+
+            $hoja = array(
+                'idhojaRecepcion' => $row['idhojaRecepcion'],
+                'observaciones' => $row['observaciones'],
+                'citas_idcitas' => $row['idcitas'],
+                'usuario' => $usuario,
+                'cita' => $cita,
+                'automovil' => $auto
+            );
+
+            array_push($hojas, $hoja);
+        }
+
         $res->getBody()->write(
             json_encode(
-                $db->query("SELECT * FROM hojaRecepcion")->fetchAll()
+                $hojas
             )
         );
         return $res->withStatus(200);
