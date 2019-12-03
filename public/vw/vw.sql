@@ -61,7 +61,7 @@ CREATE TABLE `citas` (
   KEY `fk_citas_numserie1_idx` (`numserie`),
   CONSTRAINT `fk_citas_numserie1` FOREIGN KEY (`numserie`) REFERENCES `usuario_has_automovil` (`numserie`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_citas_usuario1` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,9 +70,24 @@ CREATE TABLE `citas` (
 
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
-INSERT INTO `citas` VALUES (1,'2019-12-12 00:00:00','1',6,NULL),(2,'2019-01-01 00:00:00','0',6,NULL),(3,'2019-10-12 00:00:00','0',6,NULL),(4,'2019-11-12 00:00:00','0',6,NULL),(5,'1998-02-01 00:00:00','1',6,NULL),(6,'1998-02-01 00:00:00','1',6,NULL),(7,'1998-02-01 00:00:00','1',6,NULL),(8,'2019-12-10 10:00:00','0',25,'123456789'),(9,'2019-12-01 10:00:00','0',25,'123456789');
+INSERT INTO `citas` VALUES (1,'2019-12-12 00:00:00','1',6,NULL),(2,'2019-01-01 00:00:00','0',6,NULL),(3,'2019-10-12 00:00:00','0',6,NULL),(4,'2019-11-12 00:00:00','0',6,NULL),(5,'1998-02-01 00:00:00','1',6,NULL),(6,'1998-02-01 00:00:00','1',6,NULL),(7,'1998-02-01 00:00:00','1',6,NULL),(8,'2019-12-10 10:00:00','0',25,'123456789'),(9,'2019-12-01 10:00:00','0',25,'123456789'),(10,'2019-12-01 10:00:00','0',25,'123456789');
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER crearHoja AFTER INSERT ON citas FOR EACH ROW INSERT INTO hojaRecepcion (citas_idcitas, states_idstates) VALUES (NEW.idcitas, 1) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `ciudades`
@@ -144,7 +159,7 @@ CREATE TABLE `hojaRecepcion` (
   KEY `fk_hojaRecepcion_2_idx` (`states_idstates`),
   CONSTRAINT `fk_hojaRecepcion_1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_hojaRecepcion_2` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +168,7 @@ CREATE TABLE `hojaRecepcion` (
 
 LOCK TABLES `hojaRecepcion` WRITE;
 /*!40000 ALTER TABLE `hojaRecepcion` DISABLE KEYS */;
-INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(2,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(3,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(4,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(5,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(6,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,NULL),(7,NULL,9,NULL);
+INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,1),(2,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,2),(3,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,3),(4,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,1),(5,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,4),(6,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,5),(7,NULL,9,6),(8,NULL,10,1);
 /*!40000 ALTER TABLE `hojaRecepcion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,7 +348,7 @@ CREATE TABLE `states` (
   `idstates` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idstates`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -342,6 +357,7 @@ CREATE TABLE `states` (
 
 LOCK TABLES `states` WRITE;
 /*!40000 ALTER TABLE `states` DISABLE KEYS */;
+INSERT INTO `states` VALUES (1,'Espera de llegada'),(2,'Recepción'),(3,'Espera de asignación de mecánico'),(4,'En espera de refacciones'),(5,'Reparación'),(6,'Espera de asignación de aseador'),(7,'Lavando'),(8,'Terminado');
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -411,6 +427,14 @@ INSERT INTO `usuario_has_automovil` VALUES (25,4,'123456789'),(3,1,'234235'),(3,
 UNLOCK TABLES;
 
 --
+-- Dumping events for database 'vw'
+--
+
+--
+-- Dumping routines for database 'vw'
+--
+
+--
 -- Final view structure for view `reparaciones_refacciones`
 --
 
@@ -455,4 +479,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-02 19:08:48
+-- Dump completed on 2019-12-02 19:38:35
