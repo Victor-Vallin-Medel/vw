@@ -25,7 +25,7 @@ export class SetsheetComponent implements OnInit {
   }
 
   update() {
-    this.order$.patchHoja(this.data.states_idstates + 1).subscribe(
+    this.order$.patchHoja(this.data.states_idstates + 1, this.data.idhojaRecepcion).subscribe(
       res => {
         this.dialogRef.close();
         this.snack.open('¡Orden actualizada!', 'Close', { duration: 6000 });

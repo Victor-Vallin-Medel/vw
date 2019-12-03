@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog } from '@angular/material';
 import { Car } from '../../models/car';
 import { HojaService } from '../../services/order.service';
@@ -14,6 +14,7 @@ import { SetsheetComponent } from '../employee/setsheet/setsheet.component';
 export class ViewServiceComponent implements OnInit {
 
   @Input() order: Hoja;
+  @Output() reload = new EventEmitter<boolean>();
   // order: Observable<{}>;
 
   constructor(public orderService: HojaService, private sheetInfo: MatDialog) {
@@ -24,7 +25,9 @@ export class ViewServiceComponent implements OnInit {
   }
 
   openSheetInfo(order: Hoja) {
-    this.sheetInfo.open(SetsheetComponent, { data: order, width: '450px' });
+    const modal = this.sheetInfo.open(SetsheetComponent, { data: order, width: '450px' });
+    
+    modal.afterClosed().subscribe(() => this.reload.emit(true));
   }
 
 }
