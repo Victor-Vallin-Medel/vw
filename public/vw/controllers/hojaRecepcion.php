@@ -110,10 +110,13 @@ $app->group('/hojas', function() use($db){
         return $res->withStatus(200);
     });
 
-    $this->patch('', function($req, $res, $args) use ($db){
+    $this->patch('/{id}', function($req, $res, $args) use ($db){
+
+        $id = $args['id'];
+
         $data = $req->getParsedBody();
 
-        $columns = array('observaciones', 'citas_idcitas');
+        $columns = array('observaciones', 'citas_idcitas', 'states_idstates');
 
         foreach($data as $key => $value){
             if( !in_array($key, $columns) ){
@@ -128,16 +131,24 @@ $app->group('/hojas', function() use($db){
             }
         }
 
+        if( isset($data['observaciones']) ){
+            $json = json_encode($data['observaciones']);
+            $db->query("UPDATE hojaRecepcion SET observaciones = '$json' WHERE idhojaRecepcion = $id");
+            unset($data['observaciones']);
+        }
+
         foreach($data as $key => $value){
             if( gettype($value) == 'string' )
-                $result = $db->query("UPDATE FROM hojaRecepcion SET $key = '$value'");
+                $query = "UPDATE hojaRecepcion SET $key = '$value' WHERE idhojaRecepcion = $id";
+                
             else
-                $result = $db->query("UPDATE FROM hojaRecepcion SET $key = $value");
-            if($result->affectedRows() != 1){
+                $query = "UPDATE hojaRecepcion SET $key = $value WHERE idhojaRecepcion = $id";
+            $result = $db->query($query);
+            if($result->affectedRows() < 0){
                 $res->getBody()->write(
                     json_encode(
                         array(
-                            "error" => "No existe el campo $key"
+                            "error" => "error insertando el campo $key".$result->affectedRows()
                         )
                     )
                 );
