@@ -90,6 +90,31 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
+-- Temporary table structure for view `citas_completas`
+--
+
+DROP TABLE IF EXISTS `citas_completas`;
+/*!50001 DROP VIEW IF EXISTS `citas_completas`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `citas_completas` AS SELECT 
+ 1 AS `idusuario`,
+ 1 AS `usuario_nombre`,
+ 1 AS `usuario_apPat`,
+ 1 AS `usuario_apMat`,
+ 1 AS `idcitas`,
+ 1 AS `fecha`,
+ 1 AS `confirmacion`,
+ 1 AS `idhojaRecepcion`,
+ 1 AS `observaciones`,
+ 1 AS `numserie`,
+ 1 AS `idautomovil`,
+ 1 AS `automovil_nombre`,
+ 1 AS `automovil_version`,
+ 1 AS `automovil_modelo`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `ciudades`
 --
 
@@ -168,7 +193,7 @@ CREATE TABLE `hojaRecepcion` (
 
 LOCK TABLES `hojaRecepcion` WRITE;
 /*!40000 ALTER TABLE `hojaRecepcion` DISABLE KEYS */;
-INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,1),(2,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,2),(3,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,3),(4,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,1),(5,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,4),(6,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,5),(7,NULL,9,6),(8,NULL,10,1);
+INSERT INTO `hojaRecepcion` VALUES (1,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,1),(2,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,2),(4,'{\"observaciones\": [\"holaaa\", \"observacion2\"]}',1,1),(8,NULL,10,1);
 /*!40000 ALTER TABLE `hojaRecepcion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -196,7 +221,7 @@ CREATE TABLE `hojaRecepcion_has_reparaciones` (
 
 LOCK TABLES `hojaRecepcion_has_reparaciones` WRITE;
 /*!40000 ALTER TABLE `hojaRecepcion_has_reparaciones` DISABLE KEYS */;
-INSERT INTO `hojaRecepcion_has_reparaciones` VALUES (1,1),(2,1),(3,1),(1,2);
+INSERT INTO `hojaRecepcion_has_reparaciones` VALUES (1,1),(2,1),(1,2);
 /*!40000 ALTER TABLE `hojaRecepcion_has_reparaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +382,7 @@ CREATE TABLE `states` (
 
 LOCK TABLES `states` WRITE;
 /*!40000 ALTER TABLE `states` DISABLE KEYS */;
-INSERT INTO `states` VALUES (1,'Espera de llegada'),(2,'Recepción'),(3,'Espera de asignación de mecánico'),(4,'En espera de refacciones'),(5,'Reparación'),(6,'Espera de asignación de aseador'),(7,'Lavando'),(8,'Terminado');
+INSERT INTO `states` VALUES (1,'Espera de llegada'),(2,'Recepción'),(5,'Reparación'),(7,'Lavando'),(8,'Terminado');
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -435,6 +460,24 @@ UNLOCK TABLES;
 --
 
 --
+-- Final view structure for view `citas_completas`
+--
+
+/*!50001 DROP VIEW IF EXISTS `citas_completas`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `citas_completas` AS select `u`.`idusuario` AS `idusuario`,`u`.`nombre` AS `usuario_nombre`,`u`.`apPat` AS `usuario_apPat`,`u`.`apMat` AS `usuario_apMat`,`c`.`idcitas` AS `idcitas`,`c`.`fecha` AS `fecha`,`c`.`confirmacion` AS `confirmacion`,`h`.`idhojaRecepcion` AS `idhojaRecepcion`,`h`.`observaciones` AS `observaciones`,`ua`.`numserie` AS `numserie`,`a`.`idautomovil` AS `idautomovil`,`a`.`nombre` AS `automovil_nombre`,`a`.`version` AS `automovil_version`,`a`.`modelo` AS `automovil_modelo` from ((((`usuario` `u` join `automovil` `a`) join `citas` `c`) join `hojaRecepcion` `h`) join `usuario_has_automovil` `ua`) where ((`c`.`idcitas` = `h`.`citas_idcitas`) and (`c`.`usuario_idusuario` = `u`.`idusuario`) and (`c`.`numserie` = `ua`.`numserie`) and (`ua`.`automovil_idautomovil` = `a`.`idautomovil`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `reparaciones_refacciones`
 --
 
@@ -479,4 +522,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-02 19:38:35
+-- Dump completed on 2019-12-02 21:11:53
