@@ -7,26 +7,19 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div class="row" *ngIf="date$.list | async; let dates">
+    <mat-list *ngIf="date$.list | async; let dates">
       <div *ngFor="let cita of dates">
-        <div class="col s12 m6 l4 xl3" *ngIf="cita.confirmacion == 0">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>{{cita.fecha | date: 'mediumDate'}}</mat-card-title>
-              <mat-card-subtitle>{{cita.fecha | date: 'shortTime'}}</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <mat-chip-list>
-                <mat-chip color="primary" selected>{{cita.numserie}}</mat-chip>
-              </mat-chip-list>
-            </mat-card-content>
-            <mat-card-actions align=end>
-              <button mat-raised-button color="accent" (click)="openService(cita)">Ver orden</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
+        <mat-list-item *ngIf="cita.confirmacion == 0">
+          <mat-icon mat-list-icon color="primary">today</mat-icon>
+          <h4 mat-line> {{cita.fecha | date: 'mediumDate'}} </h4>
+          <p mat-line> {{cita.fecha | date: 'shortTime'}} </p>
+          
+          <button mat-icon-button color="accent" (click)="openService(cita)">
+            <mat-icon>post_add</mat-icon>
+          </button>    
+        </mat-list-item>
       </div>
-    </div>
+    </mat-list>
   </mat-expansion-panel>
 
   <mat-expansion-panel>
