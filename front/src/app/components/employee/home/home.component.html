@@ -1,0 +1,80 @@
+<h1 mat-dialog-title>Servicios vigentes <mat-icon color="primary">assignment</mat-icon></h1>
+<mat-accordion *ngIf="order$.list | async; let orders">
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.espera" matBadgeOverlap="false">Citas sin confirmar</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-list *ngIf="date$.list | async; let dates">
+      <div *ngFor="let cita of dates">
+        <mat-list-item *ngIf="cita.confirmacion == 0">
+          <mat-icon mat-list-icon color="primary">today</mat-icon>
+          <h4 mat-line> {{cita.fecha | date: 'mediumDate'}} </h4>
+          <p mat-line> {{cita.fecha | date: 'shortTime'}} </p>
+          
+          <button mat-icon-button color="accent" (click)="openService(cita)">
+            <mat-icon>post_add</mat-icon>
+          </button>    
+        </mat-list-item>
+      </div>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.recepcion" matBadgeOverlap="false">Espera de llegada</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+  
+    <mat-list>
+      <div *ngFor="let order of orders">
+        <app-view-service *ngIf="order.states_idstates == 1" [order]="order" (reload)="ngOnInit()"></app-view-service>
+      </div>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.recepcion" matBadgeOverlap="false">En recepción</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+  
+    <mat-list>
+      <div *ngFor="let order of orders">
+        <app-view-service *ngIf="order.states_idstates == 2" [order]="order" (reload)="ngOnInit()"></app-view-service>
+      </div>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.reparando" matBadgeOverlap="false">Reparando</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+  
+    <mat-list>
+      <div *ngFor="let order of orders">
+        <app-view-service *ngIf="order.states_idstates == 3 || order.states_idstates == 4" [order]="order" (reload)="ngOnInit()"></app-view-service>
+      </div>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p [matBadge]="status.lavando" matBadgeOverlap="false">Lavando</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+  
+    <mat-list>
+      <div *ngFor="let order of orders">
+        <app-view-service *ngIf="order.states_idstates == 5" [order]="order" (reload)="ngOnInit()"></app-view-service>
+      </div>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>

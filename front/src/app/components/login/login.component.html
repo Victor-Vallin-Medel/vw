@@ -1,0 +1,129 @@
+<mat-tab-group>
+    <mat-tab label="Inicar Sesión">
+      <mat-card>
+        <div class="row">
+          <h1 mat-dialog-title class="left">Iniciar Sesión</h1>
+        </div>
+        <div mat-dialog-content>
+          <form [formGroup]="loginFormGroup" (ngSubmit)="signInWithEmail()">
+            <div class="row">
+              <mat-form-field appearance="outline" class="col s12">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="emailCtrl" required cdkFocusInitial>
+                <mat-error *ngIf="loginFormGroup.get('emailCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+                <mat-error *ngIf="!loginFormGroup.get('emailCtrl').hasError('required') && loginFormGroup.get('emailCtrl').hasError('email')">
+                  Debes ingresar un correo válido.
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col s12">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput formControlName="passwordCtrl" required>
+                <mat-error *ngIf="loginFormGroup.get('passwordCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <button type="submit" mat-raised-button color="primary" [disabled]="loginFormGroup.invalid">Log In</button>
+          </form>
+        </div>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="Registrarse">
+      <mat-card>
+        <div class="row">
+          <h1 mat-dialog-title class="left">Registrarse</h1>
+          <mat-slide-toggle color="warn" [(ngModel)]="employee" (change)="changeBuilder()" class="right" style="padding-top: 0.5rem;">Empleado</mat-slide-toggle>
+        </div>
+        <div mat-dialog-content>
+          <form [formGroup]="signupFormGroup" (ngSubmit)="createUserWithEmail()" *ngIf="city$.list | async; let cities">
+            <div class="row">
+              <mat-form-field class="col s12 m6" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="emailCtrl" required cdkFocusInitial>
+                <mat-error *ngIf="signupFormGroup.get('emailCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+                <mat-error *ngIf="!signupFormGroup.get('emailCtrl').hasError('required') && signupFormGroup.get('emailCtrl').hasError('email')">
+                  Debes ingresar un correo válido.
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col s12 m6" appearance="outline">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput formControlName="passwordCtrl" required>
+                <mat-error *ngIf="signupFormGroup.get('passwordCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field appearance="outline" class="col s12 m4">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nameCtrl" required>
+                <mat-error *ngIf="signupFormGroup.get('nameCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col s6 m4">
+                <mat-label>Apellido Paterno</mat-label>
+                <input matInput formControlName="apPatCtrl" required>
+                <mat-error *ngIf="signupFormGroup.get('apPatCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col s6 m4">
+                <mat-label>Materno</mat-label>
+                <input matInput formControlName="apMatCtrl">
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field appearance="outline" class="col s12">
+                <mat-label>Calle</mat-label>
+                <input matInput formControlName="calleCtrl" required>
+                <mat-error *ngIf="signupFormGroup.get('calleCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col s12 m12 l4" appearance="outline">
+                <mat-label>Colonia</mat-label>
+                <input matInput formControlName="colCtrl" required>
+                <mat-error *ngIf="signupFormGroup.get('colCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="col s12 m8 l4" appearance="outline">
+                <mat-label>Ciudad</mat-label>
+                <mat-select formControlName="ciudadCtrl" required>
+                  <mat-option *ngFor="let city of cities" [value]="city.idciudades"> {{ city.nombre }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="signupFormGroup.get('ciudadCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+                </mat-form-field>
+              <mat-form-field class="col s12 m4 l4" appearance="outline">
+                <mat-label>CP</mat-label>
+                <input matInput type="number" formControlName="cpCtrl" required>
+                <mat-error *ngIf="signupFormGroup.get('cpCtrl').hasError('required')">
+                  Campo obligatorio.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row" *ngIf="employee">
+                <div class="col s12">
+                    <mat-radio-group class="row" formControlName="roleCtrl">
+                      <mat-radio-button value="1" class="col s6 m4 radio-button">Administrador</mat-radio-button>
+                      <mat-radio-button value="3" class="col s6 m4 radio-button">Mecánico</mat-radio-button>
+                      <mat-radio-button value="4" class="col s6 m4 radio-button">Aseador</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-error *ngIf="signupFormGroup.get('roleCtrl').hasError('required')" class="center">
+                      Campo obligatorio.
+                    </mat-error>
+                  </div>      
+            </div>
+            <button type="submit" mat-raised-button color="primary" [disabled]="signupFormGroup.invalid">Sign Up</button>
+          </form>
+        </div>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>

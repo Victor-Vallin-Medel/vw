@@ -1,0 +1,10 @@
+<mat-list-item>
+  <mat-icon mat-list-icon color="primary">assignment</mat-icon>
+  <h4 mat-line> {{order.usuario.nombre}} {{order.usuario.apPat}} {{order.usuario.apMat}} </h4>
+  <p mat-line> {{order.automovil.nombre}} {{order.automovil.version}} {{order.automovil.modelo}} <i>({{order.automovil.numserie}})</i></p>
+  
+  <button mat-icon-button color="accent" (click)="openSheetInfo(order)">
+    <mat-icon>post_add</mat-icon>
+  </button>    
+</mat-list-item>
+<mat-divider></mat-divider>

@@ -1,0 +1,19 @@
+.see-item {
+    color: teal;
+}
+
+.mt {
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+}
+
+tr, th {
+    width: 20%;
+}
+
+a {
+    text-decoration: none;
+}

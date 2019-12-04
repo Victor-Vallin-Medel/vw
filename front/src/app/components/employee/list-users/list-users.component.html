@@ -1,0 +1,85 @@
+<div class="flex-container flex-between">
+  <div class="flex-child">
+    <h4 mat-dialog-title>{{ router.url == '/employees'? 'Empleados' : 'Clientes'}} <mat-icon color="primary">{{router.url == '/employees'? 'assignment_ind' : 'contacts'}}</mat-icon>
+    </h4>
+  </div>
+  <div class="flex-child">
+    <button mat-stroked-button color="primary" style="margin-top: 1.5rem;" (click)="goBack()">Regresar</button>
+  </div>
+</div>
+
+<div class="row">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+  </mat-form-field>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let row"> {{row.nombre}} {{row.apPat}} {{row.apMat}} </td>
+      </ng-container>
+
+      <!-- Domicile Column -->
+      <ng-container matColumnDef="calle">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Domicilio </th>
+        <td mat-cell *matCellDef="let row"> {{row.calle}} {{row.colonia}}, {{row.ciudad}}. {{row.cp}} </td>
+      </ng-container>
+
+      <!-- Role Column -->
+      <ng-container matColumnDef="rol">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
+        <td mat-cell *matCellDef="let row"> {{row.rol | uppercase}} </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let row">
+          <div *ngIf="router.url == '/employees'; else view">
+            <button mat-icon-button class=btn-actions color="primary" [routerLink]="['/employee', row.idusuario]">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class=btn-actions color="warn" [swal]="delUser">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <swal #delUser
+              title="Precaución"
+              icon="warning"
+              text="¿Deseas eliminar al empleado {{row.nombre}} {{row.apPat}} {{row.ApMat}}"
+              showCancelButton="true"
+              cancelButtonText="Cancelar"
+              (confirm)="deleteEmployee(row.idusuario)">
+            </swal>
+          </div>
+          <ng-template #view>
+            <button mat-icon-button class=btn-actions color="primary" [routerLink]="['/customer', row.idusuario]">
+              <mat-icon>forward</mat-icon>
+            </button>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+      <mat-progress-spinner 
+        color="primary" 
+        mode="indeterminate">
+      </mat-progress-spinner>
+    </mat-card>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+  </div>
+</div>
