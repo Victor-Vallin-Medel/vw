@@ -1,4 +1,5 @@
 <?php
+
 if (PHP_SAPI == 'cli-server') {
     // To help the built-in PHP dev server, check if the request was actually for
     // something which should probably be served as a static file
@@ -35,13 +36,55 @@ require __DIR__ . '/../config/db.php';
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = 'root';
-$dbname = 'mydb';
+$dbname = 'vw';
 
 $db = new DB( $dbhost, $dbuser, $dbpass, $dbname );
 
-require __DIR__ . '/../models/model.php';
-require __DIR__ . '/../classes/cliente.php';
-require __DIR__ . '/../controllers/cliente.php';
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
+//Import classes
+require __DIR__ . '/../classes/auth.php';
+use Classes\Auth;
+
+$app->add(function ($req, $res, $next) {
+
+    /*
+    $auth = $req->getHeader('Authorization')[0];
+    if($auth == ""){
+        //No token
+    }
+    $token = explode(" ",$auth)[1];
+    $parsed_token = Auth::GetData($token);
+    print_r($parsed_token);
+
+    echo $req->getUri()->getPath();
+    */
+
+    $response = $next($req, $res);
+    return $response
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+            ->withHeader('Content-Type', 'application/json');
+});
+
+require __DIR__ . '/../controllers/usuario.php';
+require __DIR__ . '/../controllers/automovil.php';
+require __DIR__ . '/../controllers/ciudades.php';
+require __DIR__ . '/../controllers/direcciones.php';
+require __DIR__ . '/../controllers/citas.php';
+require __DIR__ . '/../controllers/hojaRecepcion.php';
+require __DIR__ . '/../controllers/reparaciones.php';
+require __DIR__ . '/../controllers/refacciones.php';
+
+// Catch-all route to serve a 404 Not Found page if none of the routes match
+// NOTE: make sure this route is defined last
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+    $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
+    return $handler($req, $res);
+});
 
 // Run app
 $app->run();

@@ -36,12 +36,13 @@ class DB {
             }
             $this->query->execute();
            	if ($this->query->errno) {
-				die('Unable to process MySQL query (check your params) - ' . $this->query->error);
+				//echo 'Unable to process MySQL query (check your params) - ' . $this->query->error;
            	}
 			$this->query_count++;
         } else {
-            die('Unable to prepare statement (check your syntax) - ' . $this->connection->error);
-        }
+            echo 'Unable to prepare statement (check your syntax) - ' . $this->connection->error;
+		}
+		//print_r($this->query);
 		return $this;
     }
 
@@ -92,6 +93,10 @@ class DB {
 
 	public function affectedRows() {
 		return $this->query->affected_rows;
+	}
+
+	public function getInsertedId(){
+		return $this->query->insert_id;
 	}
 
 	private function _gettype($var) {
