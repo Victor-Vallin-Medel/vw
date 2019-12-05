@@ -64,7 +64,7 @@ $app->group('/hojas', function() use($db){
     $this->get('/estado/{estado}', function($req, $res, $args) use ($db){
         $estado = $args['estado'];
 
-        $citas = $db->query("SELECT * FROM citas_completas WHERE states_idstates = $estado")->fetchAll();
+        $citas = $db->query("SELECT * FROM citas_completas WHERE states_idstates = $estado ORDER BY fecha DESC")->fetchAll();
 
         $return = array();
         foreach($citas as $cita){
