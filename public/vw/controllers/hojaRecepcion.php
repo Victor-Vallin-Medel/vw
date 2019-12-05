@@ -115,20 +115,25 @@ $app->group('/hojas', function() use($db){
         $params = $req->getQueryParams();
         if( isset($params['idreparaciones']) ){
             $data = $req->getParsedBody();
-            $rep = array( $data['hojaRecepcion_idhojaRecepcion'], $data['reparaciones_idreparaciones'] );
-            $result = $db->query("INSERT INTO hojaRecepcion_has_reparaciones (hojaRecepcion_idhojaRecepcion, reparaciones_idreparaciones) VALUES (?,?)",$rep);
-            echo $result->affectedRows();
-            if($result->affectedRows() != 1){
-                $res->getBody()->write(
-                    json_encode(
-                        array(
-                            "error" => "Ocurrio un error insertando los datos"
+
+            $reparaciones = $data['reparaciones_idreparaciones'];
+
+            foreach($reparaciones as $reparacion){
+                $rep = array( $data['hojaRecepcion_idhojaRecepcion'], $reparacion );
+                $result = $db->query("INSERT INTO hojaRecepcion_has_reparaciones (hojaRecepcion_idhojaRecepcion, reparaciones_idreparaciones) VALUES (?,?)",$rep);
+                if($result->affectedRows() != 1){
+                    $res->getBody()->write(
+                        json_encode(
+                            array(
+                                "error" => "Ocurrio un error insertando los datos"
+                            )
                         )
-                    )
-                        );
-                $res->withStatus(400);
+                            );
+                    return $res->withStatus(400);
+                }
             }
-            $res->withStatus(200);
+
+            return $res->withStatus(200);
         }
         return $res->withStatus(400);
     });
