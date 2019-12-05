@@ -285,5 +285,12 @@ $app->group('/usuarios', function() use ($db){
             json_encode( $db->query("SELECT u.idusuario, u.nombre, u.apPat, u.apMat, u.email, u.direcciones_iddirecciones, d.calle, d.cp, d.colonia, c.nombre as ciudad, u.roles_idroles FROM usuario u,direcciones d, ciudades c WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles <> 2")->fetchAll() )
         );
     });
+
+    $this->get('/direcciones/mapa', function($req, $res, $args) use ($db){
+        $direcciones = $db->query("SELECT CONCAT(d.calle,, d.colonia) as direccion FROM usuario u, direcciones d WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles = 1")->fetchAll();
+        foreach($direcciones as $direccion){
+            $print_r($direccion);
+        }
+    });
 });
 ?>

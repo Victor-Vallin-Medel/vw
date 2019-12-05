@@ -64,7 +64,7 @@ $app->group('/hojas', function() use($db){
     $this->get('/estado/{estado}', function($req, $res, $args) use ($db){
         $estado = $args['estado'];
 
-        $citas = $db->query("SELECT idusuario, usuario_nombre, usuario_apPat, usuario_apMat, usuario_email, idcitas, fecha, confirmacion, idhojaRecepcion, JSON_EXTRACT(observaciones,'$.observaciones') as observaciones, states_idstates, numserie, idautomovil, automovil_nombre, automovil_version, automovil_modelo FROM citas_completas WHERE states_idstates = $estado ORDER BY fecha DESC")->fetchAll();
+        $citas = $db->query("SELECT idusuario, usuario_nombre, usuario_apPat, usuario_apMat, usuario_email, idcitas, fecha, confirmacion, idhojaRecepcion, JSON_UNQUOTE(JSON_EXTRACT(observaciones,'$.observaciones')) as observaciones, states_idstates, numserie, idautomovil, automovil_nombre, automovil_version, automovil_modelo FROM citas_completas WHERE states_idstates = $estado ORDER BY fecha DESC")->fetchAll();
 
         $return = array();
         foreach($citas as $cita){
