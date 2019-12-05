@@ -61,6 +61,55 @@ $app->group('/hojas', function() use($db){
         );
     });
 
+    $this->get('/estado/{estado}', function($req, $res, $args) use ($db){
+        $estado = $args['estado'];
+
+        $citas = $db->query("SELECT * FROM citas_completas WHERE states_idstates = $estado")->fetchAll();
+
+        $return = array();
+        foreach($citas as $cita){
+            $cita_aux = array(
+                "idcitas" => $cita['idcitas'],
+                "confirmacion" => $cita['confirmacion'],
+                "fecha" => $cita['fecha'],
+                "numserie" => $cita['numserie'],
+                "usuario_idusuario" => $cita['idusuario']
+            );
+
+            $usuario = array(
+                "idusuario" => $cita['idusuario'],
+                "nombre" => $cita['usuario_nombre'],
+                "apPat" => $cita['usuario_apPat'],
+                "apMat" => $cita['usuario_apMat']
+            );
+
+            $auto = array(
+                "idautomovil" => $cita['idautomovil'],
+                "nombre" => $cita['automovil_nombre'],
+                "modelo" => $cita['automovil_modelo'],
+                "version" => $cita['automovil_version']
+            );
+
+            $hoja = array(
+                "idhojaRecepcion" => $cita['idhojaRecepcion'],
+                "observaciones" => $cita['observaciones'],
+                "citas_idcitas" => $cita['idcitas'],
+                "states_idstates" => $cita['states_idstates'],
+                "usuario" => $usuario,
+                "automovil" => $auto,
+                "cita" => $cita_aux
+            );
+            array_push($return, $hoja);
+        }
+
+        $res->getBody()->write(
+            json_encode(
+                $return
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->get('/', function($req, $res, $args) use($db){
         $params = $req->getQueryParams();
         if( isset($params['idstates']) ){
