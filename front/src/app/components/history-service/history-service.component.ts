@@ -2,6 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { HojaService } from 'src/app/services/order.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Location } from '@angular/common';
+import { RadialChartOptions, ChartDataSets, ChartType } from 'chart.js';
+import { Label } from 'ng2-charts';
+import { CitaService } from 'src/app/services/cita.service';
 
 @Component({
   selector: 'app-history-service',
@@ -27,9 +31,20 @@ export class HistoryServiceComponent implements OnInit {
 
   expandedOrder: any | null;
 
-  constructor(public order$: HojaService) {
-    // this.car = this.carService.getCar(this.order.fk_plates_car);
-  }
+  // Chart properties
+  // Radar
+  public radarChartOptions: RadialChartOptions = {
+    responsive: true,
+  };
+  public radarChartLabels: Label[];
+
+  public radarChartData: ChartDataSets[];
+  public radarChartType: ChartType = 'radar';
+
+  fetchTotal: boolean = true;
+  months_name: string [] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  constructor(public order$: HojaService, public date$: CitaService, private location: Location) { }
 
   ngOnInit() {
     this.order$.getByState(6).subscribe((partial: any []) => {
@@ -41,6 +56,12 @@ export class HistoryServiceComponent implements OnInit {
 
       this.isLoading = false;
     });
+
+    this.date$.getTotales().subscribe((partial: any[]) => {
+      this.radarChartLabels = partial.map(r => this.months_name[r.mes - 1]);
+      this.radarChartData = [{ data: partial.map(r => r.cantidad), label: "Totales" }];
+      this.fetchTotal = false;
+    });
   }
 
   applyFilter(filterValue: string) {
@@ -49,6 +70,10 @@ export class HistoryServiceComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

@@ -95,3 +95,21 @@
         <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
     </div>
 </div>
+
+<br>
+
+<h4 mat-dialog-title><span class="aligned-with-icon-relative">Servicios por mes</span> <mat-icon color="primary">today</mat-icon>
+</h4>
+
+<div class="row">
+    <mat-card class="mat-elevation-z8">
+        <div class="chart" *ngIf="!fetchTotal">
+            <canvas baseChart
+                [datasets]="radarChartData"
+                [options]="radarChartOptions"
+                [labels]="radarChartLabels"
+                [chartType]="radarChartType">
+            </canvas>
+        </div>
+    </mat-card>
+</div>
