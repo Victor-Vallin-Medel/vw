@@ -35,6 +35,16 @@ $app->group('/reparaciones', function() use ($db){
         return $res->withStatus(400);
     });
 
+    $this->get('/mes/{mes}', function($req, $res, $args) use($db){
+        $mes = $args['mes'];
+        $res->getBody()->write(
+            json_encode(
+                $db->query("CALL reparacionesPerMonth($mes)")->fetchAll()
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->get('/vista/refacciones', function($req, $res, $args) use ($db){
         $reparaciones = $db->query("SELECT * FROM reparaciones")->fetchAll();
 
