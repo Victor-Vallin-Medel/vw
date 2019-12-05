@@ -16,13 +16,6 @@ import { Hoja } from 'src/app/models/hoja';
 })
 export class HomeComponent implements OnInit {
 
-  orders: Order [];
-  status = {
-    espera: 0,
-    recepcion: 0,
-    reparando: 0,
-    lavando: 0,
-  }
 
   constructor(public date$: CitaService, public order$: HojaService, private sheetService: MatBottomSheet, private router: Router) { }
 
@@ -36,15 +29,8 @@ export class HomeComponent implements OnInit {
       data: cita
     });
 
-    ref.afterDismissed().subscribe(() => {
-      this.status = {
-        espera: 0,
-        recepcion: 0,
-        reparando: 0,
-        lavando: 0,
-      }
-      this.ngOnInit()
-    });
+    ref.afterDismissed().subscribe(() => 
+      this.ngOnInit());
   }
 
 }
