@@ -26,4 +26,8 @@ export class RefaccionService {
     });
   }
 
+  getMax() {
+    return this.http.get<any>(`${this.URL}/vista/max`);
+  }
+
 }

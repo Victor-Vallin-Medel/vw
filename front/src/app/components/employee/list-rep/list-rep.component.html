@@ -65,6 +65,27 @@
 
         <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
     </div>
+    <br>
+    <mat-card class="mat-elevation-z8">
+        <mat-list dense class="row">
+            <div class="col s12 m6">
+                <h4 mat-subheader>Reparacion más usada:</h4>
+                <mat-list-item *ngIf="repMax | async; let repm">
+                    <mat-icon mat-list-icon style="color: teal;">fiber_smart_record</mat-icon>
+                    <h4 mat-line class="example-rep-info">{{repm[0].nombre}} - Cantidad: {{repm[0].cantidad}} </h4>
+                    <p mat-line class="example-rep-info"> {{repm[0].descripcion}} </p>
+                </mat-list-item>
+            </div>
+            <div class="col s12 m6">
+                <h4 mat-subheader>Refacción más vendida:</h4>
+                <mat-list-item *ngIf="refMax | async; let repm">
+                    <mat-icon mat-list-icon style="color: teal;">fiber_smart_record</mat-icon>
+                    <h4 mat-line class="example-rep-info">{{repm[0].nombre}} - Cantidad: {{repm[0].total_vendidas}} </h4>
+                    <!-- <p mat-line class="example-rep-info"> {{repm[0].descripcion}} </p> -->
+                </mat-list-item>
+            </div>
+        </mat-list>
+    </mat-card>
 </div>
 
 <br>
