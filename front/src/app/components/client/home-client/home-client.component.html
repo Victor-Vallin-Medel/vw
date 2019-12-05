@@ -35,36 +35,24 @@
     </div> -->
   </mat-expansion-panel>
 
-  <mat-expansion-panel>
+  <mat-expansion-panel *ngIf="orders2 | async; let orders">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <p>En servicio</p>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <!-- <div class="row">
-      <div *ngFor="let car of Auto">
-        <div class="col s12 m6 l4" *ngIf="false"> <!--car.status != 0
-          <mat-card >
-            <mat-card-header>
-              <mat-card-title>{{car.nombre}}</mat-card-title>
-              <mat-card-subtitle>{{car.modelo}} </mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <mat-chip-list>
-                <mat-chip color="primary" selected>{{car.num_serie}}</mat-chip>
-                <mat-chip color="accent" selected>{{car.version}}</mat-chip>
-              </mat-chip-list>
-            </mat-card-content>
-            <mat-card-actions align=end>
-              <button mat-icon-button class="see-item" (click)="openCarService(car)"><mat-icon>visibility</mat-icon></button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-
+    <mat-list>
+      <div *ngFor="let order of orders">
+        <mat-list-item>
+          <mat-icon mat-list-icon color="primary">directions_car</mat-icon>
+          <h4 mat-line> {{order.automovil.nombre}} {{order.automovil.version}} {{order.automovil.modelo}} ({{order.cita.numserie}})</h4>
+          <p mat-line> {{order.cita.fecha | date: 'short'}} </p>
+          <p mat-line> {{order.estado}} </p>
+        </mat-list-item>
       </div>
     
-    </div> -->
+    </mat-list>
   </mat-expansion-panel>
 
 </mat-accordion>

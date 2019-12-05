@@ -8,6 +8,8 @@ import { HistoryServiceComponent } from '../../history-service/history-service.c
 import { ViewServiceComponent } from '../../view-service/view-service.component';
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session.service';
+import { UserService } from 'src/app/services/user.service';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-home-client',
@@ -19,9 +21,10 @@ export class HomeClientComponent implements OnInit {
   orders: any [];
   isLoading: boolean = true;
   cantidad: number;
+  orders2: Observable<any []>
   displayedColumns: string[] = ['fecha', 'nombre', 'version', 'modelo', 'numserie'];
 
-  constructor(private session: SessionService, public car$: CarsService, public order$: HojaService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
+  constructor(private session: SessionService, public car$: CarsService, public order$: HojaService, public user$: UserService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
 
   }
 
@@ -37,6 +40,10 @@ export class HomeClientComponent implements OnInit {
       this.isLoading = false;
 
       this.orders = partial;
+    });
+
+    this.user$.getHojas(this.session.user.idusuario).subscribe((partial: any []) => {
+      this.orders2 = new BehaviorSubject<any []>(partial).asObservable();
     });
   }
 

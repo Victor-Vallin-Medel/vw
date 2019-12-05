@@ -100,5 +100,9 @@ export class UserService {
   deleteUser(uid: number) {
     return this.http.delete(`${this.URL}/${uid}`);
   }
+
+  getHojas(uid: number) {
+    return this.http.get<any []>(`${this.URL}/hojas/${uid}`);
+  }
   
 }
