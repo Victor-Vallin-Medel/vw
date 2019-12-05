@@ -16,6 +16,6 @@ Vagrant.configure("2") do |config|
         cd /var/www
         composer require slim/slim "^3.12"
         echo "Importando db"
-        mysql -u root -proot < /var/www/vw.sql
+        # mysql -u root -proot < /var/www/vw.sql
     SHELL
 end

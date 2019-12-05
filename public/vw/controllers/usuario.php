@@ -377,10 +377,11 @@ $app->group('/usuarios', function() use ($db){
 
     $this->get('/direcciones/mapa', function($req, $res, $args) use ($db){
         $points = array();
-        $direcciones = $db->query("SELECT CONCAT(d.calle,' ', d.colonia) as direccion FROM usuario u, direcciones d WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles = 2")->fetchAll();
+        $direcciones = $db->query("SELECT CONCAT(d.calle,' ', d.colonia,' ', c.nombre) as direccion FROM usuario u, direcciones d, ciudades c WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles = 2 AND d.ciudades_idciudades = c.idciudades")->fetchAll();
         foreach($direcciones as $direccion){
             $dir = $direccion['direccion'];
             $dir = str_replace(" ", "+", $dir);
+            $dir = str_replace("#","",$dir);
             $r = "https://maps.googleapis.com/maps/api/geocode/json?address=$dir&key=AIzaSyD3jxfLl4HZP2L7T1vtv9dTPn8-5evgzDA";
             $point = file_get_contents($r);
             array_push($points, json_decode($point));

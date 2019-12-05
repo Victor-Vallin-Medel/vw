@@ -62,6 +62,15 @@ $app->group('/reparaciones', function() use ($db){
         return $res->withStatus(200);
     });
 
+    $this->get('/vista/max', function($req,$res,$args) use($db){
+        $res->getBody()->write(
+            json_encode(
+                $db->query("CALL maxReparacion()")->fetchAll()
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->post('', function($req, $res, $args) use($db){
         $data = $req->getParsedBody();
 
