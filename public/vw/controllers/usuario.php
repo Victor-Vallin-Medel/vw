@@ -182,7 +182,13 @@ $app->group('/usuarios', function() use ($db){
     //Hojas no terminadas mayores a 2
     $this->get('/hojas/{id}', function($req, $res, $args) use ($db){
         $id = $args['id'];
-        $citas = $db->query("SELECT idusuario, usuario_nombre, usuario_apPat, usuario_apMat, usuario_email, idcitas, fecha, confirmacion, idhojaRecepcion, JSON_UNQUOTE(JSON_EXTRACT(observaciones,'$.observaciones')) as observaciones, states_idstates, numserie, idautomovil, automovil_nombre, automovil_version, automovil_modelo FROM citas_completas WHERE states_idstates <> 6 AND states_idstates > 1 ORDER BY fecha DESC")->fetchAll();
+        $citas = $db->query("SELECT s.nombre,c.idusuario, c.usuario_nombre, c.usuario_apPat, c.usuario_apMat, c.usuario_email, c.idcitas, c.fecha, c.confirmacion, c.idhojaRecepcion, JSON_UNQUOTE(JSON_EXTRACT(c.observaciones,'$.observaciones')) as observaciones, c.states_idstates, c.numserie, c.idautomovil, c.automovil_nombre, c.automovil_version, c.automovil_modelo 
+        FROM citas_completas c, states s
+        WHERE states_idstates <> 6 
+        AND states_idstates > 1 
+        AND idusuario = $id
+        AND c.states_idstates = s.idstates
+        ORDER BY fecha DESC")->fetchAll();
         $return = array();
         foreach($citas as $cita){
             $cita_aux = array(
@@ -216,6 +222,7 @@ $app->group('/usuarios', function() use ($db){
                 "observaciones" => $cita['observaciones'],
                 "citas_idcitas" => $cita['idcitas'],
                 "states_idstates" => $cita['states_idstates'],
+                "estado" => $cita['nombre'],
                 "usuario" => $usuario,
                 "automovil" => $auto,
                 "cita" => $cita_aux,
