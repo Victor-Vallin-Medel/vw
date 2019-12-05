@@ -57,6 +57,7 @@ import { OrdersComponent } from './components/employee/orders/orders.component';
 
 import { RolesPipe } from './pipes/roles.pipe';
 import { SetsheetComponent } from './components/employee/setsheet/setsheet.component';
+import { ListRepComponent } from './components/employee/list-rep/list-rep.component';
 
 export function getToken(): string {
   return localStorage.getItem('token');
@@ -88,7 +89,8 @@ export function getToken(): string {
     NotFoundComponent,
     SettingsComponent,
     LoadingComponent,
-    SetsheetComponent
+    SetsheetComponent,
+    ListRepComponent
   ],
   imports: [
     BrowserModule,

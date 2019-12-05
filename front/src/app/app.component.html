@@ -90,6 +90,10 @@
           <mat-icon mat-list-icon>assignment_ind</mat-icon>
           <a class="item-link" mat-line>Empleados</a>
         </mat-list-item>
+        <mat-list-item routerLink="/repairs" routerLinkActive="active-link" *ngIf="session.user.roles_idroles == 1 || session.user.roles_idroles == 3">
+          <mat-icon mat-list-icon>build</mat-icon>
+          <a class="item-link" mat-line>Reparaciones</a>
+        </mat-list-item>
         <mat-list-item routerLink="/orders" routerLinkActive="active-link">
           <mat-icon mat-list-icon>assignment</mat-icon>
           <a class="item-link" mat-line>Ordenes de servicio</a>
