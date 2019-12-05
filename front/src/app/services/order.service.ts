@@ -33,4 +33,11 @@ export class HojaService {
   patchHoja(state: number, uid: number) {
     return this.http.patch(`${this.URL}/${uid}`, { states_idstates: state });
   }
+
+  setRefs(uid: number, refs: number []) {
+    return this.http.post(`${this.URL}/?idreparaciones=${uid}`, {
+      reparaciones_idreparaciones : refs,
+      hojaRecepcion_idhojaRecepcion: uid
+    });
+  }
 }

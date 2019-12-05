@@ -39,5 +39,12 @@
     </div>
 </mat-card-content>
 <mat-dialog-actions align="end">
-    <button mat-raised-button [color]="data.states_idstates != 3? 'primary': 'accent'" (click)="update()" *ngIf="right"> {{ data.states_idstates != 3? 'Actualizar': 'Solicitar'}} </button>
+    <button
+        mat-raised-button
+        [color]="data.states_idstates != 3? 'primary': 'accent'"
+        [disabled]="data.states_idstates == 3 && selectedRefs.length <= 0"
+        (click)="update()"
+        *ngIf="right">
+        {{ data.states_idstates != 3? 'Actualizar': 'Solicitar'}}
+    </button>
 </mat-dialog-actions>

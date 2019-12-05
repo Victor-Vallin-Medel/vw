@@ -14,7 +14,7 @@ import { ReparacionService } from 'src/app/services/reparacion.service';
 export class SetsheetComponent implements OnInit {
 
   right: boolean = false;
-  selectedRefs: [];
+  selectedRefs: [] = [];
 
   constructor(public dialogRef: MatDialogRef<SetsheetComponent>, @Inject(MAT_DIALOG_DATA) public data: Hoja, public session: SessionService, public order$: HojaService, public ref$: ReparacionService, private snack: MatSnackBar) { }
 
@@ -29,16 +29,23 @@ export class SetsheetComponent implements OnInit {
   }
 
   update() {
-    // TODO: Insert refs.
+    if (this.data.states_idstates == 3) {
+      this.order$.setRefs(this.data.idhojaRecepcion, this.selectedRefs).subscribe(
+        res => this.updateService(),
+        (err: HttpErrorResponse) => this.snack.open(err.error.error, 'Close', { duration: 6000 })
+      );
+    }
+    else this.updateService();
+  }
+
+  updateService() {
     this.order$.patchHoja(this.data.states_idstates + 1, this.data.idhojaRecepcion).subscribe(
       res => {
         this.dialogRef.close();
         this.snack.open('¡Orden actualizada!', 'Close', { duration: 6000 });
       },
-      (err: HttpErrorResponse) => {
-        this.snack.open(err.error.error, 'Close', { duration: 6000 });
-      }
-    )
+      (err: HttpErrorResponse) => this.snack.open(err.error.error, 'Close', { duration: 6000 })
+    );
   }
 
 }
