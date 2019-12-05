@@ -165,12 +165,11 @@
       </mat-tab>
 
       <!-- Contraseña -->
-      <mat-tab *ngIf="router.url == '/settings'">
+      <!-- <mat-tab *ngIf="router.url == '/settings'">
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">lock</mat-icon>
           Contraseña
         </ng-template>
-        <!-- Form to update password -->
         <form [formGroup]="securityFormGroup" (ngSubmit)="updateUser(securityFormGroup, user.idusuario, 3)" class="form-tab">
             <div class="row">
               <mat-form-field appearance="outline" class="col s12">
@@ -192,7 +191,7 @@
               <button type="submit" mat-raised-button color="primary" [disabled]="securityFormGroup.invalid" class="middle">Modificar</button>
             </div>
           </form>
-      </mat-tab>
+      </mat-tab> -->
     </mat-tab-group>
   </div>
 </div>

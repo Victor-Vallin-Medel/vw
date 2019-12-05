@@ -115,7 +115,13 @@ export class SettingsComponent implements OnInit {
     data = Object.assign({}, source);
 
     this.user$.patchUser(data, id, route).subscribe(
-      (res) => this.snack.open('Usuario actualizado.', 'Close', { duration: 6000 }),
+      (res: any) => {
+        this.snack.open('Usuario actualizado.', 'Close', { duration: 6000 });
+        
+        if (type != 2) {
+          localStorage.setItem('token', res.jwt);
+        }
+      },
       (err: HttpErrorResponse) => {
         this.user$.current$.next(this.userCopy);
         this.user$.current = this.user$.current$.asObservable();
