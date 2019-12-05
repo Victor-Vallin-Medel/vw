@@ -8,7 +8,7 @@
 <mat-card-header>
     <mat-card-title> {{data.usuario.nombre}} {{data.usuario.apPat}} {{data.usuario.apMat}} </mat-card-title>
     <mat-card-subtitle> {{data.automovil.nombre}} {{data.automovil.version}} {{data.automovil.modelo}} <i>({{data.automovil.numserie}})</i> </mat-card-subtitle>
-</mat-card-header>
+</mat-card-header><br>
 <mat-divider></mat-divider><br>
 <mat-card-content>
     <div class="row">
@@ -26,7 +26,7 @@
         </div>
     </form> -->
 
-    <!-- Reparando -->
+    <!-- Espera de refacciones -->
     <div *ngIf="data.states_idstates == 3 && right && ref$.list | async; let refs">
         <mat-divider></mat-divider>
         <mat-selection-list #rep [(ngModel)]="selectedRefs">
@@ -37,6 +37,18 @@
         
         <p> Reparaciones seleccionadas: {{rep.selectedOptions.selected.length}} </p>
     </div>
+
+    <!-- Reparando -->
+    <div *ngIf="data.states_idstates == 4 && right && ref$.list | async; let refs">
+        <mat-divider></mat-divider>
+        <mat-list>
+            <h3 mat-subheader>Lista de reparaciones</h3>
+            <mat-list-item *ngFor="let ref of refs">
+                {{ ref.parser.nombre }}
+            </mat-list-item>
+        </mat-list>
+    </div>
+
 </mat-card-content>
 <mat-dialog-actions align="end">
     <button

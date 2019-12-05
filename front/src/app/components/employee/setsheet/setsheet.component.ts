@@ -25,7 +25,8 @@ export class SetsheetComponent implements OnInit {
 
     else this.right = false;
 
-    this.ref$.getReparaciones();
+    if (this.data.states_idstates == 3) this.ref$.getReparaciones();
+    else if (this.data.states_idstates == 4) this.ref$.getHojaReparaciones(this.data.idhojaRecepcion);
   }
 
   update() {

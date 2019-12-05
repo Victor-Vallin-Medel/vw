@@ -37,4 +37,13 @@ export class ReparacionService {
   getReparacionesOf() {
     return this.http.get<Reparacion []>(`${this.URL}`);
   }
+
+  getHojaReparaciones(uid: number) {
+    return this.http.get<Reparacion []>(`${this.URL}/?idhojaRecepcion=${uid}`).subscribe((partial: Reparacion []) => {
+      partial.forEach(r => r.parser = JSON.parse(r.descripcion));
+      
+      this.list$.next(partial);
+      this.list = this.list$.asObservable();
+    });
+  }
 }
