@@ -34,16 +34,6 @@ CREATE TABLE `automovil` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `automovil`
---
-
-LOCK TABLES `automovil` WRITE;
-/*!40000 ALTER TABLE `automovil` DISABLE KEYS */;
-INSERT INTO `automovil` VALUES (1,'Polo','Comfortline','2012'),(2,'Polo','Economica','2018'),(3,'Vento','Comfortline','2019'),(4,'Vento','Economica','2010');
-/*!40000 ALTER TABLE `automovil` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `citas`
 --
 
@@ -63,16 +53,6 @@ CREATE TABLE `citas` (
   CONSTRAINT `fk_citas_usuario1` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `citas`
---
-
-LOCK TABLES `citas` WRITE;
-/*!40000 ALTER TABLE `citas` DISABLE KEYS */;
-INSERT INTO `citas` VALUES (1,'2019-12-10 00:00:00','0',2,'23423'),(2,'2019-12-09 00:00:00','0',2,'45234'),(3,'2019-01-02 00:00:00','1',2,'23423');
-/*!40000 ALTER TABLE `citas` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -130,16 +110,6 @@ CREATE TABLE `ciudades` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ciudades`
---
-
-LOCK TABLES `ciudades` WRITE;
-/*!40000 ALTER TABLE `ciudades` DISABLE KEYS */;
-INSERT INTO `ciudades` VALUES (1,'Aguascalientes');
-/*!40000 ALTER TABLE `ciudades` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `direcciones`
 --
 
@@ -159,16 +129,6 @@ CREATE TABLE `direcciones` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `direcciones`
---
-
-LOCK TABLES `direcciones` WRITE;
-/*!40000 ALTER TABLE `direcciones` DISABLE KEYS */;
-INSERT INTO `direcciones` VALUES (1,'Granjenito #114','20240','Barrio del Encino',1),(2,'Colón #204','20240','Barrio de la estación',1),(3,'Paseo del Oliver #732','23423','Santa Anita',1),(4,'Alba','238947','ajsdh',1);
-/*!40000 ALTER TABLE `direcciones` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `hojaRecepcion`
 --
 
@@ -185,18 +145,8 @@ CREATE TABLE `hojaRecepcion` (
   KEY `fk_hojaRecepcion_2_idx` (`states_idstates`),
   CONSTRAINT `fk_hojaRecepcion_1` FOREIGN KEY (`citas_idcitas`) REFERENCES `citas` (`idcitas`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_hojaRecepcion_2` FOREIGN KEY (`states_idstates`) REFERENCES `states` (`idstates`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `hojaRecepcion`
---
-
-LOCK TABLES `hojaRecepcion` WRITE;
-/*!40000 ALTER TABLE `hojaRecepcion` DISABLE KEYS */;
-INSERT INTO `hojaRecepcion` VALUES (1,NULL,1,1),(2,NULL,2,1),(3,NULL,3,1),(9,NULL,1,1),(10,NULL,2,1),(11,NULL,3,1),(12,NULL,1,1),(13,NULL,2,1),(14,NULL,3,1);
-/*!40000 ALTER TABLE `hojaRecepcion` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `hojaRecepcion_has_reparaciones`
@@ -217,16 +167,6 @@ CREATE TABLE `hojaRecepcion_has_reparaciones` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `hojaRecepcion_has_reparaciones`
---
-
-LOCK TABLES `hojaRecepcion_has_reparaciones` WRITE;
-/*!40000 ALTER TABLE `hojaRecepcion_has_reparaciones` DISABLE KEYS */;
-INSERT INTO `hojaRecepcion_has_reparaciones` VALUES (1,1),(3,1),(1,2),(2,2);
-/*!40000 ALTER TABLE `hojaRecepcion_has_reparaciones` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `refacciones`
 --
 
@@ -243,16 +183,6 @@ CREATE TABLE `refacciones` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `refacciones`
---
-
-LOCK TABLES `refacciones` WRITE;
-/*!40000 ALTER TABLE `refacciones` DISABLE KEYS */;
-INSERT INTO `refacciones` VALUES (1,'Kit de servicio',50,14),(2,'Llanta',800,24);
-/*!40000 ALTER TABLE `refacciones` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `reparaciones`
 --
 
@@ -266,16 +196,6 @@ CREATE TABLE `reparaciones` (
   PRIMARY KEY (`idreparaciones`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `reparaciones`
---
-
-LOCK TABLES `reparaciones` WRITE;
-/*!40000 ALTER TABLE `reparaciones` DISABLE KEYS */;
-INSERT INTO `reparaciones` VALUES (1,'{\"nombre\": \"Servicio\", \"descripcion\": \"Servicio completo cambio de aceite y todo\"}',499.99),(2,'{\"nombre\": \"Cambio de llantas\", \"descripcion\": \"Cambio de las 4 llantas\"}',2999.99);
-/*!40000 ALTER TABLE `reparaciones` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `reparaciones_has_refacciones`
@@ -295,16 +215,6 @@ CREATE TABLE `reparaciones_has_refacciones` (
   CONSTRAINT `fk_reparaciones_has_refacciones_reparaciones1` FOREIGN KEY (`reparaciones_idreparaciones`) REFERENCES `reparaciones` (`idreparaciones`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `reparaciones_has_refacciones`
---
-
-LOCK TABLES `reparaciones_has_refacciones` WRITE;
-/*!40000 ALTER TABLE `reparaciones_has_refacciones` DISABLE KEYS */;
-INSERT INTO `reparaciones_has_refacciones` VALUES (1,1,'1'),(2,2,'4');
-/*!40000 ALTER TABLE `reparaciones_has_refacciones` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Temporary table structure for view `reparaciones_refacciones`
@@ -355,16 +265,6 @@ CREATE TABLE `roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `roles`
---
-
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'Administrador'),(2,'Cliente'),(3,'Mecánico'),(4,'Aseador');
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `states`
 --
 
@@ -377,16 +277,6 @@ CREATE TABLE `states` (
   PRIMARY KEY (`idstates`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `states`
---
-
-LOCK TABLES `states` WRITE;
-/*!40000 ALTER TABLE `states` DISABLE KEYS */;
-INSERT INTO `states` VALUES (1,'En espera de llegada'),(2,'Recepción'),(3,'En espera de refacciones'),(4,'Reparación'),(5,'Lavando'),(6,'Terminado');
-/*!40000 ALTER TABLE `states` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `usuario`
@@ -414,16 +304,6 @@ CREATE TABLE `usuario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuario`
---
-
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Daniel','Molina','','molina@gmail.com','$2y$10$NmTpNkKrMIqZl8vLj3gAs.uZVmwSErPnKm/qiJImlw53DKUGgcglS',1,1),(2,'Omar','Salazar','','omar@gmail.com','$2y$10$i7KeuvuUoP5TXXdXHl5o4O1ypIcCDEgAjZAcrjlaDCHh1ptrJXt1m',2,2),(3,'Mario','Gonzalez','','mario@gmail.com','$2y$10$iRb37Yprk.dnhy7x8b2rd.7ohrEF/WO2hPK678gsbFghLbX2bsAie',3,3),(4,'Victor','Vallin','','victor@gmail.com','$2y$10$2wuc3ONqCa1N1MZhRqHs8u4zvbP3dq1kpVaXaSXeeJRYDIuNzH0P.',4,4);
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `usuario_has_automovil`
 --
 
@@ -442,16 +322,6 @@ CREATE TABLE `usuario_has_automovil` (
   CONSTRAINT `fk_usuario_has_automovil_usuario1` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuario_has_automovil`
---
-
-LOCK TABLES `usuario_has_automovil` WRITE;
-/*!40000 ALTER TABLE `usuario_has_automovil` DISABLE KEYS */;
-INSERT INTO `usuario_has_automovil` VALUES (2,1,'23423'),(2,4,'45234');
-/*!40000 ALTER TABLE `usuario_has_automovil` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Dumping events for database 'vw'
@@ -524,4 +394,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-04 18:41:32
+-- Dump completed on 2019-12-04 18:28:27
