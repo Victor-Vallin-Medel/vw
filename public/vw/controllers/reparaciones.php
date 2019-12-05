@@ -21,6 +21,20 @@ $app->group('/reparaciones', function() use ($db){
         return $res->withStatus(200);
     });
 
+    $this->get('/', function($req, $res, $args) use($db){
+        $params = $req->getQueryParams();
+        if( isset($params['idhojaRecepcion']) ){
+            $id = $params['idhojaRecepcion'];
+            $res->getBody()->write(
+                json_encode(
+                    $db->query("SELECT r.* FROM hojaRecepcion_has_reparaciones hr, reparaciones r WHERE r.idreparaciones = hr.reparaciones_idreparaciones AND hr.hojaRecepcion_idhojaRecepcion = $id")->fetchAll()
+                )
+            );
+            return $res->withStatus(200);
+        }
+        return $res->withStatus(400);
+    });
+
     $this->post('', function($req, $res, $args) use($db){
         $data = $req->getParsedBody();
 
