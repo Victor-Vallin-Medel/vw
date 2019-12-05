@@ -16,6 +16,9 @@ import { LoadingBarHttpClientModule } from "@ngx-loading-bar/http-client";
 // Sweet Alert
 import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
 
+// Charts
+import { ChartsModule } from 'ng2-charts';
+
 // Guards
 import { AuthEmployeeGuard } from './guards/auth-employee.guard';
 import { AuthUserGuard } from './guards/auth-user.guard';
@@ -57,6 +60,7 @@ import { OrdersComponent } from './components/employee/orders/orders.component';
 
 import { RolesPipe } from './pipes/roles.pipe';
 import { SetsheetComponent } from './components/employee/setsheet/setsheet.component';
+import { ListRepComponent } from './components/employee/list-rep/list-rep.component';
 
 export function getToken(): string {
   return localStorage.getItem('token');
@@ -88,7 +92,8 @@ export function getToken(): string {
     NotFoundComponent,
     SettingsComponent,
     LoadingComponent,
-    SetsheetComponent
+    SetsheetComponent,
+    ListRepComponent
   ],
   imports: [
     BrowserModule,
@@ -100,6 +105,7 @@ export function getToken(): string {
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
     HttpClientModule,
+    ChartsModule,
     SweetAlert2Module.forRoot(),
     JwtModule.forRoot({
       config: {

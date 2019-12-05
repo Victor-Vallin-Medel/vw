@@ -11,6 +11,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ListUsersComponent } from './components/employee/list-users/list-users.component';
 import { ClientDetailsComponent } from './components/employee/client-details/client-details.component';
 import { CarsComponent } from './components/employee/cars/cars.component';
+import { ListRepComponent } from './components/employee/list-rep/list-rep.component';
+import { HistoryServiceComponent } from './components/history-service/history-service.component';
 
 const routes_clients: Routes = [
   { path: 'dashboard', component: HomeClientComponent, canActivate: [AuthUserGuard] },
@@ -18,17 +20,18 @@ const routes_clients: Routes = [
 
 const routes_employee: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthEmployeeGuard] },
-  { path: 'employees', component: ListUsersComponent },
-  { path: 'customers', component: ListUsersComponent },
-  { path: 'employee/:id', component: SettingsComponent },
-  { path: 'customer/:id', component: ClientDetailsComponent },
-  { path: 'cars', component: CarsComponent }
+  { path: 'employees', component: ListUsersComponent, canActivate: [AuthEmployeeGuard] },
+  { path: 'customers', component: ListUsersComponent, canActivate: [AuthEmployeeGuard] },
+  { path: 'employee/:id', component: SettingsComponent, canActivate: [AuthEmployeeGuard] },
+  { path: 'customer/:id', component: ClientDetailsComponent, canActivate: [AuthEmployeeGuard] },
+  { path: 'cars', component: CarsComponent, canActivate: [AuthEmployeeGuard] },
+  { path: 'repairs', component: ListRepComponent, canActivate: [AuthEmployeeGuard] },
+  { path: 'orders', component: HistoryServiceComponent, canActivate: [AuthEmployeeGuard] }
 ];
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'settings', component: SettingsComponent },
-  { path: 'car/:id', component: ViewCarComponent },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: '404', pathMatch: 'full' },

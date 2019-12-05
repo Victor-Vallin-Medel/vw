@@ -30,7 +30,26 @@ export class HojaService {
     });
   }
 
-  patchHoja(state: number, uid: number) {
-    return this.http.patch(`${this.URL}/${uid}`, { states_idstates: state });
+  patchHoja(object: {}, uid: number) {
+    return this.http.patch(`${this.URL}/${uid}`, object);
+  }
+
+  setRefs(uid: number, refs: number []) {
+    return this.http.post(`${this.URL}/?idreparaciones=${uid}`, {
+      reparaciones_idreparaciones : refs,
+      hojaRecepcion_idhojaRecepcion: uid
+    });
+  }
+
+  getByState(state: number) {
+    return this.http.get<any []>(`${this.URL}/estado/${state}`);
+  }
+
+  getRepsTotal() {
+    return this.http.get<any []>(`${this.URL}/servicios/mes`);
+  }
+
+  getHojasUsuario(uid: number) {
+    return this.http.get<any []>(`${this.URL}/?idusuario=${uid}`);
   }
 }

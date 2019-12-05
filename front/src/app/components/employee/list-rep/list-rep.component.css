@@ -1,0 +1,46 @@
+.mt {
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+tr, th {
+    width: 33.33%;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-rep-row:not(.example-expanded-row):hover {
+    background: rgb(214, 214, 214);
+    cursor: pointer;
+}
+
+tr.example-rep-row:not(.example-expanded-row):active {
+    background: rgb(214, 214, 214);
+}
+
+.example-rep-row td {
+    border-bottom-width: 0;
+}
+
+.example-rep-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-rep-description {
+    padding: 16px;
+}
+
+.example-rep-info {
+    color: rgb(56, 56, 56);
+}

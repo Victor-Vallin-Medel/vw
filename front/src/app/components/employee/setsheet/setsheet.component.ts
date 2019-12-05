@@ -5,6 +5,7 @@ import { SessionService } from 'src/app/services/session.service';
 import { HojaService } from 'src/app/services/order.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ReparacionService } from 'src/app/services/reparacion.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-setsheet',
@@ -14,7 +15,10 @@ import { ReparacionService } from 'src/app/services/reparacion.service';
 export class SetsheetComponent implements OnInit {
 
   right: boolean = false;
-  selectedRefs: [];
+  selectedRefs: [] = [];
+  observaciones: string [] = [];
+
+  objTemp: string = "";
 
   constructor(public dialogRef: MatDialogRef<SetsheetComponent>, @Inject(MAT_DIALOG_DATA) public data: Hoja, public session: SessionService, public order$: HojaService, public ref$: ReparacionService, private snack: MatSnackBar) { }
 
@@ -25,20 +29,37 @@ export class SetsheetComponent implements OnInit {
 
     else this.right = false;
 
-    this.ref$.getReparaciones();
+    if (this.data.states_idstates == 3) this.ref$.getReparaciones();
+    else if (this.data.states_idstates == 4) this.ref$.getHojaReparaciones(this.data.idhojaRecepcion);
   }
 
   update() {
-    // TODO: Insert refs.
-    this.order$.patchHoja(this.data.states_idstates + 1, this.data.idhojaRecepcion).subscribe(
+    if (this.data.states_idstates == 3) {
+      this.order$.setRefs(this.data.idhojaRecepcion, this.selectedRefs).subscribe(
+        res => this.updateService(),
+        (err: HttpErrorResponse) => this.snack.open(err.error.error, 'Close', { duration: 6000 })
+      );
+    }
+    else this.updateService();
+  }
+
+  updateService() {
+    this.order$.patchHoja(this.getAndSet(), this.data.idhojaRecepcion).subscribe(
       res => {
         this.dialogRef.close();
         this.snack.open('¡Orden actualizada!', 'Close', { duration: 6000 });
       },
-      (err: HttpErrorResponse) => {
-        this.snack.open(err.error.error, 'Close', { duration: 6000 });
-      }
-    )
+      (err: HttpErrorResponse) => this.snack.open(err.error.error, 'Close', { duration: 6000 })
+    );
+  }
+
+  getAndSet() {
+    return (this.data.states_idstates == 1) ? { states_idstates: this.data.states_idstates + 1, observaciones: { observaciones: this.observaciones }} : { states_idstates: this.data.states_idstates + 1 };
+  }
+
+  addObservacion() {
+    this.observaciones.push(this.objTemp);
+    this.objTemp = "";
   }
 
 }

@@ -14,12 +14,15 @@ export class StatusPipe implements PipeTransform {
         return "En recepción.";
         break;
       case 3:
-        return "Reparando.";
+        return "En espera de refacciones.";
         break;
       case 4:
-        return "Lavando.";
+        return "Reparación.";
         break;
       case 5:
+        return "Lavando.";
+        break;
+      case 6:
         return "Finalizado";
         break;
     

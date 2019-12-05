@@ -52,4 +52,8 @@ export class CitaService {
   patchCita(uid: number) {
     return this.http.patch(`${this.URL}/${uid}`, { confirmacion: "1" });
   }
+
+  getTotales() {
+    return this.http.get<any []>(`${this.URL}/mes/`);
+  }
 }
