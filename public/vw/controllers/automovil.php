@@ -137,7 +137,6 @@ $app->group('/automoviles', function() use ($db){
 
     $this->get('/vista/registrados/', function($req, $res, $args) use($db){
         $params = $req->getQueryParams();
-        print_r($params);
         foreach($params as $key => $value){
             $result = $db->query("SELECT ua.usuario_idusuario, ua.automovil_idautomovil, ua.numserie, a.nombre, a.version, a.modelo, u.nombre as unombre, u.apPat, u.apMat  FROM usuario u,usuario_has_automovil ua, automovil a WHERE ua.automovil_idautomovil = a.idautomovil AND ua.usuario_idusuario = u.idusuario AND a.$key = '$value'")->fetchAll();
 

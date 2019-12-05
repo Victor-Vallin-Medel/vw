@@ -21,6 +21,56 @@ $app->group('/reparaciones', function() use ($db){
         return $res->withStatus(200);
     });
 
+    $this->get('/', function($req, $res, $args) use($db){
+        $params = $req->getQueryParams();
+        if( isset($params['idhojaRecepcion']) ){
+            $id = $params['idhojaRecepcion'];
+            $res->getBody()->write(
+                json_encode(
+                    $db->query("SELECT r.* FROM hojaRecepcion_has_reparaciones hr, reparaciones r WHERE r.idreparaciones = hr.reparaciones_idreparaciones AND hr.hojaRecepcion_idhojaRecepcion = $id")->fetchAll()
+                )
+            );
+            return $res->withStatus(200);
+        }
+        return $res->withStatus(400);
+    });
+
+    $this->get('/mes/{mes}', function($req, $res, $args) use($db){
+        $mes = $args['mes'];
+        $res->getBody()->write(
+            json_encode(
+                $db->query("CALL reparacionesPerMonth($mes)")->fetchAll()
+            )
+        );
+        return $res->withStatus(200);
+    });
+
+    $this->get('/vista/refacciones', function($req, $res, $args) use ($db){
+        $reparaciones = $db->query("SELECT * FROM reparaciones")->fetchAll();
+
+        foreach($reparaciones as $key => $reparacion){
+            $id = $reparacion['idreparaciones'];
+            $refacciones = $db->query("SELECT * FROM refacciones r, reparaciones_has_refacciones rr WHERE rr.reparaciones_idreparaciones = $id AND rr.refacciones_idrefacciones = r.idrefacciones")->fetchAll();
+            $reparaciones[$key]['refacciones'] = $refacciones;
+        }
+
+        $res->getBody()->write(
+            json_encode(
+                $reparaciones
+            )
+        );
+        return $res->withStatus(200);
+    });
+
+    $this->get('/vista/max', function($req,$res,$args) use($db){
+        $res->getBody()->write(
+            json_encode(
+                $db->query("CALL maxReparacion()")->fetchAll()
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->post('', function($req, $res, $args) use($db){
         $data = $req->getParsedBody();
 

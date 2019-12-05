@@ -34,6 +34,15 @@ $app->group('/refacciones', function() use ($db){
         $res->withStatus(200);
     });
 
+    $this->get('/vista/max', function($req, $res, $args) use ($db){
+        $res->getBody()->write(
+            json_encode(
+                $db->query("CALL maxRefaccion()")->fetchAll()
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->post('', function($req, $res, $args) use($db){
         $data = $req->getParsedBody();
 

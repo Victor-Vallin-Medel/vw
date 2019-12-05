@@ -61,6 +61,60 @@ $app->group('/hojas', function() use($db){
         );
     });
 
+    $this->get('/estado/{estado}', function($req, $res, $args) use ($db){
+        $estado = $args['estado'];
+
+        $citas = $db->query("SELECT idusuario, usuario_nombre, usuario_apPat, usuario_apMat, usuario_email, idcitas, fecha, confirmacion, idhojaRecepcion, JSON_UNQUOTE(JSON_EXTRACT(observaciones,'$.observaciones')) as observaciones, states_idstates, numserie, idautomovil, automovil_nombre, automovil_version, automovil_modelo FROM citas_completas WHERE states_idstates = $estado ORDER BY fecha DESC")->fetchAll();
+
+        $return = array();
+        foreach($citas as $cita){
+            $cita_aux = array(
+                "idcitas" => $cita['idcitas'],
+                "confirmacion" => $cita['confirmacion'],
+                "fecha" => $cita['fecha'],
+                "numserie" => $cita['numserie'],
+                "usuario_idusuario" => $cita['idusuario']
+            );
+
+            $usuario = array(
+                "idusuario" => $cita['idusuario'],
+                "nombre" => $cita['usuario_nombre'],
+                "apPat" => $cita['usuario_apPat'],
+                "apMat" => $cita['usuario_apMat'],
+                "email" => $cita['usuario_email']
+            );
+
+            $auto = array(
+                "idautomovil" => $cita['idautomovil'],
+                "nombre" => $cita['automovil_nombre'],
+                "modelo" => $cita['automovil_modelo'],
+                "version" => $cita['automovil_version']
+            );
+
+            $idHoja = $cita['idhojaRecepcion'];
+            $reparaciones = $db->query("SELECT rv.idreparaciones, rv.nombre, rv.descripcion, rv.precio FROM hojaRecepcion_has_reparaciones hr, reparaciones_view rv WHERE hr.hojaRecepcion_idhojaRecepcion = $idHoja AND hr.reparaciones_idreparaciones = rv.idreparaciones")->fetchAll();
+
+            $hoja = array(
+                "idhojaRecepcion" => $cita['idhojaRecepcion'],
+                "observaciones" => $cita['observaciones'],
+                "citas_idcitas" => $cita['idcitas'],
+                "states_idstates" => $cita['states_idstates'],
+                "usuario" => $usuario,
+                "automovil" => $auto,
+                "cita" => $cita_aux,
+                "reparaciones" => $reparaciones
+            );
+            array_push($return, $hoja);
+        }
+
+        $res->getBody()->write(
+            json_encode(
+                $return
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->get('/', function($req, $res, $args) use($db){
         $params = $req->getQueryParams();
         if( isset($params['idstates']) ){
@@ -73,7 +127,69 @@ $app->group('/hojas', function() use($db){
             return $res->withStatus(200);
         }
 
+        if( isset($params['idusuario']) ){
+            $id = $params['idusuario'];
+
+            $citas = $db->query("SELECT idusuario, usuario_nombre, usuario_apPat, usuario_apMat, usuario_email, idcitas, fecha, confirmacion, idhojaRecepcion, JSON_UNQUOTE(JSON_EXTRACT(observaciones,'$.observaciones')) as observaciones, states_idstates, numserie, idautomovil, automovil_nombre, automovil_version, automovil_modelo FROM citas_completas WHERE states_idstates = 6 AND idusuario = $id ORDER BY fecha DESC")->fetchAll();
+            $ret = array();
+            foreach($citas as $cita){
+                $cita_aux = array(
+                    "idcitas" => $cita['idcitas'],
+                    "confirmacion" => $cita['confirmacion'],
+                    "fecha" => $cita['fecha'],
+                    "numserie" => $cita['numserie'],
+                    "usuario_idusuario" => $cita['idusuario']
+                );
+
+                $usuario = array(
+                    "idusuario" => $cita['idusuario'],
+                    "nombre" => $cita['usuario_nombre'],
+                    "apPat" => $cita['usuario_apPat'],
+                    "apMat" => $cita['usuario_apMat'],
+                    "email" => $cita['usuario_email']
+                );
+
+                $auto = array(
+                    "idautomovil" => $cita['idautomovil'],
+                    "nombre" => $cita['automovil_nombre'],
+                    "modelo" => $cita['automovil_modelo'],
+                    "version" => $cita['automovil_version']
+                );
+
+                $idHoja = $cita['idhojaRecepcion'];
+                $reparaciones = $db->query("SELECT rv.idreparaciones, rv.nombre, rv.descripcion, rv.precio FROM hojaRecepcion_has_reparaciones hr, reparaciones_view rv WHERE hr.hojaRecepcion_idhojaRecepcion = $idHoja AND hr.reparaciones_idreparaciones = rv.idreparaciones")->fetchAll();
+
+                $hoja = array(
+                    "idhojaRecepcion" => $cita['idhojaRecepcion'],
+                    "observaciones" => $cita['observaciones'],
+                    "citas_idcitas" => $cita['idcitas'],
+                    "states_idstates" => $cita['states_idstates'],
+                    "usuario" => $usuario,
+                    "automovil" => $auto,
+                    "cita" => $cita_aux,
+                    "reparaciones" => $reparaciones
+                );
+                array_push($ret, $hoja);
+            }
+
+            $res->getBody()->write(
+                json_encode(
+                    $ret
+                )
+            );
+            return $res->withStatus(200);
+        }
+
         return $res->withStatus(400);
+    });
+
+    $this->get('/servicios/mes', function($req, $res, $args) use ($db) {
+        $res->getBody()->write(
+            json_encode(
+                $db->query("CALL serviciosPerMonth()")->fetchAll()
+            )
+        );
+        return $res->withStatus(200);
     });
 
     $this->post('', function($req, $res, $args) use ($db){
@@ -108,6 +224,34 @@ $app->group('/hojas', function() use($db){
         }
 
         return $res->withStatus(200);
+    });
+
+    //Add reparacionees to hojaRecepcion
+    $this->post('/', function($req, $res, $args) use($db){
+        $params = $req->getQueryParams();
+        if( isset($params['idreparaciones']) ){
+            $data = $req->getParsedBody();
+
+            $reparaciones = $data['reparaciones_idreparaciones'];
+
+            foreach($reparaciones as $reparacion){
+                $rep = array( $data['hojaRecepcion_idhojaRecepcion'], $reparacion );
+                $result = $db->query("INSERT INTO hojaRecepcion_has_reparaciones (hojaRecepcion_idhojaRecepcion, reparaciones_idreparaciones) VALUES (?,?)",$rep);
+                if($result->affectedRows() != 1){
+                    $res->getBody()->write(
+                        json_encode(
+                            array(
+                                "error" => "Ocurrio un error insertando los datos"
+                            )
+                        )
+                            );
+                    return $res->withStatus(400);
+                }
+            }
+
+            return $res->withStatus(200);
+        }
+        return $res->withStatus(400);
     });
 
     $this->patch('/{id}', function($req, $res, $args) use ($db){

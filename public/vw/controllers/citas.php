@@ -17,6 +17,15 @@ $app->group('/citas',function() use ($db){
         return $res->withStatus(200);
     });
 
+    $this->get('/mes/', function($req, $res, $args) use ($db){
+        $res->getBody()->write(
+            json_encode(
+                $db->query("CALL citasPerMonth()")->fetchAll()
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->post('', function($req, $res, $args) use ($db){
         $data = $req->getParsedBody();
 
