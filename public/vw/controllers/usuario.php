@@ -287,9 +287,13 @@ $app->group('/usuarios', function() use ($db){
     });
 
     $this->get('/direcciones/mapa', function($req, $res, $args) use ($db){
-        $direcciones = $db->query("SELECT CONCAT(d.calle,, d.colonia) as direccion FROM usuario u, direcciones d WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles = 1")->fetchAll();
+        $direcciones = $db->query("SELECT CONCAT(d.calle,' ', d.colonia) as direccion FROM usuario u, direcciones d WHERE u.direcciones_iddirecciones = d.iddirecciones AND u.roles_idroles = 1")->fetchAll();
         foreach($direcciones as $direccion){
-            $print_r($direccion);
+            $dir = $direccion['direccion'];
+            $r = "maps.googleapis.com/maps/api/geocode/json?address=$dir&key=AIzaSyD3jxfLl4HZP2L7T1vtv9dTPn8-5evgzDA";
+            echo $r;
+            $point = file_get_contents("maps.googleapis.com/maps/api/geocode/json?address=$dir&key=AIzaSyD3jxfLl4HZP2L7T1vtv9dTPn8-5evgzDA");
+            print_r($point);
         }
     });
 });

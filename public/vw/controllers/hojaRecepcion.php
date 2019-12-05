@@ -130,6 +130,15 @@ $app->group('/hojas', function() use($db){
         return $res->withStatus(400);
     });
 
+    $this->get('/servicios/mes', function($req, $res, $args) use ($db) {
+        $res->getBody()->write(
+            json_encode(
+                $db->query("CALL serviciosPerMonth()")->fetchAll()
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->post('', function($req, $res, $args) use ($db){
         $data = $req->getParsedBody();
 
