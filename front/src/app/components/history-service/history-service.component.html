@@ -1,41 +1,97 @@
-<section *ngIf="car | async; let car; else loading" class="animated fadeIn">
-  <div class="flex-container flex-between">
-    <h1 mat-card-title class="flex-child">Orden de servicio</h1>
-    <h3 class="flex-child">{{order.dateReception | date: short}} - {{order.time}}:00 hrs</h3>
-  </div>
-  <mat-divider></mat-divider>
-  <div class="container font-top">
-    <h4>Estado de servicio:</h4>
-    <div class="flex-container flex-around">
-      <p class="flex-child">
-        <span *ngIf="order.dateDelivery == null; else deliverySpan">En servicio o en espera de entrega.</span>
-        <ng-template #deliverySpan>Fecha de entrega: {{order.dateDelivery | date: short}}</ng-template>
-      </p>
-      <div class="flex-child">
-        <div *ngIf="order.dateDelivery == null; else deliveryIcon">
-          <button mat-icon-button color="warn">
-            <mat-icon>remove_circle</mat-icon>
-          </button>
-        </div>
-        <ng-template #deliveryIcon>
-          <button mat-icon-button style="color: forestgreen;">
-            <mat-icon>check_circle</mat-icon>
-          </button>
-        </ng-template>
-      </div>
+<div class="flex-container flex-between">
+    <div class="flex-child">
+        <h4 mat-dialog-title><span class="aligned-with-icon-relative">Ordenes de servicio</span>
+            <mat-icon color="primary">assignment</mat-icon>
+        </h4>
     </div>
-    <br>
-    <h4>Datos del vehículo:</h4>
-    <mat-chip-list class="flex-container flex-around">
-      <mat-chip color="primary" selected class="flex-child">{{car.name}}</mat-chip>
-      <mat-chip color="accent" selected class="flex-child">{{car.version}}</mat-chip>
-      <mat-chip style="background-color: crimson;" selected class="flex-child">{{car.model}}</mat-chip>
-      <mat-chip style="background-color: teal;" selected class="flex-child">{{car.plates}}</mat-chip>
-    </mat-chip-list>
-  </div>
-</section>
-<ng-template #loading>
-  <div class="load">
-    <mat-spinner class="spinner"></mat-spinner>
-  </div>
-</ng-template>
+    <div class="flex-child">
+        <button mat-stroked-button color="primary" style="margin-top: 1.5rem;" (click)="goBack()">Regresar</button>
+    </div>
+</div>
+
+<div class="row">
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+    </mat-form-field>
+
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+
+            <!-- Fecha Column -->
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </th>
+                <td mat-cell *matCellDef="let row"> {{row.cita.fecha | date: 'short'}} </td>
+            </ng-container>
+
+            <!-- Nombre Column -->
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                <td mat-cell *matCellDef="let row"> {{row.automovil.nombre}} </td>
+            </ng-container>
+
+            <!-- Version Column -->
+            <ng-container matColumnDef="version">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Versión </th>
+                <td mat-cell *matCellDef="let row"> {{row.automovil.version}} </td>
+            </ng-container>
+
+            <!-- Modelo Column -->
+            <ng-container matColumnDef="modelo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
+                <td mat-cell *matCellDef="let row"> {{row.automovil.modelo}} </td>
+            </ng-container>
+
+            <!-- Version Column -->
+            <ng-container matColumnDef="numserie">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> No. serie </th>
+                <td mat-cell *matCellDef="let row"> {{row.cita.numserie}} </td>
+            </ng-container>
+
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let order" [attr.colspan]="displayedColumns.length">
+                    <div class="example-rep-detail" [@detailExpand]="order == expandedOrder ? 'expanded' : 'collapsed'">
+                        <div class="example-rep-description">
+                            <div class="row">
+                                <div class="col s4" style="margin-top: 0.7rem;">
+                                    <a [routerLink]="['/customer', order.usuario.idusuario]"><mat-icon color="primary">account_circle</mat-icon> <span class="aligned-with-icon-relative"> {{order.usuario.nombre}} {{order.usuario.apPat}} {{order.usuario.apMat}} </span></a>
+                                    <p><mat-icon color="primary">mail</mat-icon> <span class="aligned-with-icon-relative"> {{order.usuario.email}} </span></p>
+                                </div>
+                                <div class="col s4">
+                                    <mat-list dense>
+                                        <h4 mat-subheader>Observaciones:</h4>
+                                        <mat-list-item *ngFor="let o of order.observaciones"> {{o}} </mat-list-item>
+                                    </mat-list>
+                                </div>
+                                <div class="col s4">
+                                    <mat-list dense>
+                                        <h4 mat-subheader>Reparaciones:</h4>
+                                        <mat-list-item *ngFor="let rep of order.reparaciones">
+                                            <mat-icon mat-list-icon style="color: teal;">fiber_smart_record</mat-icon>
+                                            <h4 mat-line class="example-rep-info">{{rep.nombre}} {{rep.precio | currency}} </h4>
+                                            <p mat-line class="example-rep-info"> {{rep.descripcion}} </p>
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let order; columns: displayedColumns;" class="example-rep-row"
+                [class.example-expanded-row]="expandedOrder === order"
+                (click)="expandedOrder = expandedOrder === order ? null : order">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+
+        <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+            <mat-progress-spinner color="primary" mode="indeterminate">
+            </mat-progress-spinner>
+        </mat-card>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+    </div>
+</div>

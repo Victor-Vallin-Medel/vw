@@ -40,4 +40,8 @@ export class HojaService {
       hojaRecepcion_idhojaRecepcion: uid
     });
   }
+
+  getByState(state: number) {
+    return this.http.get<any []>(`${this.URL}/estado/${state}`);
+  }
 }

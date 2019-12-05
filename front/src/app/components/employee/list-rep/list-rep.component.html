@@ -83,14 +83,16 @@
     </div>
 </div>
 <div class="row">
-    <div class="chart" *ngIf="!fetchingMonth">
-        <canvas baseChart
-            [data]="pieChartData"
-            [labels]="pieChartLabels"
-            [chartType]="pieChartType"
-            [options]="pieChartOptions"
-            [colors]="pieChartColors"
-            [legend]="pieChartLegend">
-        </canvas>
-    </div>
+    <mat-card class="mat-elevation-z8">
+        <div class="chart" *ngIf="!fetchingMonth">
+            <canvas baseChart
+                [data]="pieChartData"
+                [labels]="pieChartLabels"
+                [chartType]="pieChartType"
+                [options]="pieChartOptions"
+                [colors]="pieChartColors"
+                [legend]="pieChartLegend">
+            </canvas>
+        </div>
+    </mat-card>
 </div>

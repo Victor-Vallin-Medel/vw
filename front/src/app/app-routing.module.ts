@@ -12,6 +12,7 @@ import { ListUsersComponent } from './components/employee/list-users/list-users.
 import { ClientDetailsComponent } from './components/employee/client-details/client-details.component';
 import { CarsComponent } from './components/employee/cars/cars.component';
 import { ListRepComponent } from './components/employee/list-rep/list-rep.component';
+import { HistoryServiceComponent } from './components/history-service/history-service.component';
 
 const routes_clients: Routes = [
   { path: 'dashboard', component: HomeClientComponent, canActivate: [AuthUserGuard] },
@@ -24,7 +25,8 @@ const routes_employee: Routes = [
   { path: 'employee/:id', component: SettingsComponent },
   { path: 'customer/:id', component: ClientDetailsComponent },
   { path: 'cars', component: CarsComponent },
-  { path: 'repairs', component: ListRepComponent }
+  { path: 'repairs', component: ListRepComponent },
+  { path: 'orders', component: HistoryServiceComponent }
 ];
 
 const routes: Routes = [
