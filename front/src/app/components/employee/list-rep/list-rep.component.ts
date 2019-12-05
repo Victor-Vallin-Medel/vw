@@ -7,7 +7,9 @@ import { Reparacion } from 'src/app/models/reparacion';
 import { Refaccion } from 'src/app/models/refaccion';
 import { trigger, state, transition, style, animate } from '@angular/animations';
 import { ChartOptions, ChartType } from 'chart.js';
+import { randomColor } from "randomcolor";
 import { Label } from 'ng2-charts';
+import { Location } from '@angular/common';
 
 export interface RepAndRefs extends Reparacion {
   refacciones: Refaccion []
@@ -69,7 +71,7 @@ export class ListRepComponent implements OnInit {
   selectedMonth: number = 1;
   months_name: string [] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-  constructor(public session: SessionService, public rep$: ReparacionService) { }
+  constructor(public session: SessionService, public rep$: ReparacionService, private location: Location) { }
 
   ngOnInit() {
     this.rep$.getRefsWithRep().subscribe((partial: RepAndRefs []) => {
@@ -98,13 +100,21 @@ export class ListRepComponent implements OnInit {
       this.pieChartLabels = partial.map(r => r.nombre);
       this.pieChartData = partial.map(r => r.cantidad);
       this.fetchingMonth = false;
+      this.pieChartColors = [
+        { 
+          backgroundColor: partial.map(() => randomColor({
+            luminosity: 'dark',
+            format: 'rgba',
+            alpha: 0.5
+          })),
+        },
+      ];
     });
-    this.pieChartColors = [
-      {
-        backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
-      },
-    ];
     this.selectedMonth = month;
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }
