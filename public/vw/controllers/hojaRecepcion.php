@@ -127,6 +127,15 @@ $app->group('/hojas', function() use($db){
             return $res->withStatus(200);
         }
 
+        if( isset($params['idusuario']) ){
+            $id = $params['idusuario'];
+            $res->getBody()->write(
+                json_encode(
+                    $db->query("SELECT * FROM hojaRecepcion hr, usuario u, citas c WHERE hr.citas_idcitas = c.idcitas AND u.idusuario = $id AND u.idusuario = c.usuario_idusuario AND hr.states_idstates = 6")->fetchAll()
+                )
+            );
+        }
+
         return $res->withStatus(400);
     });
 
