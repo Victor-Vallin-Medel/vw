@@ -6,10 +6,11 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Reparacion } from 'src/app/models/reparacion';
 import { Refaccion } from 'src/app/models/refaccion';
 import { trigger, state, transition, style, animate } from '@angular/animations';
-import { ChartOptions, ChartType } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { randomColor } from "randomcolor";
-import { Label } from 'ng2-charts';
+import { Label, Color } from 'ng2-charts';
 import { Location } from '@angular/common';
+import { HojaService } from 'src/app/services/order.service';
 
 export interface RepAndRefs extends Reparacion {
   refacciones: Refaccion []
@@ -46,6 +47,8 @@ export class ListRepComponent implements OnInit {
   expandedRep: RepAndRefs | null;
 
   // Chart properties
+  public chartLegend = true;
+
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -60,18 +63,62 @@ export class ListRepComponent implements OnInit {
       },
     }
   };
-
-  public pieChartLegend = true;
+  
   public pieChartType: ChartType = 'pie';
   public pieChartLabels: Label[];
   public pieChartData: number[];
   public pieChartColors: [{ backgroundColor }];
 
+  public lineChartOptions: (ChartOptions & { annotation: any }) = {
+    responsive: true,
+    scales: {
+      // We use this empty structure as a placeholder for dynamic theming.
+      xAxes: [{}],
+      yAxes: [
+        {
+          id: 'y-axis-0',
+          position: 'left',
+        },
+        {
+          id: 'y-axis-1',
+          position: 'right',
+          gridLines: {
+            color: 'rgba(255,210,0,0.3)',
+          },
+        }
+      ]
+    },
+    annotation: {
+      annotations: [
+        {
+          type: 'line',
+          mode: 'vertical',
+          scaleID: 'x-axis-0',
+          value: 'March',
+          borderColor: 'teal',
+          borderWidth: 2,
+          label: {
+            enabled: true,
+            fontColor: 'teal',
+            content: 'LineAnno'
+          }
+        },
+      ],
+    },
+  };
+
+  public lineChartColors: Color[];
+
+  public lineChartType: ChartType = 'line';
+  public lineChartLabels: Label[];
+  public lineChartData: ChartDataSets[];
+
+  fetchingTotal: boolean = true;
   fetchingMonth: boolean = true;
   selectedMonth: number = 1;
   months_name: string [] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-  constructor(public session: SessionService, public rep$: ReparacionService, private location: Location) { }
+  constructor(public session: SessionService, public order$: HojaService,public rep$: ReparacionService, private location: Location) { }
 
   ngOnInit() {
     this.rep$.getRefsWithRep().subscribe((partial: RepAndRefs []) => {
@@ -85,6 +132,7 @@ export class ListRepComponent implements OnInit {
     });
 
     this.getChartOfMonth(1);
+    this.getChartOfTotal();
   }
 
   applyFilter(filterValue: string) {
@@ -111,6 +159,25 @@ export class ListRepComponent implements OnInit {
       ];
     });
     this.selectedMonth = month;
+  }
+
+  getChartOfTotal() {
+    this.order$.getRepsTotal().subscribe((partial: any []) => {
+      this.lineChartData = [{ data: partial.map(r => r.servicios), label: 'Totales' }];
+      console.log(this.lineChartData);
+      this.lineChartLabels = partial.map(r => this.months_name[r.mes - 1]);
+      this.fetchingTotal = false;
+      this.lineChartColors = [
+        { // red
+          backgroundColor: 'rgba(255,0,0,0.3)',
+          borderColor: 'red',
+          pointBackgroundColor: 'rgba(148,159,177,1)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+        }
+      ];
+    });
   }
 
   goBack() {

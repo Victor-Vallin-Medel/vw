@@ -71,7 +71,7 @@
 
 <div class="flex-container flex-between">
     <div class="flex-child">
-        <h4 mat-dialog-title><span class="aligned-with-icon-relative">Usadas por mes</span> <mat-icon color="primary">donut_small</mat-icon>
+        <h4 mat-dialog-title><span class="aligned-with-icon-relative">Reparación usada por mes</span> <mat-icon color="primary">donut_small</mat-icon>
         </h4>
     </div>
     <div class="flex-child">
@@ -91,7 +91,27 @@
                 [chartType]="pieChartType"
                 [options]="pieChartOptions"
                 [colors]="pieChartColors"
-                [legend]="pieChartLegend">
+                [legend]="chartLegend">
+            </canvas>
+        </div>
+    </mat-card>
+</div>
+
+<br>
+
+<h4 mat-dialog-title><span class="aligned-with-icon-relative">Reparaciones totales por mes</span> <mat-icon color="primary">trending_up</mat-icon>
+</h4>
+
+<div class="row">
+    <mat-card class="mat-elevation-z8">
+        <div class="chart" *ngIf="!fetchingTotal">
+            <canvas baseChart
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="chartLegend"
+                [chartType]="lineChartType">
             </canvas>
         </div>
     </mat-card>

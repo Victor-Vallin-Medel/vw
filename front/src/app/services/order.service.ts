@@ -44,4 +44,8 @@ export class HojaService {
   getByState(state: number) {
     return this.http.get<any []>(`${this.URL}/estado/${state}`);
   }
+
+  getRepsTotal() {
+    return this.http.get<any []>(`${this.URL}/servicios/mes`);
+  }
 }
