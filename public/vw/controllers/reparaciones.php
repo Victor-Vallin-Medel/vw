@@ -35,6 +35,23 @@ $app->group('/reparaciones', function() use ($db){
         return $res->withStatus(400);
     });
 
+    $this->get('/vista/refacciones', function($req, $res, $args) use ($db){
+        $reparaciones = $db->query("SELECT * FROM reparaciones")->fetchAll();
+
+        foreach($reparaciones as $key => $reparacion){
+            $id = $reparacion['idreparaciones'];
+            $refacciones = $db->query("SELECT * FROM refacciones r, reparaciones_has_refacciones rr WHERE rr.reparaciones_idreparaciones = $id AND rr.refacciones_idrefacciones = r.idrefacciones")->fetchAll();
+            $reparaciones[$key]['refacciones'] = $refacciones;
+        }
+
+        $res->getBody()->write(
+            json_encode(
+                $reparaciones
+            )
+        );
+        return $res->withStatus(200);
+    });
+
     $this->post('', function($req, $res, $args) use($db){
         $data = $req->getParsedBody();
 
