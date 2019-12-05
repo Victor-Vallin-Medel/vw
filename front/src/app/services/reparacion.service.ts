@@ -62,4 +62,8 @@ export class ReparacionService {
   getDataMonth(month: number) {
     return this.http.get<RepByMonth []>(`${this.URL}/mes/${month}`);
   }
+
+  getMax() {
+    return this.http.get<any>(`${this.URL}/vista/max`);
+  }
 }

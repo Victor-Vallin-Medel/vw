@@ -11,6 +11,7 @@ import { randomColor } from "randomcolor";
 import { Label, Color } from 'ng2-charts';
 import { Location } from '@angular/common';
 import { HojaService } from 'src/app/services/order.service';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 export interface RepAndRefs extends Reparacion {
   refacciones: Refaccion []
@@ -118,7 +119,10 @@ export class ListRepComponent implements OnInit {
   selectedMonth: number = 1;
   months_name: string [] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-  constructor(public session: SessionService, public order$: HojaService,public rep$: ReparacionService, private location: Location) { }
+  repMax: Observable<any>;
+  refMax: Observable<any>;
+  
+  constructor(public session: SessionService, public order$: HojaService,public rep$: ReparacionService, public ref$: RefaccionService, private location: Location) { }
 
   ngOnInit() {
     this.rep$.getRefsWithRep().subscribe((partial: RepAndRefs []) => {
@@ -133,6 +137,10 @@ export class ListRepComponent implements OnInit {
 
     this.getChartOfMonth(1);
     this.getChartOfTotal();
+
+    this.rep$.getMax().subscribe(partial => this.repMax = new BehaviorSubject<any>(partial).asObservable());
+
+    this.ref$.getMax().subscribe(partial =>this.refMax = new BehaviorSubject<any>(partial).asObservable());
   }
 
   applyFilter(filterValue: string) {
