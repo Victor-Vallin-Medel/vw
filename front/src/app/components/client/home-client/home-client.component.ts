@@ -16,11 +16,12 @@ import { SessionService } from 'src/app/services/session.service';
 })
 export class HomeClientComponent implements OnInit {
 
-  orders: Order[] = [];
+  orders: any [];
+  isLoading: boolean = true;
   cantidad: number;
-  displayedColumns: string[] = ['fk_plates_car', 'dateReception', 'time',];
+  displayedColumns: string[] = ['fecha', 'nombre', 'version', 'modelo', 'numserie'];
 
-  constructor(private session: SessionService, public car$: CarsService, private orderService: HojaService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
+  constructor(private session: SessionService, public car$: CarsService, public order$: HojaService, private sheetService: MatBottomSheet, private sheetCarService: MatBottomSheet, private router: Router) {
 
   }
 
@@ -32,6 +33,11 @@ export class HomeClientComponent implements OnInit {
       this.cantidad = partial.cantidad;
     });
     
+    this.order$.getHojasUsuario(this.session.user.idusuario).subscribe((partial: any []) => {
+      this.isLoading = false;
+
+      this.orders = partial;
+    });
   }
 
   openOrderService(order: Order) {

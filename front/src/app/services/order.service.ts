@@ -48,4 +48,8 @@ export class HojaService {
   getRepsTotal() {
     return this.http.get<any []>(`${this.URL}/servicios/mes`);
   }
+
+  getHojasUsuario(uid: number) {
+    return this.http.get<any []>(`${this.URL}/?idusuario=${uid}`);
+  }
 }
