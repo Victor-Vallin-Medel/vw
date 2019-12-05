@@ -179,6 +179,60 @@ $app->group('/usuarios', function() use ($db){
         return $res->withStatus(400);
     });
 
+    //Hojas no terminadas mayores a 2
+    $this->get('/hojas/{id}', function($req, $res, $args) use ($db){
+        $id = $args['id'];
+        $citas = $db->query("SELECT idusuario, usuario_nombre, usuario_apPat, usuario_apMat, usuario_email, idcitas, fecha, confirmacion, idhojaRecepcion, JSON_UNQUOTE(JSON_EXTRACT(observaciones,'$.observaciones')) as observaciones, states_idstates, numserie, idautomovil, automovil_nombre, automovil_version, automovil_modelo FROM citas_completas WHERE states_idstates <> 6 AND states_idstates > 1 ORDER BY fecha DESC")->fetchAll();
+        $return = array();
+        foreach($citas as $cita){
+            $cita_aux = array(
+                "idcitas" => $cita['idcitas'],
+                "confirmacion" => $cita['confirmacion'],
+                "fecha" => $cita['fecha'],
+                "numserie" => $cita['numserie'],
+                "usuario_idusuario" => $cita['idusuario']
+            );
+
+            $usuario = array(
+                "idusuario" => $cita['idusuario'],
+                "nombre" => $cita['usuario_nombre'],
+                "apPat" => $cita['usuario_apPat'],
+                "apMat" => $cita['usuario_apMat'],
+                "email" => $cita['usuario_email']
+            );
+
+            $auto = array(
+                "idautomovil" => $cita['idautomovil'],
+                "nombre" => $cita['automovil_nombre'],
+                "modelo" => $cita['automovil_modelo'],
+                "version" => $cita['automovil_version']
+            );
+
+            $idHoja = $cita['idhojaRecepcion'];
+            $reparaciones = $db->query("SELECT rv.idreparaciones, rv.nombre, rv.descripcion, rv.precio FROM hojaRecepcion_has_reparaciones hr, reparaciones_view rv WHERE hr.hojaRecepcion_idhojaRecepcion = $idHoja AND hr.reparaciones_idreparaciones = rv.idreparaciones")->fetchAll();
+
+            $hoja = array(
+                "idhojaRecepcion" => $cita['idhojaRecepcion'],
+                "observaciones" => $cita['observaciones'],
+                "citas_idcitas" => $cita['idcitas'],
+                "states_idstates" => $cita['states_idstates'],
+                "usuario" => $usuario,
+                "automovil" => $auto,
+                "cita" => $cita_aux,
+                "reparaciones" => $reparaciones
+            );
+            array_push($return, $hoja);
+        }
+
+        $res->getBody()->write(
+            json_encode(
+                $return
+            )
+        );
+
+        return $res->withStatus(200);
+    });
+
     $this->post('/verify-token', function($req, $res, $args){
         print_r($req->getHeader('token'));
         print_r(Auth::GetData($req->getHeader('token')[0]) );
@@ -235,6 +289,26 @@ $app->group('/usuarios', function() use ($db){
             }
             $result = $db->query($query);
         }
+
+        $user = $db->query("SELECT idusuario, nombre, apPat, apMat, email, direcciones_iddirecciones, roles_idroles FROM usuario WHERE email = '$email'")->fetchArray();
+        $direccion = $db->query("SELECT * FROM direcciones WHERE iddirecciones = ?", $user['direcciones_iddirecciones'])->fetchArray();
+        $ciudad = $db->query("SELECT * FROM ciudades WHERE idciudades = ?",$direccion['ciudades_idciudades'])->fetchArray();
+
+        //Generate JWT
+        $jwt = Auth::SignIn(array(
+            "idusuario" => $user['idusuario'],
+            "email" => $user['email'],
+            "nombre" => $user['nombre'],
+            "apPat" => $user['apPat'],
+            "apMat" => $user['apMat'],
+            "direcciones_iddirecciones" => $user['direcciones_iddirecciones'],
+            "calle" => $direccion['calle'],
+            "colonia" => $direccion['colonia'],
+            "cp" => $direccion['cp'],
+            "ciudad" => $ciudad['nombre'],
+            "idciudades" => $ciudad['idciudades'],
+            "roles_idroles" => $user['roles_idroles']
+        ));
 
         return $res->withStatus(200);
     });
