@@ -90,6 +90,9 @@ $app->group('/hojas', function() use($db){
                 "version" => $cita['automovil_version']
             );
 
+            $idHoja = $cita['idhojaRecepcion'];
+            $reparaciones = $db->query("SELECT rv.idreparaciones, rv.nombre, rv.descripcion, rv.precio FROM hojaRecepcion_has_reparaciones hr, reparaciones_view rv WHERE hr.hojaRecepcion_idhojaRecepcion = $idHoja AND hr.reparaciones_idreparaciones = rv.idreparaciones")->fetchAll();
+
             $hoja = array(
                 "idhojaRecepcion" => $cita['idhojaRecepcion'],
                 "observaciones" => $cita['observaciones'],
@@ -97,7 +100,8 @@ $app->group('/hojas', function() use($db){
                 "states_idstates" => $cita['states_idstates'],
                 "usuario" => $usuario,
                 "automovil" => $auto,
-                "cita" => $cita_aux
+                "cita" => $cita_aux,
+                "reparaciones" => $reparaciones
             );
             array_push($return, $hoja);
         }
