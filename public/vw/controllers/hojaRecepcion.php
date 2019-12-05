@@ -80,7 +80,8 @@ $app->group('/hojas', function() use($db){
                 "idusuario" => $cita['idusuario'],
                 "nombre" => $cita['usuario_nombre'],
                 "apPat" => $cita['usuario_apPat'],
-                "apMat" => $cita['usuario_apMat']
+                "apMat" => $cita['usuario_apMat'],
+                "email" => $cita['usuario_email']
             );
 
             $auto = array(
