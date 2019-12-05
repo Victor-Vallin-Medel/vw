@@ -317,6 +317,14 @@ $app->group('/usuarios', function() use ($db){
             "roles_idroles" => $user['roles_idroles']
         ));
 
+        $response = array(
+            'jwt' => $jwt
+        );
+        
+        $res->getBody()->write(
+            json_encode( $response )
+        );
+
         return $res->withStatus(200);
     });
 
