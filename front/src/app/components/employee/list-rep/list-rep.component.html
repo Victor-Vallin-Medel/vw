@@ -66,3 +66,31 @@
         <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
     </div>
 </div>
+
+<br>
+
+<div class="flex-container flex-between">
+    <div class="flex-child">
+        <h4 mat-dialog-title><span class="aligned-with-icon-relative">Usadas por mes</span> <mat-icon color="primary">donut_small</mat-icon>
+        </h4>
+    </div>
+    <div class="flex-child">
+        <button mat-button [matMenuTriggerFor]="months" color="accent" style="margin-top: 1.5rem;">{{months_name[selectedMonth - 1]}}</button>
+
+        <mat-menu #months="matMenu">
+            <button mat-menu-item *ngFor="let month of months_name; index as i" (click)="getChartOfMonth(i + 1)"> {{month}} </button>
+        </mat-menu>
+    </div>
+</div>
+<div class="row">
+    <div class="chart" *ngIf="!fetchingMonth">
+        <canvas baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [colors]="pieChartColors"
+            [legend]="pieChartLegend">
+        </canvas>
+    </div>
+</div>

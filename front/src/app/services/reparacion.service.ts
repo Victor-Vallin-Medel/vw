@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Reparacion } from '../models/reparacion';
 import { HttpClient } from '@angular/common/http';
-import { RepAndRefs } from '../components/employee/list-rep/list-rep.component';
+import { RepAndRefs, RepByMonth } from '../components/employee/list-rep/list-rep.component';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +57,9 @@ export class ReparacionService {
    */
   getRefsWithRep() {
     return this.http.get<RepAndRefs []>(`${this.URL}/vista/refacciones`);
+  }
+
+  getDataMonth(month: number) {
+    return this.http.get<RepByMonth []>(`${this.URL}/mes/${month}`);
   }
 }

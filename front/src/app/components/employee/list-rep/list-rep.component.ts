@@ -6,9 +6,17 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Reparacion } from 'src/app/models/reparacion';
 import { Refaccion } from 'src/app/models/refaccion';
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import { ChartOptions, ChartType } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 export interface RepAndRefs extends Reparacion {
   refacciones: Refaccion []
+}
+
+export interface RepByMonth {
+  idreparaciones: number,
+  cantidad: number,
+  nombre: string
 }
 
 @Component({
@@ -25,6 +33,7 @@ export interface RepAndRefs extends Reparacion {
 })
 export class ListRepComponent implements OnInit {
 
+  // Table properties
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -34,7 +43,33 @@ export class ListRepComponent implements OnInit {
 
   expandedRep: RepAndRefs | null;
 
-  constructor(public session: SessionService, public rep$: ReparacionService, public ref$: RefaccionService) { }
+  // Chart properties
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+    legend: {
+      position: 'top',
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
+        },
+      },
+    }
+  };
+
+  public pieChartLegend = true;
+  public pieChartType: ChartType = 'pie';
+  public pieChartLabels: Label[];
+  public pieChartData: number[];
+  public pieChartColors: [{ backgroundColor }];
+
+  fetchingMonth: boolean = true;
+  selectedMonth: number = 1;
+  months_name: string [] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  constructor(public session: SessionService, public rep$: ReparacionService) { }
 
   ngOnInit() {
     this.rep$.getRefsWithRep().subscribe((partial: RepAndRefs []) => {
@@ -46,6 +81,8 @@ export class ListRepComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
+
+    this.getChartOfMonth(1);
   }
 
   applyFilter(filterValue: string) {
@@ -54,6 +91,20 @@ export class ListRepComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  getChartOfMonth(month: number) {
+    this.rep$.getDataMonth(month).subscribe((partial: RepByMonth[]) => {
+      this.pieChartLabels = partial.map(r => r.nombre);
+      this.pieChartData = partial.map(r => r.cantidad);
+      this.fetchingMonth = false;
+    });
+    this.pieChartColors = [
+      {
+        backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
+      },
+    ];
+    this.selectedMonth = month;
   }
 
 }
