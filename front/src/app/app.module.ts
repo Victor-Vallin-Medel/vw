@@ -16,6 +16,9 @@ import { LoadingBarHttpClientModule } from "@ngx-loading-bar/http-client";
 // Sweet Alert
 import { SweetAlert2Module } from "@sweetalert2/ngx-sweetalert2";
 
+// Charts
+import { ChartsModule } from 'ng2-charts';
+
 // Guards
 import { AuthEmployeeGuard } from './guards/auth-employee.guard';
 import { AuthUserGuard } from './guards/auth-user.guard';
@@ -102,6 +105,7 @@ export function getToken(): string {
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
     HttpClientModule,
+    ChartsModule,
     SweetAlert2Module.forRoot(),
     JwtModule.forRoot({
       config: {
