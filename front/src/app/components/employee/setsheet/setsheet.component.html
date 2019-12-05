@@ -18,13 +18,19 @@
         <div class="col s12"> {{data.states_idstates | status}} </div>
     </div>
     <!-- En espera de llegada -->
-    <!-- <form class="example-form">
+    <form class="example-form" *ngIf="data.states_idstates == 1 && right">
         <div class="row">
             <mat-form-field class="example-full-width" class="col s12">
-                <textarea matInput placeholder="Leave a comment"></textarea>
+                <textarea matInput placeholder="Añadir observación" [(ngModel)]="objTemp" name="observs"></textarea>
             </mat-form-field>
         </div>
-    </form> -->
+    </form>
+    <div align="end">
+        <button mat-flat-button [disabled]="objTemp.length <= 0" (click)="addObservacion()">Añadir</button>
+    </div>
+    <div class="row">
+        <p *ngFor="let o of observaciones"> {{o}} </p>
+    </div>
 
     <!-- Espera de refacciones -->
     <div *ngIf="data.states_idstates == 3 && right && ref$.list | async; let refs">

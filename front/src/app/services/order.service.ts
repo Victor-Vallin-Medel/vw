@@ -30,8 +30,8 @@ export class HojaService {
     });
   }
 
-  patchHoja(state: number, uid: number) {
-    return this.http.patch(`${this.URL}/${uid}`, { states_idstates: state });
+  patchHoja(object: {}, uid: number) {
+    return this.http.patch(`${this.URL}/${uid}`, object);
   }
 
   setRefs(uid: number, refs: number []) {
