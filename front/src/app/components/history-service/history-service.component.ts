@@ -39,7 +39,7 @@ export class HistoryServiceComponent implements OnInit {
   public radarChartLabels: Label[];
 
   public radarChartData: ChartDataSets[];
-  public radarChartType: ChartType = 'radar';
+  public radarChartType: ChartType = 'bar';
 
   fetchTotal: boolean = true;
   months_name: string [] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
